@@ -1,23 +1,13 @@
 import React from 'react';
+import type { Tournament } from '../services/api';
 import './TournamentCard.css';
-
-interface Tournament {
-  id: number;
-  title: string;
-  prize: string;
-  participants: number;
-  maxParticipants: number;
-  startDate: string;
-  endDate: string;
-  status: string;
-  game: string;
-}
 
 interface TournamentCardProps {
   tournament: Tournament;
+  onParticipate?: () => void;
 }
 
-const TournamentCard: React.FC<TournamentCardProps> = ({ tournament }) => {
+const TournamentCard: React.FC<TournamentCardProps> = ({ tournament, onParticipate }) => {
   const getStatusText = (status: string) => {
     switch (status) {
       case 'active': return 'Активный';
@@ -40,12 +30,19 @@ const TournamentCard: React.FC<TournamentCardProps> = ({ tournament }) => {
 
   return (
     <div className="tournament-card">
-      <div className="tournament-header">
-        <h3 className="tournament-title">{tournament.title}</h3>
-        <span className={`tournament-status ${getStatusClass(tournament.status)}`}>
-          {getStatusText(tournament.status)}
-        </span>
+      <div className="tournament-image">
+        <img src={tournament.image} alt={tournament.title} />
+        <div className="tournament-overlay">
+          <span className={`tournament-status ${getStatusClass(tournament.status)}`}>
+            {getStatusText(tournament.status)}
+          </span>
+        </div>
       </div>
+      
+      <div className="tournament-content">
+        <div className="tournament-header">
+          <h3 className="tournament-title">{tournament.title}</h3>
+        </div>
 
       <div className="tournament-prize">
         <span className="prize-label">Призовой фонд:</span>
@@ -83,9 +80,16 @@ const TournamentCard: React.FC<TournamentCardProps> = ({ tournament }) => {
         </div>
       </div>
 
-      <div className="tournament-actions">
-        <button className="btn-primary">Участвовать</button>
-        <button className="btn-secondary">Подробнее</button>
+        <div className="tournament-actions">
+          <button 
+            className="btn-primary" 
+            onClick={onParticipate}
+            disabled={tournament.status === 'finished'}
+          >
+            Участвовать
+          </button>
+          <button className="btn-secondary">Подробнее</button>
+        </div>
       </div>
     </div>
   );

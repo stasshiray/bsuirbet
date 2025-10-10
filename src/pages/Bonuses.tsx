@@ -1,88 +1,69 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import BonusCard from '../components/BonusCard';
+import type { Bonus } from '../services/api';
+import { fetchBonuses, claimBonus } from '../services/api';
 import './Bonuses.css';
 
 const Bonuses: React.FC = () => {
-  const bonuses = [
-    {
-      id: 1,
-      title: 'Приветственный бонус',
-      description: 'Получите 100% бонус на первый депозит до 1000 BYN',
-      amount: '1000 BYN',
-      type: 'deposit',
-      isActive: true,
-      terms: 'Минимальный депозит 50 BYN. Вейджер x35'
-    },
-    {
-      id: 2,
-      title: 'Бездепозитный бонус',
-      description: '50 BYN бесплатно при регистрации',
-      amount: '50 BYN',
-      type: 'no-deposit',
-      isActive: true,
-      terms: 'Вейджер x40. Максимальный выигрыш 500 BYN'
-    },
-    {
-      id: 3,
-      title: 'Еженедельный кэшбэк',
-      description: 'Получайте 10% кэшбэк каждую неделю',
-      amount: '10%',
-      type: 'cashback',
-      isActive: true,
-      terms: 'Кэшбэк начисляется по понедельникам'
-    },
-    {
-      id: 4,
-      title: 'Бонус на день рождения',
-      description: 'Специальный бонус в день рождения',
-      amount: '500 BYN',
-      type: 'birthday',
-      isActive: false,
-      terms: 'Доступен в течение 7 дней после дня рождения'
-    },
-    {
-      id: 5,
-      title: 'VIP бонус',
-      description: 'Эксклюзивные бонусы для VIP игроков',
-      amount: 'До 5000 BYN',
-      type: 'vip',
-      isActive: true,
-      terms: 'Только для VIP статуса'
-    },
-    {
-      id: 6,
-      title: 'Бонус за лояльность',
-      description: 'Дополнительные бонусы за активную игру',
-      amount: '200 BYN',
-      type: 'loyalty',
-      isActive: true,
-      terms: 'Начисляется ежемесячно'
-    }
-  ];
+  const [bonuses, setBonuses] = useState<Bonus[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
-  const getTypeIcon = (type: string) => {
-    switch (type) {
-      case 'deposit': return '💰';
-      case 'no-deposit': return '🎁';
-      case 'cashback': return '💸';
-      case 'birthday': return '🎂';
-      case 'vip': return '👑';
-      case 'loyalty': return '⭐';
-      default: return '🎯';
+  useEffect(() => {
+    const loadBonuses = async () => {
+      try {
+        setLoading(true);
+        const data = await fetchBonuses();
+        setBonuses(data);
+      } catch (err) {
+        setError(err instanceof Error ? err.message : 'Failed to load bonuses');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadBonuses();
+  }, []);
+
+  const handleClaimBonus = async (bonusId: number) => {
+    try {
+      await claimBonus(bonusId);
+      alert('Бонус успешно получен!');
+    } catch (err) {
+      alert(err instanceof Error ? err.message : 'Failed to claim bonus');
     }
   };
 
-  const getTypeColor = (type: string) => {
-    switch (type) {
-      case 'deposit': return '#ffd700';
-      case 'no-deposit': return '#44ff44';
-      case 'cashback': return '#44aaff';
-      case 'birthday': return '#ff44aa';
-      case 'vip': return '#aa44ff';
-      case 'loyalty': return '#ffaa44';
-      default: return '#ffffff';
-    }
-  };
+  if (loading) {
+    return (
+      <div className="bonuses">
+        <div className="container">
+          <div style={{ textAlign: 'center', padding: '2rem' }}>
+            <h2>Загрузка бонусов...</h2>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="bonuses">
+        <div className="container">
+          <div style={{ textAlign: 'center', padding: '2rem' }}>
+            <h2>Ошибка загрузки</h2>
+            <p>{error}</p>
+            <button onClick={() => window.location.reload()}>Попробовать снова</button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // Group bonuses by category
+  const welcomeBonuses = bonuses.filter(bonus => bonus.category === 'welcome');
+  const vipBonuses = bonuses.filter(bonus => bonus.category === 'vip');
+  const dailyBonuses = bonuses.filter(bonus => bonus.category === 'daily');
 
   return (
     <div className="bonuses">
@@ -97,19 +78,64 @@ const Bonuses: React.FC = () => {
 
       <section className="bonuses-content">
         <div className="container">
-          <div className="bonuses-header">
-            <h2>Доступные бонусы</h2>
-            <div className="bonus-filters">
-              <button className="filter-btn active">Все</button>
-              <button className="filter-btn">Активные</button>
-              <button className="filter-btn">VIP</button>
+          {/* Welcome Bonuses Section */}
+          <div className="bonus-section">
+            <div className="section-header">
+              <h2 className="section-title">
+                <span className="section-icon">🎁</span>
+                Добро пожаловать
+              </h2>
+              <p className="section-description">Специальные бонусы для новых игроков</p>
+            </div>
+            <div className="bonuses-grid">
+              {welcomeBonuses.map(bonus => (
+                <BonusCard 
+                  key={bonus.id} 
+                  bonus={bonus} 
+                  onClaim={() => handleClaimBonus(bonus.id)}
+                />
+              ))}
             </div>
           </div>
 
-          <div className="bonuses-grid">
-            {bonuses.map(bonus => (
-              <BonusCard key={bonus.id} bonus={bonus} />
-            ))}
+          {/* VIP Bonuses Section */}
+          <div className="bonus-section">
+            <div className="section-header">
+              <h2 className="section-title">
+                <span className="section-icon">👑</span>
+                VIP Бонусы
+              </h2>
+              <p className="section-description">Эксклюзивные предложения для VIP игроков</p>
+            </div>
+            <div className="bonuses-grid">
+              {vipBonuses.map(bonus => (
+                <BonusCard 
+                  key={bonus.id} 
+                  bonus={bonus} 
+                  onClaim={() => handleClaimBonus(bonus.id)}
+                />
+              ))}
+            </div>
+          </div>
+
+          {/* Daily Bonuses Section */}
+          <div className="bonus-section">
+            <div className="section-header">
+              <h2 className="section-title">
+                <span className="section-icon">🎰</span>
+                Ежедневные бонусы
+              </h2>
+              <p className="section-description">Регулярные награды для активных игроков</p>
+            </div>
+            <div className="bonuses-grid">
+              {dailyBonuses.map(bonus => (
+                <BonusCard 
+                  key={bonus.id} 
+                  bonus={bonus} 
+                  onClaim={() => handleClaimBonus(bonus.id)}
+                />
+              ))}
+            </div>
           </div>
 
           <div className="bonus-terms">

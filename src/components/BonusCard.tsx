@@ -1,50 +1,40 @@
 import React from 'react';
+import type { Bonus } from '../services/api';
 import './BonusCard.css';
-
-interface Bonus {
-  id: number;
-  title: string;
-  description: string;
-  amount: string;
-  type: string;
-  isActive: boolean;
-  terms: string;
-}
 
 interface BonusCardProps {
   bonus: Bonus;
+  onClaim?: () => void;
 }
 
-const BonusCard: React.FC<BonusCardProps> = ({ bonus }) => {
-  const getTypeIcon = (type: string) => {
-    switch (type) {
-      case 'deposit': return '💰';
-      case 'no-deposit': return '🎁';
-      case 'cashback': return '💸';
-      case 'birthday': return '🎂';
-      case 'vip': return '👑';
-      case 'loyalty': return '⭐';
-      default: return '🎯';
+const BonusCard: React.FC<BonusCardProps> = ({ bonus, onClaim }) => {
+  const getCategoryClass = (category: string) => {
+    switch (category) {
+      case 'welcome': return 'bonus-welcome';
+      case 'vip': return 'bonus-vip';
+      case 'daily': return 'bonus-daily';
+      default: return '';
     }
   };
 
-  const getTypeColor = (type: string) => {
-    switch (type) {
-      case 'deposit': return '#ffd700';
-      case 'no-deposit': return '#44ff44';
-      case 'cashback': return '#44aaff';
-      case 'birthday': return '#ff44aa';
-      case 'vip': return '#aa44ff';
-      case 'loyalty': return '#ffaa44';
-      default: return '#ffffff';
+  const getCategoryLabel = (category: string) => {
+    switch (category) {
+      case 'welcome': return 'Добро пожаловать';
+      case 'vip': return 'VIP';
+      case 'daily': return 'Ежедневно';
+      default: return '';
     }
   };
 
   return (
-    <div className={`bonus-card ${bonus.isActive ? 'active' : 'inactive'}`}>
+    <div className={`bonus-card ${getCategoryClass(bonus.category)} ${bonus.isActive ? 'active' : 'inactive'}`}>
+      <div className="bonus-category-badge">
+        {getCategoryLabel(bonus.category)}
+      </div>
+      
       <div className="bonus-header">
-        <div className="bonus-icon" style={{ color: getTypeColor(bonus.type) }}>
-          {getTypeIcon(bonus.type)}
+        <div className="bonus-icon" style={{ color: bonus.color }}>
+          {bonus.icon}
         </div>
         <div className="bonus-status">
           {bonus.isActive ? (
@@ -61,7 +51,7 @@ const BonusCard: React.FC<BonusCardProps> = ({ bonus }) => {
         
         <div className="bonus-amount">
           <span className="amount-label">Размер бонуса:</span>
-          <span className="amount-value" style={{ color: getTypeColor(bonus.type) }}>
+          <span className="amount-value" style={{ color: bonus.color }}>
             {bonus.amount}
           </span>
         </div>
@@ -75,7 +65,9 @@ const BonusCard: React.FC<BonusCardProps> = ({ bonus }) => {
       <div className="bonus-actions">
         {bonus.isActive ? (
           <>
-            <button className="btn-primary">Получить бонус</button>
+            <button className="btn-primary" onClick={onClaim}>
+              Получить бонус
+            </button>
             <button className="btn-secondary">Подробнее</button>
           </>
         ) : (

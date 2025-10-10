@@ -1,0 +1,4 @@
+---
+alwaysApply: true
+---
+Use `import type` when import types.

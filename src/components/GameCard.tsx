@@ -1,14 +1,6 @@
 import React from 'react';
+import type { Game } from '../services/api';
 import './GameCard.css';
-
-interface Game {
-  id: number;
-  title: string;
-  category: string;
-  image: string;
-  jackpot: string;
-  isHot: boolean;
-}
 
 interface GameCardProps {
   game: Game;

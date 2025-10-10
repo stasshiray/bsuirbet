@@ -1,72 +1,67 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import TournamentCard from '../components/TournamentCard';
+import type { Tournament } from '../services/api';
+import { fetchTournaments, participateInTournament } from '../services/api';
 import './Tournaments.css';
 
 const Tournaments: React.FC = () => {
-  const tournaments = [
-    {
-      id: 1,
-      title: 'Mega Tournament',
-      prize: '500,000 BYN',
-      participants: 1250,
-      maxParticipants: 2000,
-      startDate: '2024-01-15',
-      endDate: '2024-01-22',
-      status: 'active',
-      game: 'Book of Ra'
-    },
-    {
-      id: 2,
-      title: 'Weekly Slots Challenge',
-      prize: '100,000 BYN',
-      participants: 850,
-      maxParticipants: 1000,
-      startDate: '2024-01-20',
-      endDate: '2024-01-27',
-      status: 'upcoming',
-      game: 'Gonzo\'s Quest'
-    },
-    {
-      id: 3,
-      title: 'Blackjack Masters',
-      prize: '75,000 BYN',
-      participants: 320,
-      maxParticipants: 500,
-      startDate: '2024-01-18',
-      endDate: '2024-01-25',
-      status: 'active',
-      game: 'Blackjack Classic'
-    },
-    {
-      id: 4,
-      title: 'Roulette Royale',
-      prize: '200,000 BYN',
-      participants: 0,
-      maxParticipants: 300,
-      startDate: '2024-01-25',
-      endDate: '2024-02-01',
-      status: 'upcoming',
-      game: 'European Roulette'
-    }
-  ];
+  const [tournaments, setTournaments] = useState<Tournament[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
-  const getStatusText = (status: string) => {
-    switch (status) {
-      case 'active': return 'Активный';
-      case 'upcoming': return 'Скоро';
-      case 'finished': return 'Завершен';
-      default: return status;
+  useEffect(() => {
+    const loadTournaments = async () => {
+      try {
+        setLoading(true);
+        const data = await fetchTournaments();
+        setTournaments(data);
+      } catch (err) {
+        setError(err instanceof Error ? err.message : 'Failed to load tournaments');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadTournaments();
+  }, []);
+
+  const handleParticipate = async (tournamentId: number) => {
+    try {
+      await participateInTournament(tournamentId);
+      // Reload tournaments to get updated participant count
+      const updatedTournaments = await fetchTournaments();
+      setTournaments(updatedTournaments);
+      alert('Вы успешно присоединились к турниру!');
+    } catch (err) {
+      alert(err instanceof Error ? err.message : 'Failed to participate in tournament');
     }
   };
 
-  const getStatusClass = (status: string) => {
-    switch (status) {
-      case 'active': return 'status-active';
-      case 'upcoming': return 'status-upcoming';
-      case 'finished': return 'status-finished';
-      default: return '';
-    }
-  };
+  if (loading) {
+    return (
+      <div className="tournaments">
+        <div className="container">
+          <div style={{ textAlign: 'center', padding: '2rem' }}>
+            <h2>Загрузка турниров...</h2>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="tournaments">
+        <div className="container">
+          <div style={{ textAlign: 'center', padding: '2rem' }}>
+            <h2>Ошибка загрузки</h2>
+            <p>{error}</p>
+            <button onClick={() => window.location.reload()}>Попробовать снова</button>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="tournaments">
@@ -92,7 +87,11 @@ const Tournaments: React.FC = () => {
 
           <div className="tournaments-grid">
             {tournaments.map(tournament => (
-              <TournamentCard key={tournament.id} tournament={tournament} />
+              <TournamentCard 
+                key={tournament.id} 
+                tournament={tournament} 
+                onParticipate={() => handleParticipate(tournament.id)}
+              />
             ))}
           </div>
 

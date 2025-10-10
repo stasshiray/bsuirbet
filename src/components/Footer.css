@@ -1,6 +1,6 @@
 .footer {
-  background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 100%);
-  border-top: 1px solid rgba(255, 215, 0, 0.2);
+  background: linear-gradient(135deg, #0f1419 0%, #1a2332 100%);
+  border-top: 1px solid rgba(255, 107, 53, 0.2);
   margin-top: 4rem;
 }
 
@@ -12,7 +12,7 @@
 }
 
 .footer-section h3 {
-  color: #ffd700;
+  color: #ff6b35;
   font-size: 1.5rem;
   margin-bottom: 1rem;
 }
@@ -44,7 +44,7 @@
 }
 
 .footer-section ul li a:hover {
-  color: #ffd700;
+  color: #ff6b35;
 }
 
 .footer-bottom {

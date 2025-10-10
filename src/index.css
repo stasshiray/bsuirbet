@@ -10,7 +10,7 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: #0a0a0a;
+  background-color: #0f1419;
   color: #ffffff;
   line-height: 1.6;
 }
@@ -36,26 +36,34 @@ button {
   padding: 0 20px;
 }
 
-/* Casino-specific styles */
-.casino-gradient {
-  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+/* Fonbet-style colors and gradients */
+.fonbet-gradient {
+  background: linear-gradient(135deg, #0f1419 0%, #1a2332 50%, #2d3748 100%);
 }
 
-.gold-accent {
-  color: #ffd700;
+.fonbet-orange {
+  color: #ff6b35;
 }
 
-.red-accent {
-  color: #ff4444;
+.fonbet-orange-bg {
+  background: linear-gradient(45deg, #ff6b35, #ff8c42);
 }
 
-.green-accent {
-  color: #44ff44;
+.fonbet-blue {
+  color: #4a90e2;
+}
+
+.fonbet-green {
+  color: #4caf50;
+}
+
+.fonbet-red {
+  color: #f44336;
 }
 
 .card {
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.12);
   border-radius: 8px;
   backdrop-filter: blur(10px);
   transition: all 0.3s ease;
@@ -63,23 +71,24 @@ button {
 
 .card:hover {
   transform: translateY(-2px);
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
-  border-color: rgba(255, 215, 0, 0.3);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+  border-color: rgba(255, 107, 53, 0.3);
 }
 
 .btn-primary {
-  background: linear-gradient(45deg, #ffd700, #ffed4e);
-  color: #000;
+  background: linear-gradient(45deg, #ff6b35, #ff8c42);
+  color: #ffffff;
   padding: 12px 24px;
   border-radius: 6px;
   font-weight: 600;
   transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(255, 107, 53, 0.3);
 }
 
 .btn-primary:hover {
-  background: linear-gradient(45deg, #ffed4e, #ffd700);
+  background: linear-gradient(45deg, #ff8c42, #ff6b35);
   transform: translateY(-1px);
-  box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
+  box-shadow: 0 4px 15px rgba(255, 107, 53, 0.4);
 }
 
 .btn-secondary {
@@ -94,5 +103,30 @@ button {
 
 .btn-secondary:hover {
   background: rgba(255, 255, 255, 0.2);
-  border-color: rgba(255, 215, 0, 0.5);
+  border-color: rgba(255, 107, 53, 0.5);
+}
+
+/* Fonbet-style text colors */
+.text-orange {
+  color: #ff6b35;
+}
+
+.text-blue {
+  color: #4a90e2;
+}
+
+.text-green {
+  color: #4caf50;
+}
+
+.text-red {
+  color: #f44336;
+}
+
+.text-gray {
+  color: #9ca3af;
+}
+
+.text-white {
+  color: #ffffff;
 }

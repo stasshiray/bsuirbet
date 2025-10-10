@@ -1,58 +1,60 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import GameCard from '../components/GameCard';
+import type { Game, Jackpot } from '../services/api';
+import { fetchGames, fetchJackpots } from '../services/api';
 import './Home.css';
 
 const Home: React.FC = () => {
-  const games = [
-    {
-      id: 1,
-      title: 'Book of Ra',
-      category: 'Слоты',
-      image: '/api/placeholder/300/200',
-      jackpot: '1,250,000 BYN',
-      isHot: true
-    },
-    {
-      id: 2,
-      title: 'European Roulette',
-      category: 'Рулетка',
-      image: '/api/placeholder/300/200',
-      jackpot: '850,000 BYN',
-      isHot: false
-    },
-    {
-      id: 3,
-      title: 'Blackjack Classic',
-      category: 'Блэкджек',
-      image: '/api/placeholder/300/200',
-      jackpot: '650,000 BYN',
-      isHot: true
-    },
-    {
-      id: 4,
-      title: 'Mega Moolah',
-      category: 'Слоты',
-      image: '/api/placeholder/300/200',
-      jackpot: '5,200,000 BYN',
-      isHot: true
-    },
-    {
-      id: 5,
-      title: 'Texas Hold\'em',
-      category: 'Покер',
-      image: '/api/placeholder/300/200',
-      jackpot: '320,000 BYN',
-      isHot: false
-    },
-    {
-      id: 6,
-      title: 'Gonzo\'s Quest',
-      category: 'Слоты',
-      image: '/api/placeholder/300/200',
-      jackpot: '980,000 BYN',
-      isHot: true
-    }
-  ];
+  const [games, setGames] = useState<Game[]>([]);
+  const [jackpots, setJackpots] = useState<Jackpot[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const loadData = async () => {
+      try {
+        setLoading(true);
+        const [gamesData, jackpotsData] = await Promise.all([
+          fetchGames(),
+          fetchJackpots()
+        ]);
+        setGames(gamesData);
+        setJackpots(jackpotsData);
+      } catch (err) {
+        setError(err instanceof Error ? err.message : 'Failed to load data');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadData();
+  }, []);
+
+  if (loading) {
+    return (
+      <div className="home">
+        <div className="container">
+          <div style={{ textAlign: 'center', padding: '2rem' }}>
+            <h2>Загрузка...</h2>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="home">
+        <div className="container">
+          <div style={{ textAlign: 'center', padding: '2rem' }}>
+            <h2>Ошибка загрузки</h2>
+            <p>{error}</p>
+            <button onClick={() => window.location.reload()}>Попробовать снова</button>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="home">
@@ -60,7 +62,7 @@ const Home: React.FC = () => {
         <div className="container">
           <div className="hero-content">
             <h1 className="hero-title">
-              Добро пожаловать в <span className="gold-accent">BSUIRBet Casino</span>
+              Добро пожаловать в <span className="fonbet-orange">BSUIRBet Casino</span>
             </h1>
             <p className="hero-subtitle">
               Лучшие онлайн казино игры, турниры и бонусы. Играйте и выигрывайте!
@@ -77,18 +79,12 @@ const Home: React.FC = () => {
         <div className="container">
           <h2 className="section-title">Джекпоты</h2>
           <div className="jackpot-display">
-            <div className="jackpot-item">
-              <span className="jackpot-label">Mega Moolah</span>
-              <span className="jackpot-amount">5,200,000 BYN</span>
-            </div>
-            <div className="jackpot-item">
-              <span className="jackpot-label">Book of Ra</span>
-              <span className="jackpot-amount">1,250,000 BYN</span>
-            </div>
-            <div className="jackpot-item">
-              <span className="jackpot-label">Gonzo's Quest</span>
-              <span className="jackpot-amount">980,000 BYN</span>
-            </div>
+            {jackpots.slice(0, 3).map((jackpot, index) => (
+              <div key={index} className="jackpot-item">
+                <span className="jackpot-label">{jackpot.game}</span>
+                <span className="jackpot-amount">{jackpot.amount}</span>
+              </div>
+            ))}
           </div>
         </div>
       </section>

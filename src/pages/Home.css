@@ -1,9 +1,10 @@
 .home {
   min-height: 100vh;
+  background: #0f1419;
 }
 
 .hero {
-  background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #16213e 100%);
+  background: linear-gradient(135deg, #0f1419 0%, #1a2332 50%, #2d3748 100%);
   padding: 4rem 0;
   text-align: center;
   position: relative;
@@ -31,6 +32,11 @@
   font-weight: bold;
   margin-bottom: 1.5rem;
   line-height: 1.2;
+  color: #ffffff;
+}
+
+.hero-title .fonbet-orange {
+  color: #ff6b35;
 }
 
 .hero-subtitle {
@@ -57,15 +63,15 @@
 .jackpot-section {
   background: rgba(0, 0, 0, 0.5);
   padding: 3rem 0;
-  border-top: 1px solid rgba(255, 215, 0, 0.2);
-  border-bottom: 1px solid rgba(255, 215, 0, 0.2);
+  border-top: 1px solid rgba(255, 107, 53, 0.2);
+  border-bottom: 1px solid rgba(255, 107, 53, 0.2);
 }
 
 .section-title {
   font-size: 2.5rem;
   text-align: center;
   margin-bottom: 2rem;
-  color: #ffd700;
+  color: #ff6b35;
 }
 
 .jackpot-display {
@@ -77,8 +83,8 @@
 
 .jackpot-item {
   text-align: center;
-  background: rgba(255, 215, 0, 0.1);
-  border: 1px solid rgba(255, 215, 0, 0.3);
+  background: rgba(255, 107, 53, 0.1);
+  border: 1px solid rgba(255, 107, 53, 0.3);
   border-radius: 12px;
   padding: 1.5rem 2rem;
   min-width: 200px;
@@ -95,20 +101,24 @@
   display: block;
   font-size: 1.8rem;
   font-weight: bold;
-  color: #ffd700;
-  text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+  color: #ff6b35;
+  text-shadow: 0 0 10px rgba(255, 107, 53, 0.5);
 }
 
 .games-section {
   padding: 4rem 0;
-  background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 100%);
+  background: linear-gradient(135deg, #0f1419 0%, #1a2332 100%);
 }
 
 .games-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 2rem;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: repeat(5, 1fr);
+  gap: 1.5rem;
   margin-top: 2rem;
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .features-section {
@@ -134,7 +144,7 @@
 
 .feature-card:hover {
   transform: translateY(-5px);
-  border-color: rgba(255, 215, 0, 0.3);
+  border-color: rgba(255, 107, 53, 0.3);
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
 }
 
@@ -146,12 +156,20 @@
 .feature-card h3 {
   font-size: 1.3rem;
   margin-bottom: 1rem;
-  color: #ffd700;
+  color: #ff6b35;
 }
 
 .feature-card p {
   color: #cccccc;
   line-height: 1.6;
+}
+
+@media (max-width: 1024px) {
+  .games-grid {
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(7, 1fr);
+    gap: 1.2rem;
+  }
 }
 
 @media (max-width: 768px) {
@@ -174,7 +192,9 @@
   }
 
   .games-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(10, 1fr);
+    gap: 1rem;
   }
 
   .features-grid {

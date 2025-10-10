@@ -1,21 +1,21 @@
 .bonuses {
   min-height: 100vh;
-  background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 100%);
+  background: linear-gradient(135deg, #0f1419 0%, #1a2332 100%);
 }
 
 .bonuses-hero {
-  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+  background: linear-gradient(135deg, #1a2332 0%, #2d3748 100%);
   padding: 4rem 0;
   text-align: center;
-  border-bottom: 1px solid rgba(255, 215, 0, 0.2);
+  border-bottom: 1px solid rgba(255, 107, 53, 0.2);
 }
 
 .page-title {
   font-size: 3rem;
   font-weight: bold;
-  color: #ffd700;
+  color: #ff6b35;
   margin-bottom: 1rem;
-  text-shadow: 0 0 20px rgba(255, 215, 0, 0.3);
+  text-shadow: 0 0 20px rgba(255, 107, 53, 0.3);
 }
 
 .page-subtitle {
@@ -59,22 +59,52 @@
 }
 
 .filter-btn:hover {
-  background: rgba(255, 215, 0, 0.1);
-  border-color: rgba(255, 215, 0, 0.3);
-  color: #ffd700;
+  background: rgba(255, 107, 53, 0.1);
+  border-color: rgba(255, 107, 53, 0.3);
+  color: #ff6b35;
 }
 
 .filter-btn.active {
-  background: linear-gradient(45deg, #ffd700, #ffed4e);
-  color: #000;
+  background: linear-gradient(45deg, #ff6b35, #ff8c42);
+  color: #ffffff;
   border-color: transparent;
+}
+
+.bonus-section {
+  margin-bottom: 4rem;
+}
+
+.section-header {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.section-title {
+  font-size: 2.5rem;
+  color: #ffffff;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.section-icon {
+  font-size: 2rem;
+}
+
+.section-description {
+  color: #cccccc;
+  font-size: 1.1rem;
+  max-width: 600px;
+  margin: 0 auto;
 }
 
 .bonuses-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
   gap: 2rem;
-  margin-bottom: 4rem;
+  margin-bottom: 2rem;
 }
 
 .bonus-terms {
@@ -87,7 +117,7 @@
 
 .bonus-terms h3 {
   font-size: 2rem;
-  color: #ffd700;
+  color: #ff6b35;
   margin-bottom: 2rem;
   text-align: center;
 }
@@ -108,7 +138,7 @@
 
 .term-item h4 {
   font-size: 1.2rem;
-  color: #ffd700;
+  color: #ff6b35;
   margin-bottom: 1rem;
 }
 
@@ -126,7 +156,7 @@
 
 .loyalty-program h3 {
   font-size: 2rem;
-  color: #ffd700;
+  color: #ff6b35;
   margin-bottom: 2rem;
   text-align: center;
 }
@@ -148,7 +178,7 @@
 
 .loyalty-level:hover {
   transform: translateY(-5px);
-  border-color: rgba(255, 215, 0, 0.3);
+  border-color: rgba(255, 107, 53, 0.3);
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
 }
 
@@ -159,7 +189,7 @@
 
 .loyalty-level h4 {
   font-size: 1.3rem;
-  color: #ffd700;
+  color: #ff6b35;
   margin-bottom: 0.5rem;
 }
 

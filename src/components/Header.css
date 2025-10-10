@@ -1,7 +1,7 @@
 .header {
-  background: rgba(0, 0, 0, 0.9);
+  background: rgba(15, 20, 25, 0.95);
   backdrop-filter: blur(10px);
-  border-bottom: 1px solid rgba(255, 215, 0, 0.2);
+  border-bottom: 1px solid rgba(255, 107, 53, 0.2);
   position: sticky;
   top: 0;
   z-index: 1000;
@@ -20,14 +20,14 @@
   flex-direction: column;
   align-items: flex-start;
   text-decoration: none;
-  color: #ffd700;
+  color: #ff6b35;
   font-weight: bold;
 }
 
 .logo-text {
   font-size: 1.8rem;
   line-height: 1;
-  text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+  text-shadow: 0 0 10px rgba(255, 107, 53, 0.5);
 }
 
 .logo-subtitle {
@@ -54,13 +54,13 @@
 }
 
 .nav-link:hover {
-  color: #ffd700;
-  background: rgba(255, 215, 0, 0.1);
+  color: #ff6b35;
+  background: rgba(255, 107, 53, 0.1);
 }
 
 .nav-link.active {
-  color: #ffd700;
-  background: rgba(255, 215, 0, 0.15);
+  color: #ff6b35;
+  background: rgba(255, 107, 53, 0.15);
 }
 
 .nav-link.active::after {
@@ -71,7 +71,7 @@
   transform: translateX(-50%);
   width: 20px;
   height: 2px;
-  background: #ffd700;
+  background: #ff6b35;
   border-radius: 1px;
 }
 
@@ -93,13 +93,69 @@
 
 .btn-login:hover {
   background: rgba(255, 255, 255, 0.1);
-  border-color: #ffd700;
-  color: #ffd700;
+  border-color: #ff6b35;
+  color: #ff6b35;
 }
 
 .btn-register {
   padding: 0.5rem 1rem;
   font-size: 0.9rem;
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.user-balance {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.2rem;
+}
+
+.balance-label {
+  color: #888888;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.balance-amount {
+  color: #ff6b35;
+  font-weight: bold;
+  font-size: 1.1rem;
+  text-shadow: 0 0 5px rgba(255, 107, 53, 0.3);
+}
+
+.user-menu {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.user-name {
+  color: #ffffff;
+  font-weight: 500;
+  font-size: 0.9rem;
+}
+
+.btn-logout {
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  color: #ffffff;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-logout:hover {
+  background: rgba(255, 68, 68, 0.1);
+  border-color: rgba(255, 68, 68, 0.5);
+  color: #ff4444;
 }
 
 .menu-toggle {
@@ -149,5 +205,21 @@
   .header-actions .btn-login,
   .header-actions .btn-register {
     display: none;
+  }
+
+  .user-info {
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 0.5rem;
+  }
+
+  .user-balance {
+    align-items: center;
+  }
+
+  .user-menu {
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
   }
 }

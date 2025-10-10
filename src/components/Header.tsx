@@ -1,12 +1,30 @@
-import React, { useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import type { User } from '../services/api';
 import './Header.css';
 
 const Header: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [user, setUser] = useState<User | null>(null);
   const location = useLocation();
+  const navigate = useNavigate();
 
   const isActive = (path: string) => location.pathname === path;
+
+  useEffect(() => {
+    // Check if user is logged in
+    const storedUser = localStorage.getItem('user');
+    if (storedUser) {
+      setUser(JSON.parse(storedUser));
+    }
+  }, []);
+
+  const handleLogout = () => {
+    localStorage.removeItem('user');
+    localStorage.removeItem('token');
+    setUser(null);
+    navigate('/');
+  };
 
   return (
     <header className="header">
@@ -42,8 +60,25 @@ const Header: React.FC = () => {
           </nav>
 
           <div className="header-actions">
-            <button className="btn-login">Войти</button>
-            <button className="btn-register btn-primary">Регистрация</button>
+            {user ? (
+              <div className="user-info">
+                <div className="user-balance">
+                  <span className="balance-label">Баланс:</span>
+                  <span className="balance-amount">{user.balance} BYN</span>
+                </div>
+                <div className="user-menu">
+                  <span className="user-name">{user.firstName} {user.lastName}</span>
+                  <button className="btn-logout" onClick={handleLogout}>
+                    Выйти
+                  </button>
+                </div>
+              </div>
+            ) : (
+              <>
+                <Link to="/login" className="btn-login">Войти</Link>
+                <Link to="/signup" className="btn-register btn-primary">Регистрация</Link>
+              </>
+            )}
             <button 
               className="menu-toggle"
               onClick={() => setIsMenuOpen(!isMenuOpen)}
