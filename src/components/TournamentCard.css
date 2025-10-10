@@ -1,0 +1,212 @@
+.tournament-card {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  padding: 2rem;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.tournament-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+  border-color: rgba(255, 215, 0, 0.3);
+}
+
+.tournament-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #ffd700, #ffed4e);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.tournament-card:hover::before {
+  opacity: 1;
+}
+
+.tournament-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1.5rem;
+  gap: 1rem;
+}
+
+.tournament-title {
+  font-size: 1.4rem;
+  font-weight: bold;
+  color: #ffffff;
+  margin: 0;
+  flex: 1;
+}
+
+.tournament-status {
+  padding: 0.3rem 0.8rem;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  white-space: nowrap;
+}
+
+.status-active {
+  background: linear-gradient(45deg, #44ff44, #66ff66);
+  color: #000;
+  box-shadow: 0 2px 10px rgba(68, 255, 68, 0.3);
+}
+
+.status-upcoming {
+  background: linear-gradient(45deg, #ffd700, #ffed4e);
+  color: #000;
+  box-shadow: 0 2px 10px rgba(255, 215, 0, 0.3);
+}
+
+.status-finished {
+  background: linear-gradient(45deg, #888888, #aaaaaa);
+  color: #000;
+}
+
+.tournament-prize {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+  padding: 1rem;
+  background: rgba(255, 215, 0, 0.1);
+  border-radius: 8px;
+  border: 1px solid rgba(255, 215, 0, 0.2);
+}
+
+.prize-label {
+  color: #cccccc;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.prize-amount {
+  color: #ffd700;
+  font-size: 1.5rem;
+  font-weight: bold;
+  text-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
+}
+
+.tournament-game {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  padding: 0.8rem 1rem;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 6px;
+}
+
+.game-label {
+  color: #888888;
+  font-size: 0.9rem;
+}
+
+.game-name {
+  color: #ffffff;
+  font-weight: 500;
+}
+
+.tournament-participants {
+  margin-bottom: 1.5rem;
+}
+
+.participants-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.participants-count {
+  color: #ffffff;
+  font-weight: bold;
+  font-size: 1.1rem;
+}
+
+.participants-label {
+  color: #888888;
+  font-size: 0.9rem;
+}
+
+.progress-bar {
+  width: 100%;
+  height: 6px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #ffd700, #ffed4e);
+  border-radius: 3px;
+  transition: width 0.3s ease;
+}
+
+.tournament-dates {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.date-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  padding: 0.8rem;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 6px;
+}
+
+.date-label {
+  color: #888888;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.date-value {
+  color: #ffffff;
+  font-weight: 500;
+}
+
+.tournament-actions {
+  display: flex;
+  gap: 1rem;
+}
+
+.tournament-actions .btn-primary,
+.tournament-actions .btn-secondary {
+  flex: 1;
+  padding: 0.8rem 1rem;
+  font-size: 0.9rem;
+}
+
+@media (max-width: 768px) {
+  .tournament-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+
+  .tournament-dates {
+    grid-template-columns: 1fr;
+  }
+
+  .tournament-actions {
+    flex-direction: column;
+  }
+}
