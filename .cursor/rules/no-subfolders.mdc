@@ -1,0 +1,4 @@
+---
+alwaysApply: true
+---
+When generate code, place every file into `src` folder and don't create any subfolders

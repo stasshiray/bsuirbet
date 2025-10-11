@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import TournamentCard from '../components/TournamentCard';
-import type { Tournament } from '../services/api';
-import { fetchTournaments, participateInTournament } from '../services/api';
-import './Tournaments.css';
+import TournamentCard from './TournamentCard';
+import type { Tournament } from './api';
+import { fetchTournaments, participateInTournament } from './api';
+import './TournamentsPage.css';
 
 const Tournaments: React.FC = () => {
   const [tournaments, setTournaments] = useState<Tournament[]>([]);

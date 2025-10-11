@@ -1,5 +1,5 @@
 import React from 'react';
-import type { Game, Provider } from '../services/api';
+import type { Game, Provider } from './api';
 import './GameCard.css';
 
 interface GameCardProps {

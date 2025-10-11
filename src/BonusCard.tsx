@@ -1,6 +1,6 @@
 import React from 'react';
-import type { Bonus } from '../services/bonuses';
-import { isWelcomeBonus, isVipBonus, isDailyBonus } from '../services/bonuses';
+import type { Bonus } from './bonuses';
+import { isWelcomeBonus, isVipBonus, isDailyBonus } from './bonuses';
 import './BonusCard.css';
 
 interface BonusCardProps {

@@ -4,7 +4,7 @@
  * for working with discriminated unions and bonus management.
  */
 
-import { assertNever } from '../utils';
+import { assertNever } from './utils';
 
 // Base bonus interface
 interface BaseBonus {

@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useMemo } from "react";
-import GameCard from "../components/GameCard";
-import type { Game, Jackpot, Provider } from "../services/api";
-import { fetchGames, fetchJackpots, fetchProviders } from "../services/api";
-import "./Home.css";
+import GameCard from "./GameCard";
+import type { Game, Jackpot, Provider } from "./api";
+import { fetchGames, fetchJackpots, fetchProviders } from "./api";
+import "./HomePage.css";
 
 type GamesLookup = {
   [key: number]: Game;

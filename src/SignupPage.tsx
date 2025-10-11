@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { signup, type SignupRequest } from '../services/api';
-import './Signup.css';
+import { signup, type SignupRequest } from './api';
+import './SignupPage.css';
 
 const Signup: React.FC = () => {
   const navigate = useNavigate();

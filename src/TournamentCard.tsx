@@ -1,5 +1,5 @@
 import React from 'react';
-import type { Tournament } from '../services/api';
+import type { Tournament } from './api';
 import './TournamentCard.css';
 
 interface TournamentCardProps {

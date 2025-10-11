@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import BonusCard from '../components/BonusCard';
-import type { Bonus } from '../services/bonuses';
-import { fetchBonuses, claimBonus } from '../services/api';
-import './Bonuses.css';
+import BonusCard from './BonusCard';
+import type { Bonus } from './bonuses';
+import { fetchBonuses, claimBonus } from './api';
+import './BonusesPage.css';
 
 const Bonuses: React.FC = () => {
   const [bonuses, setBonuses] = useState<Bonus[]>([]);

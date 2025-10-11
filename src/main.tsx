@@ -1,7 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App.tsx";
-import { worker } from "./mocks/browser.ts";
+import { worker } from "./browser.ts";
 import "./index.css";
 
 worker.start().then(

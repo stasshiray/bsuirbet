@@ -1,10 +1,10 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Layout from './components/Layout';
-import Home from './pages/Home';
-import Tournaments from './pages/Tournaments';
-import Bonuses from './pages/Bonuses';
-import Login from './pages/Login';
-import Signup from './pages/Signup';
+import Layout from './Layout';
+import Home from './HomePage';
+import Tournaments from './TournamentsPage';
+import Bonuses from './BonusesPage';
+import Login from './LoginPage';
+import Signup from './SignupPage';
 import './App.css';
 
 function App() {

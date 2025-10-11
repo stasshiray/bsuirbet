@@ -1,5 +1,5 @@
 // API service functions for fetching data from the backend
-import type { Bonus } from './bonuses';
+import type { Bonus } from './services/bonuses';
 
 export interface Provider {
   id: string;
