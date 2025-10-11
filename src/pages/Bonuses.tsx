@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import BonusCard from '../components/BonusCard';
-import type { Bonus } from '../services/api';
+import type { Bonus } from '../services/bonuses';
 import { fetchBonuses, claimBonus } from '../services/api';
 import './Bonuses.css';
 

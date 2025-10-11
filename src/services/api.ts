@@ -1,4 +1,14 @@
 // API service functions for fetching data from the backend
+import type { Bonus } from './bonuses';
+
+export interface Provider {
+  id: string;
+  name: string;
+  logo: string;
+  description: string;
+  isActive: boolean;
+  gameCount: number;
+}
 
 export interface Game {
   id: number;
@@ -7,6 +17,7 @@ export interface Game {
   image: string;
   jackpot: string;
   isHot: boolean;
+  providerId: string;
 }
 
 export interface Tournament {
@@ -22,21 +33,8 @@ export interface Tournament {
   image: string;
 }
 
-export interface Bonus {
-  id: number;
-  title: string;
-  description: string;
-  amount: string;
-  type: string;
-  category: 'welcome' | 'vip' | 'daily';
-  isActive: boolean;
-  terms: string;
-  icon: string;
-  color: string;
-}
-
 export interface Jackpot {
-  game: string;
+  gameId: number;
   amount: string;
 }
 
@@ -56,12 +54,8 @@ export interface LoginRequest {
   password: string;
 }
 
-export interface SignupRequest {
-  email: string;
+export type SignupRequest = Pick<User, 'email' | 'username' | 'firstName' | 'lastName'> & {
   password: string;
-  username: string;
-  firstName: string;
-  lastName: string;
 }
 
 export interface AuthResponse {
@@ -151,6 +145,15 @@ export const claimBonus = async (id: number): Promise<{ success: boolean; messag
     throw new Error(error.error || 'Failed to claim bonus');
   }
   
+  return response.json();
+};
+
+// Providers API
+export const fetchProviders = async (): Promise<Provider[]> => {
+  const response = await fetch('/api/providers');
+  if (!response.ok) {
+    throw new Error('Failed to fetch providers');
+  }
   return response.json();
 };
 

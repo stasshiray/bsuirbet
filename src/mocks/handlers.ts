@@ -1,5 +1,49 @@
 import { http, HttpResponse } from 'msw';
 
+// Mock data for providers
+const providers = [
+  {
+    id: 'netent',
+    name: 'NetEnt',
+    logo: 'https://via.placeholder.com/100x50/4CAF50/FFFFFF?text=NetEnt',
+    description: 'Leading provider of premium online casino games with innovative features and cutting-edge graphics.',
+    isActive: true,
+    gameCount: 5
+  },
+  {
+    id: 'microgaming',
+    name: 'Microgaming',
+    logo: 'https://via.placeholder.com/100x50/2196F3/FFFFFF?text=Microgaming',
+    description: 'Pioneer in online gaming industry, known for classic slots and progressive jackpots.',
+    isActive: true,
+    gameCount: 4
+  },
+  {
+    id: 'playngo',
+    name: 'Play\'n GO',
+    logo: 'https://via.placeholder.com/100x50/FF9800/FFFFFF?text=Play\'n+GO',
+    description: 'Mobile-first gaming provider specializing in high-quality HTML5 slot games.',
+    isActive: true,
+    gameCount: 4
+  },
+  {
+    id: 'evolution',
+    name: 'Evolution Gaming',
+    logo: 'https://via.placeholder.com/100x50/9C27B0/FFFFFF?text=Evolution',
+    description: 'World leader in live casino games, expanding into premium slot game development.',
+    isActive: true,
+    gameCount: 4
+  },
+  {
+    id: 'pragmatic',
+    name: 'Pragmatic Play',
+    logo: 'https://via.placeholder.com/100x50/F44336/FFFFFF?text=Pragmatic',
+    description: 'Fast-growing provider offering diverse portfolio of slots, live casino, and bingo games.',
+    isActive: true,
+    gameCount: 3
+  }
+];
+
 // Mock data for games - 20 games based on Fonbet website
 const games = [
   {
@@ -8,7 +52,8 @@ const games = [
     category: 'Слоты',
     image: 'https://origin-s3.by0e87-resources.by/ContentBY/Showcase/resources/Casino_desktop.png',
     jackpot: '1,250,000 BYN',
-    isHot: true
+    isHot: true,
+    providerId: 'netent'
   },
   {
     id: 2,
@@ -16,7 +61,8 @@ const games = [
     category: 'Слоты',
     image: 'https://origin-s3.by0e87-resources.by/ContentBY/Showcase/resources/Roulete_desktop.png',
     jackpot: '850,000 BYN',
-    isHot: false
+    isHot: false,
+    providerId: 'microgaming'
   },
   {
     id: 3,
@@ -24,7 +70,8 @@ const games = [
     category: 'Слоты',
     image: 'https://origin-s3.by0e87-resources.by/ContentBY/Showcase/resources/Sport_desktop.png',
     jackpot: '650,000 BYN',
-    isHot: true
+    isHot: true,
+    providerId: 'playngo'
   },
   {
     id: 4,
@@ -32,7 +79,8 @@ const games = [
     category: 'Слоты',
     image: 'https://origin-s3.by0e87-resources.by/ContentBY/Showcase/resources/tvg_desktop.png',
     jackpot: '5,200,000 BYN',
-    isHot: true
+    isHot: true,
+    providerId: 'netent'
   },
   {
     id: 5,
@@ -40,7 +88,8 @@ const games = [
     category: 'Слоты',
     image: 'https://origin-s3.by0e87-resources.by/ContentBY/Showcase/resources/Casino_desktop.png',
     jackpot: '320,000 BYN',
-    isHot: false
+    isHot: false,
+    providerId: 'microgaming'
   },
   {
     id: 6,
@@ -48,7 +97,8 @@ const games = [
     category: 'Слоты',
     image: 'https://origin-s3.by0e87-resources.by/ContentBY/Showcase/resources/Roulete_desktop.png',
     jackpot: '980,000 BYN',
-    isHot: true
+    isHot: true,
+    providerId: 'playngo'
   },
   {
     id: 7,
@@ -56,7 +106,8 @@ const games = [
     category: 'Слоты',
     image: 'https://origin-s3.by0e87-resources.by/ContentBY/Showcase/resources/Sport_desktop.png',
     jackpot: '750,000 BYN',
-    isHot: false
+    isHot: false,
+    providerId: 'evolution'
   },
   {
     id: 8,
@@ -64,7 +115,8 @@ const games = [
     category: 'Слоты',
     image: 'https://origin-s3.by0e87-resources.by/ContentBY/Showcase/resources/tvg_desktop.png',
     jackpot: '1,100,000 BYN',
-    isHot: true
+    isHot: true,
+    providerId: 'netent'
   },
   {
     id: 9,
@@ -72,7 +124,8 @@ const games = [
     category: 'Слоты',
     image: 'https://origin-s3.by0e87-resources.by/ContentBY/Showcase/resources/Casino_desktop.png',
     jackpot: '920,000 BYN',
-    isHot: false
+    isHot: false,
+    providerId: 'microgaming'
   },
   {
     id: 10,
@@ -80,7 +133,8 @@ const games = [
     category: 'Слоты',
     image: 'https://origin-s3.by0e87-resources.by/ContentBY/Showcase/resources/Roulete_desktop.png',
     jackpot: '2,500,000 BYN',
-    isHot: true
+    isHot: true,
+    providerId: 'playngo'
   },
   {
     id: 11,
@@ -88,7 +142,8 @@ const games = [
     category: 'Слоты',
     image: 'https://origin-s3.by0e87-resources.by/ContentBY/Showcase/resources/Sport_desktop.png',
     jackpot: '1,800,000 BYN',
-    isHot: true
+    isHot: true,
+    providerId: 'evolution'
   },
   {
     id: 12,
@@ -96,7 +151,8 @@ const games = [
     category: 'Слоты',
     image: 'https://origin-s3.by0e87-resources.by/ContentBY/Showcase/resources/tvg_desktop.png',
     jackpot: '1,350,000 BYN',
-    isHot: false
+    isHot: false,
+    providerId: 'netent'
   },
   {
     id: 13,
@@ -104,7 +160,8 @@ const games = [
     category: 'Слоты',
     image: 'https://origin-s3.by0e87-resources.by/ContentBY/Showcase/resources/Casino_desktop.png',
     jackpot: '680,000 BYN',
-    isHot: true
+    isHot: true,
+    providerId: 'microgaming'
   },
   {
     id: 14,
@@ -112,7 +169,8 @@ const games = [
     category: 'Слоты',
     image: 'https://origin-s3.by0e87-resources.by/ContentBY/Showcase/resources/Roulete_desktop.png',
     jackpot: '1,450,000 BYN',
-    isHot: false
+    isHot: false,
+    providerId: 'playngo'
   },
   {
     id: 15,
@@ -120,7 +178,8 @@ const games = [
     category: 'Слоты',
     image: 'https://origin-s3.by0e87-resources.by/ContentBY/Showcase/resources/Sport_desktop.png',
     jackpot: '890,000 BYN',
-    isHot: true
+    isHot: true,
+    providerId: 'evolution'
   },
   {
     id: 16,
@@ -128,7 +187,8 @@ const games = [
     category: 'Слоты',
     image: 'https://origin-s3.by0e87-resources.by/ContentBY/Showcase/resources/tvg_desktop.png',
     jackpot: '1,600,000 BYN',
-    isHot: false
+    isHot: false,
+    providerId: 'netent'
   },
   {
     id: 17,
@@ -136,7 +196,8 @@ const games = [
     category: 'Слоты',
     image: 'https://origin-s3.by0e87-resources.by/ContentBY/Showcase/resources/Casino_desktop.png',
     jackpot: '1,200,000 BYN',
-    isHot: true
+    isHot: true,
+    providerId: 'microgaming'
   },
   {
     id: 18,
@@ -144,7 +205,8 @@ const games = [
     category: 'Слоты',
     image: 'https://origin-s3.by0e87-resources.by/ContentBY/Showcase/resources/Roulete_desktop.png',
     jackpot: '950,000 BYN',
-    isHot: false
+    isHot: false,
+    providerId: 'playngo'
   },
   {
     id: 19,
@@ -152,7 +214,8 @@ const games = [
     category: 'Слоты',
     image: 'https://origin-s3.by0e87-resources.by/ContentBY/Showcase/resources/Sport_desktop.png',
     jackpot: '1,750,000 BYN',
-    isHot: true
+    isHot: true,
+    providerId: 'evolution'
   },
   {
     id: 20,
@@ -160,7 +223,8 @@ const games = [
     category: 'Слоты',
     image: 'https://origin-s3.by0e87-resources.by/ContentBY/Showcase/resources/tvg_desktop.png',
     jackpot: '3,200,000 BYN',
-    isHot: true
+    isHot: true,
+    providerId: 'netent'
   }
 ];
 
@@ -240,7 +304,7 @@ const tournaments = [
   }
 ];
 
-// Mock data for bonuses - 3 distinct categories
+// Mock data for bonuses with discriminated unions
 const bonuses = [
   // WELCOME BONUSES (Green theme)
   {
@@ -250,6 +314,10 @@ const bonuses = [
     amount: '100 BYN + 300 FS',
     type: 'welcome',
     category: 'welcome',
+    welcomeType: 'new-user',
+    maxAmount: 100,
+    minDeposit: 10,
+    wageringRequirement: 35,
     isActive: true,
     terms: 'Для всех новых клиентов!',
     icon: '🎁',
@@ -262,6 +330,9 @@ const bonuses = [
     amount: '50 BYN',
     type: 'no-deposit',
     category: 'welcome',
+    welcomeType: 'no-deposit',
+    maxAmount: 50,
+    wageringRequirement: 40,
     isActive: true,
     terms: 'Только для новых аккаунтов',
     icon: '🎯',
@@ -274,6 +345,10 @@ const bonuses = [
     amount: '200% до 200 BYN',
     type: 'first-deposit',
     category: 'welcome',
+    welcomeType: 'first-deposit',
+    maxAmount: 200,
+    minDeposit: 20,
+    wageringRequirement: 30,
     isActive: true,
     terms: 'Максимум 200 BYN бонуса',
     icon: '💰',
@@ -288,6 +363,10 @@ const bonuses = [
     amount: '1000 BYN + 1000 FS',
     type: 'vip-welcome',
     category: 'vip',
+    vipLevel: 'diamond',
+    exclusiveFeatures: ['Персональный менеджер', 'Приоритетная поддержка', 'Эксклюзивные игры'],
+    personalManager: true,
+    higherLimits: true,
     isActive: true,
     terms: 'Только для VIP статуса',
     icon: '👑',
@@ -300,6 +379,10 @@ const bonuses = [
     amount: 'До 25%',
     type: 'vip-cashback',
     category: 'vip',
+    vipLevel: 'platinum',
+    exclusiveFeatures: ['Еженедельный кэшбэк', 'Быстрые выплаты'],
+    personalManager: true,
+    higherLimits: true,
     isActive: true,
     terms: 'Еженедельный кэшбэк',
     icon: '💎',
@@ -312,6 +395,10 @@ const bonuses = [
     amount: '2000 BYN',
     type: 'vip-birthday',
     category: 'vip',
+    vipLevel: 'gold',
+    exclusiveFeatures: ['Специальные подарки', 'Персональные поздравления'],
+    personalManager: false,
+    higherLimits: false,
     isActive: false,
     terms: 'Доступен в день рождения',
     icon: '🎂',
@@ -326,6 +413,10 @@ const bonuses = [
     amount: 'До 15%',
     type: 'daily-cashback',
     category: 'daily',
+    frequency: 'daily',
+    resetTime: '00:00 UTC',
+    maxClaims: 1,
+    currentClaims: 0,
     isActive: true,
     terms: 'Кэшбэк начисляется ежедневно',
     icon: '💸',
@@ -338,6 +429,10 @@ const bonuses = [
     amount: '50 FS',
     type: 'daily-spins',
     category: 'daily',
+    frequency: 'daily',
+    resetTime: '00:00 UTC',
+    maxClaims: 1,
+    currentClaims: 0,
     isActive: true,
     terms: 'Обновляется каждые 24 часа',
     icon: '🎰',
@@ -350,6 +445,10 @@ const bonuses = [
     amount: '200 BYN',
     type: 'weekend',
     category: 'daily',
+    frequency: 'weekly',
+    resetTime: 'Понедельник 00:00 UTC',
+    maxClaims: 2,
+    currentClaims: 0,
     isActive: true,
     terms: 'Доступен каждые выходные',
     icon: '🎉',
@@ -415,12 +514,31 @@ export const handlers = [
     return HttpResponse.json(bonus);
   }),
 
+  // Providers API
+  http.get('/api/providers', () => {
+    return HttpResponse.json(providers);
+  }),
+
+  http.get('/api/providers/:id', ({ params }) => {
+    const { id } = params;
+    const provider = providers.find(p => p.id === id);
+    
+    if (!provider) {
+      return HttpResponse.json(
+        { error: 'Provider not found' },
+        { status: 404 }
+      );
+    }
+    
+    return HttpResponse.json(provider);
+  }),
+
   // Jackpot API
   http.get('/api/jackpots', () => {
     const jackpots = games
       .filter(game => game.jackpot)
       .map(game => ({
-        game: game.title,
+        gameId: game.id,
         amount: game.jackpot
       }));
     

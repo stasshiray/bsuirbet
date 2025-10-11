@@ -110,9 +110,31 @@
 .game-category {
   color: #cccccc;
   font-size: 0.8rem;
-  margin-bottom: 0.8rem;
+  margin-bottom: 0.5rem;
   text-transform: uppercase;
   letter-spacing: 0.5px;
+}
+
+.game-provider {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.8rem;
+}
+
+.provider-label {
+  color: #aaaaaa;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-weight: 500;
+}
+
+.provider-name {
+  color: #ff6b35;
+  font-size: 0.8rem;
+  font-weight: bold;
+  text-shadow: 0 0 5px rgba(255, 107, 53, 0.3);
 }
 
 .game-jackpot {

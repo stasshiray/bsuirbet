@@ -1,5 +1,6 @@
 import React from 'react';
-import type { Bonus } from '../services/api';
+import type { Bonus } from '../services/bonuses';
+import { isWelcomeBonus, isVipBonus, isDailyBonus } from '../services/bonuses';
 import './BonusCard.css';
 
 interface BonusCardProps {
@@ -17,6 +18,10 @@ const BonusCard: React.FC<BonusCardProps> = ({ bonus, onClaim }) => {
     }
   };
 
+  // Example of using other utility functions from utils.ts
+  // import { formatCurrency } from '../utils';
+  // const formattedAmount = formatCurrency(100); // Would format as "100,00 BYN"
+
   const getCategoryLabel = (category: string) => {
     switch (category) {
       case 'welcome': return 'Добро пожаловать';
@@ -24,6 +29,78 @@ const BonusCard: React.FC<BonusCardProps> = ({ bonus, onClaim }) => {
       case 'daily': return 'Ежедневно';
       default: return '';
     }
+  };
+
+  // Type-safe rendering based on bonus category
+  const renderBonusSpecificInfo = () => {
+    if (isWelcomeBonus(bonus)) {
+      return (
+        <div className="bonus-specific-info">
+          <div className="info-item">
+            <span className="info-label">Тип:</span>
+            <span className="info-value">{bonus.welcomeType}</span>
+          </div>
+          {bonus.maxAmount && (
+            <div className="info-item">
+              <span className="info-label">Макс. сумма:</span>
+              <span className="info-value">{bonus.maxAmount} BYN</span>
+            </div>
+          )}
+          {bonus.wageringRequirement && (
+            <div className="info-item">
+              <span className="info-label">Вейджер:</span>
+              <span className="info-value">{bonus.wageringRequirement}x</span>
+            </div>
+          )}
+        </div>
+      );
+    }
+
+    if (isVipBonus(bonus)) {
+      return (
+        <div className="bonus-specific-info">
+          <div className="info-item">
+            <span className="info-label">VIP Уровень:</span>
+            <span className="info-value vip-level">{bonus.vipLevel}</span>
+          </div>
+          {bonus.personalManager && (
+            <div className="info-item">
+              <span className="info-label">Персональный менеджер:</span>
+              <span className="info-value">✓</span>
+            </div>
+          )}
+          <div className="info-item">
+            <span className="info-label">Эксклюзивные функции:</span>
+            <span className="info-value">{bonus.exclusiveFeatures.join(', ')}</span>
+          </div>
+        </div>
+      );
+    }
+
+    if (isDailyBonus(bonus)) {
+      return (
+        <div className="bonus-specific-info">
+          <div className="info-item">
+            <span className="info-label">Частота:</span>
+            <span className="info-value">{bonus.frequency}</span>
+          </div>
+          {bonus.resetTime && (
+            <div className="info-item">
+              <span className="info-label">Сброс:</span>
+              <span className="info-value">{bonus.resetTime}</span>
+            </div>
+          )}
+          {bonus.maxClaims && (
+            <div className="info-item">
+              <span className="info-label">Использовано:</span>
+              <span className="info-value">{bonus.currentClaims}/{bonus.maxClaims}</span>
+            </div>
+          )}
+        </div>
+      );
+    }
+
+    return null;
   };
 
   return (
@@ -60,6 +137,8 @@ const BonusCard: React.FC<BonusCardProps> = ({ bonus, onClaim }) => {
           <span className="terms-label">Условия:</span>
           <span className="terms-text">{bonus.terms}</span>
         </div>
+
+        {renderBonusSpecificInfo()}
       </div>
 
       <div className="bonus-actions">

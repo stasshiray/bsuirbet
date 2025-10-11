@@ -1,27 +1,63 @@
-import React, { useState, useEffect } from 'react';
-import GameCard from '../components/GameCard';
-import type { Game, Jackpot } from '../services/api';
-import { fetchGames, fetchJackpots } from '../services/api';
-import './Home.css';
+import React, { useState, useEffect, useMemo } from "react";
+import GameCard from "../components/GameCard";
+import type { Game, Jackpot, Provider } from "../services/api";
+import { fetchGames, fetchJackpots, fetchProviders } from "../services/api";
+import "./Home.css";
+
+type GamesLookup = {
+  [key: number]: Game;
+};
+
+type ProvidersLookup = {
+  [key: string]: Provider;
+};
+
+const createGamesLookup = (games: Game[]): GamesLookup => {
+  const lookup: GamesLookup = {};
+  games.forEach((game) => {
+    lookup[game.id] = game;
+  });
+  return lookup;
+};
+
+const createProvidersLookup = (providers: Provider[]): ProvidersLookup => {
+  const lookup: ProvidersLookup = {};
+  providers.forEach((provider) => {
+    lookup[provider.id] = provider;
+  });
+  return lookup;
+};
 
 const Home: React.FC = () => {
   const [games, setGames] = useState<Game[]>([]);
   const [jackpots, setJackpots] = useState<Jackpot[]>([]);
+  const [providers, setProviders] = useState<Provider[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+
+  // Create optimized lookup object for faster searching
+  const gamesMap = useMemo(() => createGamesLookup(games), [games]);
+
+  // Create providers lookup map
+  const providersMap = useMemo(
+    () => createProvidersLookup(providers),
+    [providers]
+  );
 
   useEffect(() => {
     const loadData = async () => {
       try {
         setLoading(true);
-        const [gamesData, jackpotsData] = await Promise.all([
+        const [gamesData, jackpotsData, providersData] = await Promise.all([
           fetchGames(),
-          fetchJackpots()
+          fetchJackpots(),
+          fetchProviders(),
         ]);
         setGames(gamesData);
         setJackpots(jackpotsData);
+        setProviders(providersData);
       } catch (err) {
-        setError(err instanceof Error ? err.message : 'Failed to load data');
+        setError(err instanceof Error ? err.message : "Failed to load data");
       } finally {
         setLoading(false);
       }
@@ -34,7 +70,7 @@ const Home: React.FC = () => {
     return (
       <div className="home">
         <div className="container">
-          <div style={{ textAlign: 'center', padding: '2rem' }}>
+          <div style={{ textAlign: "center", padding: "2rem" }}>
             <h2>Загрузка...</h2>
           </div>
         </div>
@@ -46,10 +82,12 @@ const Home: React.FC = () => {
     return (
       <div className="home">
         <div className="container">
-          <div style={{ textAlign: 'center', padding: '2rem' }}>
+          <div style={{ textAlign: "center", padding: "2rem" }}>
             <h2>Ошибка загрузки</h2>
             <p>{error}</p>
-            <button onClick={() => window.location.reload()}>Попробовать снова</button>
+            <button onClick={() => window.location.reload()}>
+              Попробовать снова
+            </button>
           </div>
         </div>
       </div>
@@ -62,10 +100,12 @@ const Home: React.FC = () => {
         <div className="container">
           <div className="hero-content">
             <h1 className="hero-title">
-              Добро пожаловать в <span className="fonbet-orange">BSUIRBet Casino</span>
+              Добро пожаловать в{" "}
+              <span className="fonbet-orange">BSUIRBet Casino</span>
             </h1>
             <p className="hero-subtitle">
-              Лучшие онлайн казино игры, турниры и бонусы. Играйте и выигрывайте!
+              Лучшие онлайн казино игры, турниры и бонусы. Играйте и
+              выигрывайте!
             </p>
             <div className="hero-actions">
               <button className="btn-primary btn-large">Начать игру</button>
@@ -79,12 +119,17 @@ const Home: React.FC = () => {
         <div className="container">
           <h2 className="section-title">Джекпоты</h2>
           <div className="jackpot-display">
-            {jackpots.slice(0, 3).map((jackpot, index) => (
-              <div key={index} className="jackpot-item">
-                <span className="jackpot-label">{jackpot.game}</span>
-                <span className="jackpot-amount">{jackpot.amount}</span>
-              </div>
-            ))}
+            {jackpots.slice(0, 3).map((jackpot, index) => {
+              const game = gamesMap[jackpot.gameId];
+              return (
+                <div key={index} className="jackpot-item">
+                  <span className="jackpot-label">
+                    {game?.title || `Game ${jackpot.gameId}`}
+                  </span>
+                  <span className="jackpot-amount">{jackpot.amount}</span>
+                </div>
+              );
+            })}
           </div>
         </div>
       </section>
@@ -93,8 +138,8 @@ const Home: React.FC = () => {
         <div className="container">
           <h2 className="section-title">Популярные игры</h2>
           <div className="games-grid">
-            {games.map(game => (
-              <GameCard key={game.id} game={game} />
+            {games.map((game) => (
+              <GameCard key={game.id} game={game} providersMap={providersMap} />
             ))}
           </div>
         </div>
