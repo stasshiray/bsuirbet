@@ -1,5 +1,6 @@
 import React from 'react';
 import type { Tournament } from './api';
+import Button from './Button';
 import './TournamentCard.css';
 
 interface TournamentCardProps {
@@ -81,14 +82,14 @@ const TournamentCard: React.FC<TournamentCardProps> = ({ tournament, onParticipa
       </div>
 
         <div className="tournament-actions">
-          <button 
-            className="btn-primary" 
+          <Button 
+            variant="primary" 
             onClick={onParticipate}
             disabled={tournament.status === 'finished'}
           >
             Участвовать
-          </button>
-          <button className="btn-secondary">Подробнее</button>
+          </Button>
+          <Button variant="secondary">Подробнее</Button>
         </div>
       </div>
     </div>

@@ -1,6 +1,7 @@
 import React from 'react';
 import type { Bonus } from './bonuses';
 import { isWelcomeBonus, isVipBonus, isDailyBonus } from './bonuses';
+import Button from './Button';
 import './BonusCard.css';
 
 interface BonusCardProps {
@@ -144,15 +145,15 @@ const BonusCard: React.FC<BonusCardProps> = ({ bonus, onClaim }) => {
       <div className="bonus-actions">
         {bonus.isActive ? (
           <>
-            <button className="btn-primary" onClick={onClaim}>
+            <Button variant="primary" onClick={onClaim}>
               Получить бонус
-            </button>
-            <button className="btn-secondary">Подробнее</button>
+            </Button>
+            <Button variant="secondary">Подробнее</Button>
           </>
         ) : (
-          <button className="btn-disabled" disabled>
+          <Button variant="secondary" disabled>
             Недоступно
-          </button>
+          </Button>
         )}
       </div>
     </div>

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import type { User } from './api';
+import Button from './Button';
 import './Header.css';
 
 const Header: React.FC = () => {
@@ -68,15 +69,31 @@ const Header: React.FC = () => {
                 </div>
                 <div className="user-menu">
                   <span className="user-name">{user.firstName} {user.lastName}</span>
-                  <button className="btn-logout" onClick={handleLogout}>
+                  <Button
+                    variant="secondary"
+                    size="small"
+                    onClick={handleLogout}
+                  >
                     Выйти
-                  </button>
+                  </Button>
                 </div>
               </div>
             ) : (
               <>
-                <Link to="/login" className="btn-login">Войти</Link>
-                <Link to="/signup" className="btn-register btn-primary">Регистрация</Link>
+                <Button
+                  variant="secondary"
+                  size="small"
+                  onClick={() => navigate('/login')}
+                >
+                  Войти
+                </Button>
+                <Button
+                  variant="primary"
+                  size="small"
+                  onClick={() => navigate('/signup')}
+                >
+                  Регистрация
+                </Button>
               </>
             )}
             <button 

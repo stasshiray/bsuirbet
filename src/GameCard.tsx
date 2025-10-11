@@ -1,5 +1,6 @@
 import React from 'react';
 import type { Game, Provider } from './api';
+import Button from './Button';
 import './GameCard.css';
 
 interface GameCardProps {
@@ -16,7 +17,9 @@ const GameCard: React.FC<GameCardProps> = ({ game, providersMap }) => {
         <img src={game.image} alt={game.title} />
         {game.isHot && <div className="hot-badge">HOT</div>}
         <div className="game-overlay">
-          <button className="play-button">Играть</button>
+          <Button variant="primary" size="small">
+            Играть
+          </Button>
         </div>
       </div>
       <div className="game-info">

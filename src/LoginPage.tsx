@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { login, type LoginRequest } from './api';
+import Button from './Button';
 import './LoginPage.css';
 
 const Login: React.FC = () => {
@@ -83,13 +84,14 @@ const Login: React.FC = () => {
             />
           </div>
 
-          <button
+          <Button
             type="submit"
-            className="btn-primary btn-full"
-            disabled={loading}
+            variant="primary"
+            fullWidth
+            loading={loading}
           >
-            {loading ? 'Вход...' : 'Войти'}
-          </button>
+            Войти
+          </Button>
 
           <div className="auth-links">
             <p>Нет аккаунта? <Link to="/signup" className="auth-link">Зарегистрироваться</Link></p>

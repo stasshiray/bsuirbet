@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { signup, type SignupRequest } from './api';
+import Button from './Button';
 import './SignupPage.css';
 
 const Signup: React.FC = () => {
@@ -159,13 +160,14 @@ const Signup: React.FC = () => {
             />
           </div>
 
-          <button
+          <Button
             type="submit"
-            className="btn-primary btn-full"
-            disabled={loading}
+            variant="primary"
+            fullWidth
+            loading={loading}
           >
-            {loading ? 'Регистрация...' : 'Зарегистрироваться'}
-          </button>
+            Зарегистрироваться
+          </Button>
 
           <div className="auth-links">
             <p>Уже есть аккаунт? <Link to="/login" className="auth-link">Войти</Link></p>
