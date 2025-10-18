@@ -2,10 +2,12 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { signup, type SignupRequest } from './api';
 import Button from './Button';
+import { useLanguage } from './LanguageContext';
 import './SignupPage.css';
 
 const Signup: React.FC = () => {
   const navigate = useNavigate();
+  const { t } = useLanguage();
   const [formData, setFormData] = useState<SignupRequest>({
     email: '',
     password: '',
@@ -63,8 +65,8 @@ const Signup: React.FC = () => {
     <div className="auth-page">
       <div className="auth-container">
         <div className="auth-header">
-          <h1 className="auth-title">Регистрация в BSUIRBet</h1>
-          <p className="auth-subtitle">Создайте свой аккаунт и получите бонус!</p>
+          <h1 className="auth-title">{t.signupTitle}</h1>
+          <p className="auth-subtitle">{t.signupSubtitle}</p>
         </div>
 
         <form className="auth-form" onSubmit={handleSubmit}>
@@ -76,7 +78,7 @@ const Signup: React.FC = () => {
 
           <div className="form-row">
             <div className="form-group">
-              <label htmlFor="firstName" className="form-label">Имя</label>
+              <label htmlFor="firstName" className="form-label">{t.firstName}</label>
               <input
                 type="text"
                 id="firstName"
@@ -84,13 +86,13 @@ const Signup: React.FC = () => {
                 value={formData.firstName}
                 onChange={handleChange}
                 className="form-input"
-                placeholder="Ваше имя"
+                placeholder={t.firstName}
                 required
               />
             </div>
 
             <div className="form-group">
-              <label htmlFor="lastName" className="form-label">Фамилия</label>
+              <label htmlFor="lastName" className="form-label">{t.lastName}</label>
               <input
                 type="text"
                 id="lastName"
@@ -98,14 +100,14 @@ const Signup: React.FC = () => {
                 value={formData.lastName}
                 onChange={handleChange}
                 className="form-input"
-                placeholder="Ваша фамилия"
+                placeholder={t.lastName}
                 required
               />
             </div>
           </div>
 
           <div className="form-group">
-            <label htmlFor="username" className="form-label">Имя пользователя</label>
+            <label htmlFor="username" className="form-label">{t.username || 'Username'}</label>
             <input
               type="text"
               id="username"
@@ -113,13 +115,13 @@ const Signup: React.FC = () => {
               value={formData.username}
               onChange={handleChange}
               className="form-input"
-              placeholder="Выберите имя пользователя"
+              placeholder={t.username || 'Username'}
               required
             />
           </div>
 
           <div className="form-group">
-            <label htmlFor="email" className="form-label">Email</label>
+            <label htmlFor="email" className="form-label">{t.email}</label>
             <input
               type="email"
               id="email"
@@ -127,13 +129,13 @@ const Signup: React.FC = () => {
               value={formData.email}
               onChange={handleChange}
               className="form-input"
-              placeholder="Введите ваш email"
+              placeholder={t.email}
               required
             />
           </div>
 
           <div className="form-group">
-            <label htmlFor="password" className="form-label">Пароль</label>
+            <label htmlFor="password" className="form-label">{t.password}</label>
             <input
               type="password"
               id="password"
@@ -141,13 +143,13 @@ const Signup: React.FC = () => {
               value={formData.password}
               onChange={handleChange}
               className="form-input"
-              placeholder="Минимум 6 символов"
+              placeholder={t.password}
               required
             />
           </div>
 
           <div className="form-group">
-            <label htmlFor="confirmPassword" className="form-label">Подтвердите пароль</label>
+            <label htmlFor="confirmPassword" className="form-label">{t.confirmPassword}</label>
             <input
               type="password"
               id="confirmPassword"
@@ -155,7 +157,7 @@ const Signup: React.FC = () => {
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
               className="form-input"
-              placeholder="Повторите пароль"
+              placeholder={t.confirmPassword}
               required
             />
           </div>
@@ -166,18 +168,17 @@ const Signup: React.FC = () => {
             fullWidth
             loading={loading}
           >
-            Зарегистрироваться
+            {t.register}
           </Button>
 
           <div className="auth-links">
-            <p>Уже есть аккаунт? <Link to="/login" className="auth-link">Войти</Link></p>
+            <p>{t.haveAccount} <Link to="/login" className="auth-link">{t.signIn}</Link></p>
           </div>
 
           <div className="welcome-bonus">
             <div className="bonus-icon">🎁</div>
             <div className="bonus-text">
-              <strong>Добро пожаловать!</strong><br />
-              Получите 100 BYN бонус при регистрации
+              {t.welcomeBonus}
             </div>
           </div>
         </form>

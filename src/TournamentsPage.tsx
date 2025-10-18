@@ -2,12 +2,14 @@ import React, { useState, useEffect } from 'react';
 import TournamentCard from './TournamentCard';
 import type { Tournament } from './api';
 import { fetchTournaments, participateInTournament } from './api';
+import { useLanguage } from './LanguageContext';
 import './TournamentsPage.css';
 
 const Tournaments: React.FC = () => {
   const [tournaments, setTournaments] = useState<Tournament[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const { t } = useLanguage();
 
   useEffect(() => {
     const loadTournaments = async () => {
@@ -31,9 +33,9 @@ const Tournaments: React.FC = () => {
       // Reload tournaments to get updated participant count
       const updatedTournaments = await fetchTournaments();
       setTournaments(updatedTournaments);
-      alert('Вы успешно присоединились к турниру!');
+      alert(t.tournamentJoined || 'Successfully joined tournament!');
     } catch (err) {
-      alert(err instanceof Error ? err.message : 'Failed to participate in tournament');
+      alert(err instanceof Error ? err.message : t.tournamentJoinFailed || 'Failed to join tournament');
     }
   };
 
@@ -42,7 +44,7 @@ const Tournaments: React.FC = () => {
       <div className="tournaments">
         <div className="container">
           <div style={{ textAlign: 'center', padding: '2rem' }}>
-            <h2>Загрузка турниров...</h2>
+            <h2>{t.loadingTournaments || 'Loading tournaments...'}</h2>
           </div>
         </div>
       </div>
@@ -54,9 +56,9 @@ const Tournaments: React.FC = () => {
       <div className="tournaments">
         <div className="container">
           <div style={{ textAlign: 'center', padding: '2rem' }}>
-            <h2>Ошибка загрузки</h2>
+            <h2>{t.error}</h2>
             <p>{error}</p>
-            <button onClick={() => window.location.reload()}>Попробовать снова</button>
+            <button onClick={() => window.location.reload()}>{t.tryAgain}</button>
           </div>
         </div>
       </div>
@@ -67,9 +69,9 @@ const Tournaments: React.FC = () => {
     <div className="tournaments">
       <section className="tournaments-hero">
         <div className="container">
-          <h1 className="page-title">Турниры</h1>
+          <h1 className="page-title">{t.tournamentsTitle}</h1>
           <p className="page-subtitle">
-            Участвуйте в турнирах и выигрывайте крупные призы!
+            {t.tournamentsSubtitle}
           </p>
         </div>
       </section>
@@ -77,11 +79,11 @@ const Tournaments: React.FC = () => {
       <section className="tournaments-content">
         <div className="container">
           <div className="tournaments-header">
-            <h2>Активные турниры</h2>
+            <h2>{t.activeTournaments}</h2>
             <div className="tournament-filters">
-              <button className="filter-btn active">Все</button>
-              <button className="filter-btn">Активные</button>
-              <button className="filter-btn">Скоро</button>
+              <button className="filter-btn active">{t.all}</button>
+              <button className="filter-btn">{t.active || 'Active'}</button>
+              <button className="filter-btn">{t.upcoming || 'Upcoming'}</button>
             </div>
           </div>
 
@@ -96,23 +98,23 @@ const Tournaments: React.FC = () => {
           </div>
 
           <div className="tournament-rules">
-            <h3>Правила турниров</h3>
+            <h3>{t.tournamentRules || 'Tournament Rules'}</h3>
             <div className="rules-grid">
               <div className="rule-item">
-                <h4>🎯 Участие</h4>
-                <p>Зарегистрируйтесь в турнире и играйте в указанную игру</p>
+                <h4>🎯 {t.participation || 'Participation'}</h4>
+                <p>{t.participationDesc || 'Register for the tournament and play the specified game'}</p>
               </div>
               <div className="rule-item">
-                <h4>🏆 Рейтинг</h4>
-                <p>Зарабатывайте очки за каждую выигранную ставку</p>
+                <h4>🏆 {t.ranking || 'Ranking'}</h4>
+                <p>{t.rankingDesc || 'Earn points for every winning bet'}</p>
               </div>
               <div className="rule-item">
-                <h4>💰 Призы</h4>
-                <p>Призовые места получают денежные награды</p>
+                <h4>💰 {t.prizes || 'Prizes'}</h4>
+                <p>{t.prizesDesc || 'Prize places receive monetary rewards'}</p>
               </div>
               <div className="rule-item">
-                <h4>⏰ Время</h4>
-                <p>Турниры проходят в ограниченное время</p>
+                <h4>⏰ {t.time || 'Time'}</h4>
+                <p>{t.timeDesc || 'Tournaments run for a limited time'}</p>
               </div>
             </div>
           </div>

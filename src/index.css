@@ -1,3 +1,39 @@
+:root {
+  /* Light theme variables */
+  --bg-primary: #ffffff;
+  --bg-secondary: #f8f9fa;
+  --bg-tertiary: #e9ecef;
+  --text-primary: #212529;
+  --text-secondary: #6c757d;
+  --text-muted: #adb5bd;
+  --border-color: #dee2e6;
+  --card-bg: #ffffff;
+  --card-border: #dee2e6;
+  --shadow: rgba(0, 0, 0, 0.1);
+  --accent-orange: #ff6b35;
+  --accent-blue: #4a90e2;
+  --accent-green: #4caf50;
+  --accent-red: #f44336;
+}
+
+[data-theme="dark"] {
+  /* Dark theme variables */
+  --bg-primary: #0f1419;
+  --bg-secondary: #1a2332;
+  --bg-tertiary: #2d3748;
+  --text-primary: #ffffff;
+  --text-secondary: #9ca3af;
+  --text-muted: #6b7280;
+  --border-color: rgba(255, 255, 255, 0.12);
+  --card-bg: rgba(255, 255, 255, 0.08);
+  --card-border: rgba(255, 255, 255, 0.12);
+  --shadow: rgba(0, 0, 0, 0.4);
+  --accent-orange: #ff6b35;
+  --accent-blue: #4a90e2;
+  --accent-green: #4caf50;
+  --accent-red: #f44336;
+}
+
 * {
   margin: 0;
   padding: 0;
@@ -10,9 +46,10 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: #0f1419;
-  color: #ffffff;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
   line-height: 1.6;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 #root {
@@ -36,34 +73,34 @@ button {
   padding: 0 20px;
 }
 
-/* Fonbet-style colors and gradients */
+/* Theme-aware gradients */
 .fonbet-gradient {
-  background: linear-gradient(135deg, #0f1419 0%, #1a2332 50%, #2d3748 100%);
+  background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 50%, var(--bg-tertiary) 100%);
 }
 
 .fonbet-orange {
-  color: #ff6b35;
+  color: var(--accent-orange);
 }
 
 .fonbet-orange-bg {
-  background: linear-gradient(45deg, #ff6b35, #ff8c42);
+  background: linear-gradient(45deg, var(--accent-orange), #ff8c42);
 }
 
 .fonbet-blue {
-  color: #4a90e2;
+  color: var(--accent-blue);
 }
 
 .fonbet-green {
-  color: #4caf50;
+  color: var(--accent-green);
 }
 
 .fonbet-red {
-  color: #f44336;
+  color: var(--accent-red);
 }
 
 .card {
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
   border-radius: 8px;
   backdrop-filter: blur(10px);
   transition: all 0.3s ease;
@@ -71,7 +108,7 @@ button {
 
 .card:hover {
   transform: translateY(-2px);
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 8px 25px var(--shadow);
   border-color: rgba(255, 107, 53, 0.3);
 }
 
@@ -92,41 +129,41 @@ button {
 }
 
 .btn-secondary {
-  background: rgba(255, 255, 255, 0.1);
-  color: #ffffff;
+  background: var(--card-bg);
+  color: var(--text-primary);
   padding: 12px 24px;
   border-radius: 6px;
   font-weight: 600;
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  border: 1px solid var(--card-border);
   transition: all 0.3s ease;
 }
 
 .btn-secondary:hover {
-  background: rgba(255, 255, 255, 0.2);
+  background: var(--bg-secondary);
   border-color: rgba(255, 107, 53, 0.5);
 }
 
-/* Fonbet-style text colors */
+/* Theme-aware text colors */
 .text-orange {
-  color: #ff6b35;
+  color: var(--accent-orange);
 }
 
 .text-blue {
-  color: #4a90e2;
+  color: var(--accent-blue);
 }
 
 .text-green {
-  color: #4caf50;
+  color: var(--accent-green);
 }
 
 .text-red {
-  color: #f44336;
+  color: var(--accent-red);
 }
 
 .text-gray {
-  color: #9ca3af;
+  color: var(--text-secondary);
 }
 
 .text-white {
-  color: #ffffff;
+  color: var(--text-primary);
 }

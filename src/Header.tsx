@@ -2,6 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import type { User } from './api';
 import Button from './Button';
+import { useTheme } from './ThemeContext';
+import { useLanguage } from './LanguageContext';
+import Translate from './Translate';
 import './Header.css';
 
 const Header: React.FC = () => {
@@ -9,6 +12,8 @@ const Header: React.FC = () => {
   const [user, setUser] = useState<User | null>(null);
   const location = useLocation();
   const navigate = useNavigate();
+  const { theme, toggleTheme } = useTheme();
+  const { language, setLanguage, loading } = useLanguage();
 
   const isActive = (path: string) => location.pathname === path;
 
@@ -37,65 +42,86 @@ const Header: React.FC = () => {
           </Link>
 
           <nav className={`nav ${isMenuOpen ? 'nav-open' : ''}`}>
-            <Link 
-              to="/" 
-              className={`nav-link ${isActive('/') ? 'active' : ''}`}
-              onClick={() => setIsMenuOpen(false)}
-            >
-              Игры
-            </Link>
-            <Link 
-              to="/tournaments" 
-              className={`nav-link ${isActive('/tournaments') ? 'active' : ''}`}
-              onClick={() => setIsMenuOpen(false)}
-            >
-              Турниры
-            </Link>
-            <Link 
-              to="/bonuses" 
-              className={`nav-link ${isActive('/bonuses') ? 'active' : ''}`}
-              onClick={() => setIsMenuOpen(false)}
-            >
-              Бонусы
-            </Link>
+                   <Link
+                     to="/"
+                     className={`nav-link ${isActive('/') ? 'active' : ''}`}
+                     onClick={() => setIsMenuOpen(false)}
+                   >
+                     <Translate id="games" />
+                   </Link>
+                   <Link
+                     to="/tournaments"
+                     className={`nav-link ${isActive('/tournaments') ? 'active' : ''}`}
+                     onClick={() => setIsMenuOpen(false)}
+                   >
+                     <Translate id="tournaments" />
+                   </Link>
+                   <Link
+                     to="/bonuses"
+                     className={`nav-link ${isActive('/bonuses') ? 'active' : ''}`}
+                     onClick={() => setIsMenuOpen(false)}
+                   >
+                     <Translate id="bonuses" />
+                   </Link>
           </nav>
 
-          <div className="header-actions">
-            {user ? (
-              <div className="user-info">
-                <div className="user-balance">
-                  <span className="balance-label">Баланс:</span>
-                  <span className="balance-amount">{user.balance} BYN</span>
-                </div>
-                <div className="user-menu">
-                  <span className="user-name">{user.firstName} {user.lastName}</span>
-                  <Button
-                    variant="secondary"
-                    size="small"
-                    onClick={handleLogout}
-                  >
-                    Выйти
-                  </Button>
-                </div>
-              </div>
-            ) : (
-              <>
-                <Button
-                  variant="secondary"
-                  size="small"
-                  onClick={() => navigate('/login')}
-                >
-                  Войти
-                </Button>
-                <Button
-                  variant="primary"
-                  size="small"
-                  onClick={() => navigate('/signup')}
-                >
-                  Регистрация
-                </Button>
-              </>
-            )}
+                 <div className="header-actions">
+                   <div className="language-selector">
+                     <select
+                       value={language}
+                       onChange={(e) => setLanguage(e.target.value as 'ru' | 'en')}
+                       className="language-select"
+                       disabled={loading}
+                     >
+                       <option value="ru">🇷🇺 <Translate id="russian" /></option>
+                       <option value="en">🇺🇸 <Translate id="english" /></option>
+                     </select>
+                     {loading && <span className="loading-indicator">⟳</span>}
+                   </div>
+            
+            <button 
+              className="theme-toggle"
+              onClick={toggleTheme}
+              title={`Switch to ${theme === 'light' ? 'dark' : 'light'} theme`}
+            >
+              {theme === 'light' ? '🌙' : '☀️'}
+            </button>
+            
+                   {user ? (
+                     <div className="user-info">
+                       <div className="user-balance">
+                         <span className="balance-label"><Translate id="balance" />:</span>
+                         <span className="balance-amount">{user.balance} <Translate id="currency" /></span>
+                       </div>
+                       <div className="user-menu">
+                         <span className="user-name">{user.firstName} {user.lastName}</span>
+                         <Button
+                           variant="secondary"
+                           size="small"
+                           onClick={handleLogout}
+                         >
+                           <Translate id="logout" />
+                         </Button>
+                       </div>
+                     </div>
+                   ) : (
+                     <>
+                       <Button
+                         variant="secondary"
+                         size="small"
+                         onClick={() => navigate('/login')}
+                       >
+                         <Translate id="login" />
+                       </Button>
+                       <Button
+                         variant="primary"
+                         size="small"
+                         onClick={() => navigate('/signup')}
+                       >
+                         <Translate id="register" />
+                       </Button>
+                     </>
+                   )}
             <button 
               className="menu-toggle"
               onClick={() => setIsMenuOpen(!isMenuOpen)}

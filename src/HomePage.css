@@ -1,10 +1,10 @@
 .home {
   min-height: 100vh;
-  background: #0f1419;
+  background: var(--bg-primary);
 }
 
 .hero {
-  background: linear-gradient(135deg, #0f1419 0%, #1a2332 50%, #2d3748 100%);
+  background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 50%, var(--bg-tertiary) 100%);
   padding: 4rem 0;
   text-align: center;
   position: relative;
@@ -32,16 +32,16 @@
   font-weight: bold;
   margin-bottom: 1.5rem;
   line-height: 1.2;
-  color: #ffffff;
+  color: var(--text-primary);
 }
 
 .hero-title .fonbet-orange {
-  color: #ff6b35;
+  color: var(--accent-orange);
 }
 
 .hero-subtitle {
   font-size: 1.3rem;
-  color: #cccccc;
+  color: var(--text-secondary);
   margin-bottom: 2.5rem;
   max-width: 600px;
   margin-left: auto;
@@ -61,17 +61,17 @@
 }
 
 .jackpot-section {
-  background: rgba(0, 0, 0, 0.5);
+  background: var(--card-bg);
   padding: 3rem 0;
-  border-top: 1px solid rgba(255, 107, 53, 0.2);
-  border-bottom: 1px solid rgba(255, 107, 53, 0.2);
+  border-top: 1px solid var(--card-border);
+  border-bottom: 1px solid var(--card-border);
 }
 
 .section-title {
   font-size: 2.5rem;
   text-align: center;
   margin-bottom: 2rem;
-  color: #ff6b35;
+  color: var(--accent-orange);
 }
 
 .jackpot-display {
@@ -83,8 +83,8 @@
 
 .jackpot-item {
   text-align: center;
-  background: rgba(255, 107, 53, 0.1);
-  border: 1px solid rgba(255, 107, 53, 0.3);
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
   border-radius: 12px;
   padding: 1.5rem 2rem;
   min-width: 200px;
@@ -93,7 +93,7 @@
 .jackpot-label {
   display: block;
   font-size: 1.1rem;
-  color: #ffffff;
+  color: var(--text-primary);
   margin-bottom: 0.5rem;
 }
 
@@ -101,13 +101,57 @@
   display: block;
   font-size: 1.8rem;
   font-weight: bold;
-  color: #ff6b35;
+  color: var(--accent-orange);
   text-shadow: 0 0 10px rgba(255, 107, 53, 0.5);
 }
 
 .games-section {
   padding: 4rem 0;
-  background: linear-gradient(135deg, #0f1419 0%, #1a2332 100%);
+  background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
+}
+
+.games-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 3rem;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.category-filters {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.filter-btn {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  color: var(--text-primary);
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.filter-btn:hover {
+  background: var(--bg-secondary);
+  border-color: var(--accent-orange);
+  transform: translateY(-1px);
+}
+
+.filter-btn.active {
+  background: var(--accent-orange);
+  border-color: var(--accent-orange);
+  color: white;
+}
+
+.filter-btn.active:hover {
+  background: var(--accent-orange-dark);
+  border-color: var(--accent-orange-dark);
 }
 
 .games-grid {
@@ -115,15 +159,35 @@
   grid-template-columns: repeat(4, 1fr);
   grid-template-rows: repeat(5, 1fr);
   gap: 1.5rem;
-  margin-top: 2rem;
   max-width: 1200px;
   margin-left: auto;
   margin-right: auto;
 }
 
+/* Live games indicator */
+.live-indicator {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  background: #ff4444;
+  color: white;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% { opacity: 1; }
+  50% { opacity: 0.7; }
+  100% { opacity: 1; }
+}
+
 .features-section {
   padding: 4rem 0;
-  background: rgba(0, 0, 0, 0.3);
+  background: var(--bg-secondary);
 }
 
 .features-grid {
@@ -136,8 +200,8 @@
 .feature-card {
   text-align: center;
   padding: 2rem;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
   border-radius: 12px;
   transition: all 0.3s ease;
 }
@@ -145,7 +209,7 @@
 .feature-card:hover {
   transform: translateY(-5px);
   border-color: rgba(255, 107, 53, 0.3);
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 10px 30px var(--shadow);
 }
 
 .feature-icon {
@@ -156,11 +220,11 @@
 .feature-card h3 {
   font-size: 1.3rem;
   margin-bottom: 1rem;
-  color: #ff6b35;
+  color: var(--accent-orange);
 }
 
 .feature-card p {
-  color: #cccccc;
+  color: var(--text-secondary);
   line-height: 1.6;
 }
 

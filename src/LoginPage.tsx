@@ -2,10 +2,12 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { login, type LoginRequest } from './api';
 import Button from './Button';
+import { useLanguage } from './LanguageContext';
 import './LoginPage.css';
 
 const Login: React.FC = () => {
   const navigate = useNavigate();
+  const { t } = useLanguage();
   const [formData, setFormData] = useState<LoginRequest>({
     email: '',
     password: ''
@@ -45,8 +47,8 @@ const Login: React.FC = () => {
     <div className="auth-page">
       <div className="auth-container">
         <div className="auth-header">
-          <h1 className="auth-title">Вход в BSUIRBet</h1>
-          <p className="auth-subtitle">Добро пожаловать обратно!</p>
+          <h1 className="auth-title">{t.loginTitle}</h1>
+          <p className="auth-subtitle">{t.loginSubtitle}</p>
         </div>
 
         <form className="auth-form" onSubmit={handleSubmit}>
@@ -57,7 +59,7 @@ const Login: React.FC = () => {
           )}
 
           <div className="form-group">
-            <label htmlFor="email" className="form-label">Email</label>
+            <label htmlFor="email" className="form-label">{t.email}</label>
             <input
               type="email"
               id="email"
@@ -65,13 +67,13 @@ const Login: React.FC = () => {
               value={formData.email}
               onChange={handleChange}
               className="form-input"
-              placeholder="Введите ваш email"
+              placeholder={t.email}
               required
             />
           </div>
 
           <div className="form-group">
-            <label htmlFor="password" className="form-label">Пароль</label>
+            <label htmlFor="password" className="form-label">{t.password}</label>
             <input
               type="password"
               id="password"
@@ -79,7 +81,7 @@ const Login: React.FC = () => {
               value={formData.password}
               onChange={handleChange}
               className="form-input"
-              placeholder="Введите ваш пароль"
+              placeholder={t.password}
               required
             />
           </div>
@@ -90,20 +92,20 @@ const Login: React.FC = () => {
             fullWidth
             loading={loading}
           >
-            Войти
+            {t.login}
           </Button>
 
           <div className="auth-links">
-            <p>Нет аккаунта? <Link to="/signup" className="auth-link">Зарегистрироваться</Link></p>
+            <p>{t.noAccount} <Link to="/signup" className="auth-link">{t.createAccount}</Link></p>
           </div>
 
           <div className="demo-credentials">
-            <h3>Демо аккаунты:</h3>
+            <h3>{t.demoCredentials}:</h3>
             <div className="demo-account">
-              <strong>Админ:</strong> admin@bsuirbet.com / admin123
+              {t.demoAccount1}
             </div>
             <div className="demo-account">
-              <strong>Игрок:</strong> player@bsuirbet.com / player123
+              {t.demoAccount2}
             </div>
           </div>
         </form>

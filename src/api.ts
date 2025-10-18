@@ -1,5 +1,5 @@
 // API service functions for fetching data from the backend
-import type { Bonus } from './services/bonuses';
+import type { Bonus } from './bonuses';
 
 export interface Provider {
   id: string;
@@ -66,8 +66,13 @@ export interface AuthResponse {
 }
 
 // Games API
-export const fetchGames = async (): Promise<Game[]> => {
-  const response = await fetch('/api/games');
+export const fetchGames = async (categories?: string[]): Promise<Game[]> => {
+  const url = new URL('/api/games', window.location.origin);
+  if (categories && categories.length > 0) {
+    categories.forEach(category => url.searchParams.append('category', category));
+  }
+  
+  const response = await fetch(url.toString());
   if (!response.ok) {
     throw new Error('Failed to fetch games');
   }
@@ -222,5 +227,60 @@ export const getCurrentUser = async (): Promise<User> => {
   if (!response.ok) {
     throw new Error('Failed to get current user');
   }
+  return response.json();
+};
+
+// Translation API functions
+export interface TranslationResponse {
+  success: boolean;
+  language: string;
+  translations: Record<string, string>;
+}
+
+export interface LanguagesResponse {
+  success: boolean;
+  languages: Array<{
+    code: string;
+    name: string;
+    flag: string;
+  }>;
+}
+
+export const fetchTranslations = async (language: string): Promise<TranslationResponse> => {
+  const response = await fetch(`/api/translations/${language}`);
+  
+  if (!response.ok) {
+    const error = await response.json();
+    throw new Error(error.error || 'Failed to fetch translations');
+  }
+
+  return response.json();
+};
+
+export const fetchAvailableLanguages = async (): Promise<LanguagesResponse> => {
+  const response = await fetch('/api/translations');
+  
+  if (!response.ok) {
+    const error = await response.json();
+    throw new Error(error.error || 'Failed to fetch available languages');
+  }
+
+  return response.json();
+};
+
+// Categories API
+export interface CategoriesResponse {
+  success: boolean;
+  categories: string[];
+}
+
+export const fetchCategories = async (): Promise<CategoriesResponse> => {
+  const response = await fetch('/api/categories');
+  
+  if (!response.ok) {
+    const error = await response.json();
+    throw new Error(error.error || 'Failed to fetch categories');
+  }
+
   return response.json();
 };

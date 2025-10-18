@@ -228,6 +228,100 @@ const games = [
   }
 ];
 
+// Mock data for live games
+const liveGames = [
+  {
+    id: 21,
+    title: 'Live Blackjack',
+    category: 'Live Games',
+    image: 'https://origin-s3.by0e87-resources.by/ContentBY/Showcase/resources/Casino_desktop.png',
+    jackpot: '500,000 BYN',
+    isHot: true,
+    providerId: 'evolution'
+  },
+  {
+    id: 22,
+    title: 'Live Roulette',
+    category: 'Live Games',
+    image: 'https://origin-s3.by0e87-resources.by/ContentBY/Showcase/resources/Roulete_desktop.png',
+    jackpot: '750,000 BYN',
+    isHot: false,
+    providerId: 'evolution'
+  },
+  {
+    id: 23,
+    title: 'Live Baccarat',
+    category: 'Live Games',
+    image: 'https://origin-s3.by0e87-resources.by/ContentBY/Showcase/resources/Sport_desktop.png',
+    jackpot: '1,000,000 BYN',
+    isHot: true,
+    providerId: 'evolution'
+  },
+  {
+    id: 24,
+    title: 'Live Poker',
+    category: 'Live Games',
+    image: 'https://origin-s3.by0e87-resources.by/ContentBY/Showcase/resources/tvg_desktop.png',
+    jackpot: '2,500,000 BYN',
+    isHot: true,
+    providerId: 'evolution'
+  },
+  {
+    id: 25,
+    title: 'Live Sic Bo',
+    category: 'Live Games',
+    image: 'https://origin-s3.by0e87-resources.by/ContentBY/Showcase/resources/Casino_desktop.png',
+    jackpot: '300,000 BYN',
+    isHot: false,
+    providerId: 'evolution'
+  },
+  {
+    id: 26,
+    title: 'Live Dragon Tiger',
+    category: 'Live Games',
+    image: 'https://origin-s3.by0e87-resources.by/ContentBY/Showcase/resources/Roulete_desktop.png',
+    jackpot: '400,000 BYN',
+    isHot: true,
+    providerId: 'evolution'
+  },
+  {
+    id: 27,
+    title: 'Live Lightning Roulette',
+    category: 'Live Games',
+    image: 'https://origin-s3.by0e87-resources.by/ContentBY/Showcase/resources/Sport_desktop.png',
+    jackpot: '1,500,000 BYN',
+    isHot: true,
+    providerId: 'evolution'
+  },
+  {
+    id: 28,
+    title: 'Live Dream Catcher',
+    category: 'Live Games',
+    image: 'https://origin-s3.by0e87-resources.by/ContentBY/Showcase/resources/tvg_desktop.png',
+    jackpot: '800,000 BYN',
+    isHot: false,
+    providerId: 'evolution'
+  },
+  {
+    id: 29,
+    title: 'Live Monopoly',
+    category: 'Live Games',
+    image: 'https://origin-s3.by0e87-resources.by/ContentBY/Showcase/resources/Casino_desktop.png',
+    jackpot: '1,200,000 BYN',
+    isHot: true,
+    providerId: 'evolution'
+  },
+  {
+    id: 30,
+    title: 'Live Crazy Time',
+    category: 'Live Games',
+    image: 'https://origin-s3.by0e87-resources.by/ContentBY/Showcase/resources/Roulete_desktop.png',
+    jackpot: '2,000,000 BYN',
+    isHot: true,
+    providerId: 'evolution'
+  }
+];
+
 // Mock data for tournaments with Fonbet images
 const tournaments = [
   {
@@ -456,15 +550,454 @@ const bonuses = [
   }
 ];
 
+// Mock translation data
+const translations = {
+  ru: {
+    // Navigation
+    games: 'Игры',
+    tournaments: 'Турниры',
+    bonuses: 'Бонусы',
+    login: 'Войти',
+    register: 'Регистрация',
+    logout: 'Выйти',
+    
+    // Header
+    balance: 'Баланс',
+    
+    // Home Page
+    welcomeTitle: 'Добро пожаловать в BSUIRBet',
+    welcomeSubtitle: 'Лучшие игры, турниры и бонусы ждут вас!',
+    playNow: 'Играть сейчас',
+    learnMore: 'Узнать больше',
+    
+    // Jackpot Section
+    jackpotTitle: 'Джекпоты',
+    megaJackpot: 'Мега Джекпот',
+    superJackpot: 'Супер Джекпот',
+    ultraJackpot: 'Ультра Джекпот',
+    
+    // Features
+    featuresTitle: 'Почему выбирают нас',
+    secureGaming: 'Безопасная игра',
+    secureGamingDesc: 'Защищенные транзакции и честная игра',
+    instantPayouts: 'Мгновенные выплаты',
+    instantPayoutsDesc: 'Быстрые и надежные выводы средств',
+    liveSupport: 'Поддержка 24/7',
+    liveSupportDesc: 'Круглосуточная помощь наших специалистов',
+    mobileGaming: 'Мобильные игры',
+    mobileGamingDesc: 'Играйте в любое время и в любом месте',
+    
+    // Login Page
+    loginTitle: 'Вход в аккаунт',
+    loginSubtitle: 'Войдите в свой аккаунт для продолжения',
+    email: 'Email',
+    password: 'Пароль',
+    rememberMe: 'Запомнить меня',
+    forgotPassword: 'Забыли пароль?',
+    noAccount: 'Нет аккаунта?',
+    createAccount: 'Создать аккаунт',
+    
+    // Demo credentials
+    demoCredentials: 'Демо аккаунты',
+    demoAccount1: 'Email: demo@bsuirbet.com, Пароль: demo123',
+    demoAccount2: 'Email: test@bsuirbet.com, Пароль: test123',
+    
+    // Signup Page
+    signupTitle: 'Создать аккаунт',
+    signupSubtitle: 'Зарегистрируйтесь и получите бонус',
+    firstName: 'Имя',
+    lastName: 'Фамилия',
+    confirmPassword: 'Подтвердите пароль',
+    agreeTerms: 'Я согласен с условиями использования',
+    haveAccount: 'Уже есть аккаунт?',
+    signIn: 'Войти',
+    
+    // Welcome bonus
+    welcomeBonus: '🎁 Добро пожаловать! Получите 1000 BYN бонус при регистрации',
+    
+    // Tournaments Page
+    tournamentsTitle: 'Турниры',
+    tournamentsSubtitle: 'Участвуйте в турнирах и выигрывайте призы',
+    activeTournaments: 'Активные турниры',
+    upcomingTournaments: 'Предстоящие турниры',
+    tournamentName: 'Название турнира',
+    prizePool: 'Призовой фонд',
+    participants: 'Участники',
+    timeLeft: 'Осталось времени',
+    joinTournament: 'Участвовать',
+    
+    // Bonuses Page
+    bonusesTitle: 'Бонусы',
+    bonusesSubtitle: 'Получите бонусы и увеличите свой баланс',
+    availableBonuses: 'Доступные бонусы',
+    bonusName: 'Название бонуса',
+    bonusAmount: 'Сумма бонуса',
+    bonusDescription: 'Описание',
+    claimBonus: 'Получить бонус',
+    
+    // Game Card
+    playGame: 'Играть',
+    provider: 'Провайдер',
+    category: 'Категория',
+    jackpot: 'Джекпот',
+    
+    // Common
+    loading: 'Загрузка...',
+    error: 'Ошибка',
+    success: 'Успешно',
+    cancel: 'Отмена',
+    confirm: 'Подтвердить',
+    save: 'Сохранить',
+    edit: 'Редактировать',
+    delete: 'Удалить',
+    close: 'Закрыть',
+    back: 'Назад',
+    next: 'Далее',
+    previous: 'Предыдущий',
+    search: 'Поиск',
+    filter: 'Фильтр',
+    sort: 'Сортировка',
+    all: 'Все',
+    none: 'Нет',
+    yes: 'Да',
+    no: 'Нет',
+    
+    // Time
+    seconds: 'сек',
+    minutes: 'мин',
+    hours: 'ч',
+    days: 'дн',
+    
+    // Currency
+    currency: 'BYN',
+    
+    // Footer
+    aboutUs: 'О нас',
+    contactUs: 'Связаться с нами',
+    privacyPolicy: 'Политика конфиденциальности',
+    termsOfService: 'Условия использования',
+    responsibleGaming: 'Ответственная игра',
+    support: 'Поддержка',
+    faq: 'Часто задаваемые вопросы',
+    help: 'Помощь',
+    copyright: '© 2024 BSUIRBet. Все права защищены.',
+    
+    // Theme
+    lightTheme: 'Светлая тема',
+    darkTheme: 'Темная тема',
+    
+    // Language
+    language: 'Язык',
+    russian: 'Русский',
+    english: 'English',
+    
+    // Additional
+    username: 'Имя пользователя',
+    tryAgain: 'Попробовать снова',
+    popularGames: 'Популярные игры',
+    
+    // Live Games
+    liveGames: 'Живые игры',
+    liveIndicator: 'В ЭФИРЕ',
+    
+    // Online Status
+    backOnline: 'Вы снова в сети',
+    goneOffline: 'Вы офлайн',
+    offline: 'Офлайн',
+    backOnlineDesc: 'Соединение восстановлено',
+    offlineDesc: 'Проверьте подключение к интернету',
+    
+    // Tournaments specific
+    loadingTournaments: 'Загрузка турниров...',
+    tournamentJoined: 'Вы успешно присоединились к турниру!',
+    tournamentJoinFailed: 'Не удалось присоединиться к турниру',
+    tournamentRules: 'Правила турниров',
+    participation: 'Участие',
+    participationDesc: 'Зарегистрируйтесь в турнире и играйте в указанную игру',
+    ranking: 'Рейтинг',
+    rankingDesc: 'Зарабатывайте очки за каждую выигранную ставку',
+    prizes: 'Призы',
+    prizesDesc: 'Призовые места получают денежные награды',
+    time: 'Время',
+    timeDesc: 'Турниры проходят в ограниченное время',
+    active: 'Активные',
+    upcoming: 'Скоро',
+    
+    // Bonuses specific
+    loadingBonuses: 'Загрузка бонусов...',
+    bonusClaimed: 'Бонус успешно получен!',
+    bonusClaimFailed: 'Не удалось получить бонус',
+    welcomeBonuses: 'Добро пожаловать',
+    welcomeBonusesDesc: 'Специальные бонусы для новых игроков',
+    vipBonuses: 'VIP Бонусы',
+    vipBonusesDesc: 'Эксклюзивные предложения для VIP игроков',
+    dailyBonuses: 'Ежедневные бонусы',
+    dailyBonusesDesc: 'Регулярные награды для активных игроков',
+    bonusTerms: 'Общие условия бонусов',
+    wagering: 'Вейджер',
+    wageringDesc: 'Все бонусы имеют условия отыгрыша (вейджер)',
+    validity: 'Срок действия',
+    validityDesc: 'Бонусы действительны в течение ограниченного времени',
+    gamesDesc: 'Некоторые игры могут не учитываться в вейджере',
+    rules: 'Правила',
+    rulesDesc: 'Соблюдайте правила казино для получения бонусов',
+    loyaltyProgram: 'Программа лояльности',
+    bronze: 'Бронза',
+    bronzePoints: '0-999 очков',
+    basicBonuses: 'Базовые бонусы',
+    standardSupport: 'Стандартная поддержка',
+    silver: 'Серебро',
+    silverPoints: '1000-4999 очков',
+    increasedBonuses: 'Увеличенные бонусы',
+    prioritySupport: 'Приоритетная поддержка',
+    personalManager: 'Персональный менеджер',
+    gold: 'Золото',
+    goldPoints: '5000-9999 очков',
+    maximumBonuses: 'Максимальные бонусы',
+    vipSupport: 'VIP поддержка 24/7',
+    exclusiveOffers: 'Эксклюзивные акции',
+    platinum: 'Платина',
+    platinumPoints: '10000+ очков',
+    exclusiveBonuses: 'Эксклюзивные бонусы',
+    personalOffers: 'Персональные предложения',
+    individualTerms: 'Индивидуальные условия'
+  },
+  en: {
+    // Navigation
+    games: 'Games',
+    tournaments: 'Tournaments',
+    bonuses: 'Bonuses',
+    login: 'Login',
+    register: 'Register',
+    logout: 'Logout',
+    
+    // Header
+    balance: 'Balance',
+    
+    // Home Page
+    welcomeTitle: 'Welcome to BSUIRBet',
+    welcomeSubtitle: 'The best games, tournaments and bonuses await you!',
+    playNow: 'Play Now',
+    learnMore: 'Learn More',
+    
+    // Jackpot Section
+    jackpotTitle: 'Jackpots',
+    megaJackpot: 'Mega Jackpot',
+    superJackpot: 'Super Jackpot',
+    ultraJackpot: 'Ultra Jackpot',
+    
+    // Features
+    featuresTitle: 'Why Choose Us',
+    secureGaming: 'Secure Gaming',
+    secureGamingDesc: 'Protected transactions and fair play',
+    instantPayouts: 'Instant Payouts',
+    instantPayoutsDesc: 'Fast and reliable withdrawals',
+    liveSupport: '24/7 Support',
+    liveSupportDesc: 'Round-the-clock help from our specialists',
+    mobileGaming: 'Mobile Gaming',
+    mobileGamingDesc: 'Play anytime, anywhere',
+    
+    // Login Page
+    loginTitle: 'Login to Account',
+    loginSubtitle: 'Sign in to your account to continue',
+    email: 'Email',
+    password: 'Password',
+    rememberMe: 'Remember me',
+    forgotPassword: 'Forgot password?',
+    noAccount: 'Don\'t have an account?',
+    createAccount: 'Create account',
+    
+    // Demo credentials
+    demoCredentials: 'Demo Accounts',
+    demoAccount1: 'Email: demo@bsuirbet.com, Password: demo123',
+    demoAccount2: 'Email: test@bsuirbet.com, Password: test123',
+    
+    // Signup Page
+    signupTitle: 'Create Account',
+    signupSubtitle: 'Register and get a bonus',
+    firstName: 'First Name',
+    lastName: 'Last Name',
+    confirmPassword: 'Confirm Password',
+    agreeTerms: 'I agree to the terms of service',
+    haveAccount: 'Already have an account?',
+    signIn: 'Sign In',
+    
+    // Welcome bonus
+    welcomeBonus: '🎁 Welcome! Get 1000 BYN bonus on registration',
+    
+    // Tournaments Page
+    tournamentsTitle: 'Tournaments',
+    tournamentsSubtitle: 'Participate in tournaments and win prizes',
+    activeTournaments: 'Active Tournaments',
+    upcomingTournaments: 'Upcoming Tournaments',
+    tournamentName: 'Tournament Name',
+    prizePool: 'Prize Pool',
+    participants: 'Participants',
+    timeLeft: 'Time Left',
+    joinTournament: 'Join Tournament',
+    
+    // Bonuses Page
+    bonusesTitle: 'Bonuses',
+    bonusesSubtitle: 'Get bonuses and increase your balance',
+    availableBonuses: 'Available Bonuses',
+    bonusName: 'Bonus Name',
+    bonusAmount: 'Bonus Amount',
+    bonusDescription: 'Description',
+    claimBonus: 'Claim Bonus',
+    
+    // Game Card
+    playGame: 'Play',
+    provider: 'Provider',
+    category: 'Category',
+    jackpot: 'Jackpot',
+    
+    // Common
+    loading: 'Loading...',
+    error: 'Error',
+    success: 'Success',
+    cancel: 'Cancel',
+    confirm: 'Confirm',
+    save: 'Save',
+    edit: 'Edit',
+    delete: 'Delete',
+    close: 'Close',
+    back: 'Back',
+    next: 'Next',
+    previous: 'Previous',
+    search: 'Search',
+    filter: 'Filter',
+    sort: 'Sort',
+    all: 'All',
+    none: 'None',
+    yes: 'Yes',
+    no: 'No',
+    
+    // Time
+    seconds: 'sec',
+    minutes: 'min',
+    hours: 'h',
+    days: 'd',
+    
+    // Currency
+    currency: 'BYN',
+    
+    // Footer
+    aboutUs: 'About Us',
+    contactUs: 'Contact Us',
+    privacyPolicy: 'Privacy Policy',
+    termsOfService: 'Terms of Service',
+    responsibleGaming: 'Responsible Gaming',
+    support: 'Support',
+    faq: 'FAQ',
+    help: 'Help',
+    copyright: '© 2024 BSUIRBet. All rights reserved.',
+    
+    // Theme
+    lightTheme: 'Light Theme',
+    darkTheme: 'Dark Theme',
+    
+    // Language
+    language: 'Language',
+    russian: 'Русский',
+    english: 'English',
+    
+    // Additional
+    username: 'Username',
+    tryAgain: 'Try Again',
+    popularGames: 'Popular Games',
+    
+    // Live Games
+    liveGames: 'Live Games',
+    liveIndicator: 'LIVE',
+    
+    // Online Status
+    backOnline: 'You are back online',
+    goneOffline: 'You are offline',
+    offline: 'Offline',
+    backOnlineDesc: 'Connection restored',
+    offlineDesc: 'Check your internet connection',
+    
+    // Tournaments specific
+    loadingTournaments: 'Loading tournaments...',
+    tournamentJoined: 'Successfully joined tournament!',
+    tournamentJoinFailed: 'Failed to join tournament',
+    tournamentRules: 'Tournament Rules',
+    participation: 'Participation',
+    participationDesc: 'Register for the tournament and play the specified game',
+    ranking: 'Ranking',
+    rankingDesc: 'Earn points for every winning bet',
+    prizes: 'Prizes',
+    prizesDesc: 'Prize places receive monetary rewards',
+    time: 'Time',
+    timeDesc: 'Tournaments run for a limited time',
+    active: 'Active',
+    upcoming: 'Upcoming',
+    
+    // Bonuses specific
+    loadingBonuses: 'Loading bonuses...',
+    bonusClaimed: 'Bonus successfully claimed!',
+    bonusClaimFailed: 'Failed to claim bonus',
+    welcomeBonuses: 'Welcome Bonuses',
+    welcomeBonusesDesc: 'Special bonuses for new players',
+    vipBonuses: 'VIP Bonuses',
+    vipBonusesDesc: 'Exclusive offers for VIP players',
+    dailyBonuses: 'Daily Bonuses',
+    dailyBonusesDesc: 'Regular rewards for active players',
+    bonusTerms: 'Bonus Terms',
+    wagering: 'Wagering',
+    wageringDesc: 'All bonuses have wagering requirements',
+    validity: 'Validity',
+    validityDesc: 'Bonuses are valid for a limited time',
+    gamesDesc: 'Some games may not count towards wagering',
+    rules: 'Rules',
+    rulesDesc: 'Follow casino rules to receive bonuses',
+    loyaltyProgram: 'Loyalty Program',
+    bronze: 'Bronze',
+    bronzePoints: '0-999 points',
+    basicBonuses: 'Basic bonuses',
+    standardSupport: 'Standard support',
+    silver: 'Silver',
+    silverPoints: '1000-4999 points',
+    increasedBonuses: 'Increased bonuses',
+    prioritySupport: 'Priority support',
+    personalManager: 'Personal manager',
+    gold: 'Gold',
+    goldPoints: '5000-9999 points',
+    maximumBonuses: 'Maximum bonuses',
+    vipSupport: 'VIP support 24/7',
+    exclusiveOffers: 'Exclusive offers',
+    platinum: 'Platinum',
+    platinumPoints: '10000+ points',
+    exclusiveBonuses: 'Exclusive bonuses',
+    personalOffers: 'Personal offers',
+    individualTerms: 'Individual terms'
+  }
+};
+
 export const handlers = [
   // Games API
-  http.get('/api/games', () => {
-    return HttpResponse.json(games);
+  http.get('/api/games', ({ request }) => {
+    const url = new URL(request.url);
+    const categories = url.searchParams.getAll('category');
+    
+    // Combine all games (regular + live)
+    const allGames = [...games, ...liveGames];
+    
+    if (categories.length === 0) {
+      return HttpResponse.json(allGames);
+    }
+    
+    const filteredGames = allGames.filter(game => 
+      categories.includes(game.category)
+    );
+    
+    return HttpResponse.json(filteredGames);
   }),
 
   http.get('/api/games/:id', ({ params }) => {
     const { id } = params;
-    const game = games.find(g => g.id === parseInt(id as string));
+    const allGames = [...games, ...liveGames];
+    const game = allGames.find(g => g.id === parseInt(id as string));
     
     if (!game) {
       return HttpResponse.json(
@@ -535,7 +1068,8 @@ export const handlers = [
 
   // Jackpot API
   http.get('/api/jackpots', () => {
-    const jackpots = games
+    const allGames = [...games, ...liveGames];
+    const jackpots = allGames
       .filter(game => game.jackpot)
       .map(game => ({
         gameId: game.id,
@@ -743,5 +1277,49 @@ export const handlers = [
     }
     
     return HttpResponse.json(user);
+  }),
+
+  // Translation API endpoints
+  http.get('/api/translations/:language', ({ params }) => {
+    const { language } = params;
+    
+    if (language !== 'ru' && language !== 'en') {
+      return HttpResponse.json(
+        { error: 'Unsupported language' },
+        { status: 400 }
+      );
+    }
+    
+    // Simulate network delay
+    return new Promise(resolve => {
+      setTimeout(() => {
+        resolve(HttpResponse.json({
+          success: true,
+          language,
+          translations: translations[language as keyof typeof translations]
+        }));
+      }, 100);
+    });
+  }),
+
+  // Get all available languages
+  http.get('/api/translations', () => {
+    return HttpResponse.json({
+      success: true,
+      languages: [
+        { code: 'ru', name: 'Русский', flag: '🇷🇺' },
+        { code: 'en', name: 'English', flag: '🇺🇸' }
+      ]
+    });
+  }),
+
+  // Categories API
+  http.get('/api/categories', () => {
+    const allGames = [...games, ...liveGames];
+    const categories = [...new Set(allGames.map(game => game.category))];
+    return HttpResponse.json({
+      success: true,
+      categories
+    });
   })
 ];

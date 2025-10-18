@@ -69,24 +69,6 @@ export const safeGet = <T>(
   return current !== undefined ? current : defaultValue;
 };
 
-/**
- * Utility function to create a debounced version of a function
- * 
- * @param func - The function to debounce
- * @param delay - The delay in milliseconds
- * @returns A debounced version of the function
- */
-export const debounce = <T extends (...args: any[]) => any>(
-  func: T,
-  delay: number
-): ((...args: Parameters<T>) => void) => {
-  let timeoutId: NodeJS.Timeout;
-  
-  return (...args: Parameters<T>) => {
-    clearTimeout(timeoutId);
-    timeoutId = setTimeout(() => func(...args), delay);
-  };
-};
 
 /**
  * Utility function to format currency values

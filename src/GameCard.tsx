@@ -1,6 +1,8 @@
 import React from 'react';
 import type { Game, Provider } from './api';
 import Button from './Button';
+import { useLanguage } from './LanguageContext';
+import Translate from './Translate';
 import './GameCard.css';
 
 interface GameCardProps {
@@ -16,9 +18,10 @@ const GameCard: React.FC<GameCardProps> = ({ game, providersMap }) => {
       <div className="game-image">
         <img src={game.image} alt={game.title} />
         {game.isHot && <div className="hot-badge">HOT</div>}
+        {game.category === 'Live Games' && <div className="live-indicator">LIVE</div>}
         <div className="game-overlay">
           <Button variant="primary" size="small">
-            Играть
+            <Translate id="playGame" />
           </Button>
         </div>
       </div>
@@ -26,11 +29,11 @@ const GameCard: React.FC<GameCardProps> = ({ game, providersMap }) => {
         <h3 className="game-title">{game.title}</h3>
         <p className="game-category">{game.category}</p>
         <div className="game-provider">
-          <span className="provider-label">Провайдер:</span>
+          <span className="provider-label"><Translate id="provider" />:</span>
           <span className="provider-name">{provider?.name || game.providerId}</span>
         </div>
         <div className="game-jackpot">
-          <span className="jackpot-label">Джекпот:</span>
+          <span className="jackpot-label"><Translate id="jackpot" />:</span>
           <span className="jackpot-amount">{game.jackpot}</span>
         </div>
       </div>

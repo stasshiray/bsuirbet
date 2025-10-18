@@ -2,12 +2,14 @@ import React, { useState, useEffect } from 'react';
 import BonusCard from './BonusCard';
 import type { Bonus } from './bonuses';
 import { fetchBonuses, claimBonus } from './api';
+import { useLanguage } from './LanguageContext';
 import './BonusesPage.css';
 
 const Bonuses: React.FC = () => {
   const [bonuses, setBonuses] = useState<Bonus[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const { t } = useLanguage();
 
   useEffect(() => {
     const loadBonuses = async () => {
@@ -28,9 +30,9 @@ const Bonuses: React.FC = () => {
   const handleClaimBonus = async (bonusId: number) => {
     try {
       await claimBonus(bonusId);
-      alert('Бонус успешно получен!');
+      alert(t.bonusClaimed || 'Bonus successfully claimed!');
     } catch (err) {
-      alert(err instanceof Error ? err.message : 'Failed to claim bonus');
+      alert(err instanceof Error ? err.message : t.bonusClaimFailed || 'Failed to claim bonus');
     }
   };
 
@@ -39,7 +41,7 @@ const Bonuses: React.FC = () => {
       <div className="bonuses">
         <div className="container">
           <div style={{ textAlign: 'center', padding: '2rem' }}>
-            <h2>Загрузка бонусов...</h2>
+            <h2>{t.loadingBonuses || 'Loading bonuses...'}</h2>
           </div>
         </div>
       </div>
@@ -51,9 +53,9 @@ const Bonuses: React.FC = () => {
       <div className="bonuses">
         <div className="container">
           <div style={{ textAlign: 'center', padding: '2rem' }}>
-            <h2>Ошибка загрузки</h2>
+            <h2>{t.error}</h2>
             <p>{error}</p>
-            <button onClick={() => window.location.reload()}>Попробовать снова</button>
+            <button onClick={() => window.location.reload()}>{t.tryAgain}</button>
           </div>
         </div>
       </div>
@@ -69,9 +71,9 @@ const Bonuses: React.FC = () => {
     <div className="bonuses">
       <section className="bonuses-hero">
         <div className="container">
-          <h1 className="page-title">Бонусы и акции</h1>
+          <h1 className="page-title">{t.bonusesTitle}</h1>
           <p className="page-subtitle">
-            Получайте максимальную выгоду от игры с нашими бонусами!
+            {t.bonusesSubtitle}
           </p>
         </div>
       </section>
@@ -83,9 +85,9 @@ const Bonuses: React.FC = () => {
             <div className="section-header">
               <h2 className="section-title">
                 <span className="section-icon">🎁</span>
-                Добро пожаловать
+                {t.welcomeBonuses || 'Welcome Bonuses'}
               </h2>
-              <p className="section-description">Специальные бонусы для новых игроков</p>
+              <p className="section-description">{t.welcomeBonusesDesc || 'Special bonuses for new players'}</p>
             </div>
             <div className="bonuses-grid">
               {welcomeBonuses.map(bonus => (
@@ -103,9 +105,9 @@ const Bonuses: React.FC = () => {
             <div className="section-header">
               <h2 className="section-title">
                 <span className="section-icon">👑</span>
-                VIP Бонусы
+                {t.vipBonuses || 'VIP Bonuses'}
               </h2>
-              <p className="section-description">Эксклюзивные предложения для VIP игроков</p>
+              <p className="section-description">{t.vipBonusesDesc || 'Exclusive offers for VIP players'}</p>
             </div>
             <div className="bonuses-grid">
               {vipBonuses.map(bonus => (
@@ -123,9 +125,9 @@ const Bonuses: React.FC = () => {
             <div className="section-header">
               <h2 className="section-title">
                 <span className="section-icon">🎰</span>
-                Ежедневные бонусы
+                {t.dailyBonuses || 'Daily Bonuses'}
               </h2>
-              <p className="section-description">Регулярные награды для активных игроков</p>
+              <p className="section-description">{t.dailyBonusesDesc || 'Regular rewards for active players'}</p>
             </div>
             <div className="bonuses-grid">
               {dailyBonuses.map(bonus => (
@@ -139,67 +141,67 @@ const Bonuses: React.FC = () => {
           </div>
 
           <div className="bonus-terms">
-            <h3>Общие условия бонусов</h3>
+            <h3>{t.bonusTerms || 'Bonus Terms'}</h3>
             <div className="terms-grid">
               <div className="term-item">
-                <h4>🎯 Вейджер</h4>
-                <p>Все бонусы имеют условия отыгрыша (вейджер)</p>
+                <h4>🎯 {t.wagering || 'Wagering'}</h4>
+                <p>{t.wageringDesc || 'All bonuses have wagering requirements'}</p>
               </div>
               <div className="term-item">
-                <h4>⏰ Срок действия</h4>
-                <p>Бонусы действительны в течение ограниченного времени</p>
+                <h4>⏰ {t.validity || 'Validity'}</h4>
+                <p>{t.validityDesc || 'Bonuses are valid for a limited time'}</p>
               </div>
               <div className="term-item">
-                <h4>🎮 Игры</h4>
-                <p>Некоторые игры могут не учитываться в вейджере</p>
+                <h4>🎮 {t.games || 'Games'}</h4>
+                <p>{t.gamesDesc || 'Some games may not count towards wagering'}</p>
               </div>
               <div className="term-item">
-                <h4>📋 Правила</h4>
-                <p>Соблюдайте правила казино для получения бонусов</p>
+                <h4>📋 {t.rules || 'Rules'}</h4>
+                <p>{t.rulesDesc || 'Follow casino rules to receive bonuses'}</p>
               </div>
             </div>
           </div>
 
           <div className="loyalty-program">
-            <h3>Программа лояльности</h3>
+            <h3>{t.loyaltyProgram || 'Loyalty Program'}</h3>
             <div className="loyalty-levels">
               <div className="loyalty-level">
                 <div className="level-icon">🥉</div>
-                <h4>Бронза</h4>
-                <p>0-999 очков</p>
+                <h4>{t.bronze || 'Bronze'}</h4>
+                <p>{t.bronzePoints || '0-999 points'}</p>
                 <ul>
-                  <li>Базовые бонусы</li>
-                  <li>Стандартная поддержка</li>
+                  <li>{t.basicBonuses || 'Basic bonuses'}</li>
+                  <li>{t.standardSupport || 'Standard support'}</li>
                 </ul>
               </div>
               <div className="loyalty-level">
                 <div className="level-icon">🥈</div>
-                <h4>Серебро</h4>
-                <p>1000-4999 очков</p>
+                <h4>{t.silver || 'Silver'}</h4>
+                <p>{t.silverPoints || '1000-4999 points'}</p>
                 <ul>
-                  <li>Увеличенные бонусы</li>
-                  <li>Приоритетная поддержка</li>
-                  <li>Персональный менеджер</li>
+                  <li>{t.increasedBonuses || 'Increased bonuses'}</li>
+                  <li>{t.prioritySupport || 'Priority support'}</li>
+                  <li>{t.personalManager || 'Personal manager'}</li>
                 </ul>
               </div>
               <div className="loyalty-level">
                 <div className="level-icon">🥇</div>
-                <h4>Золото</h4>
-                <p>5000-9999 очков</p>
+                <h4>{t.gold || 'Gold'}</h4>
+                <p>{t.goldPoints || '5000-9999 points'}</p>
                 <ul>
-                  <li>Максимальные бонусы</li>
-                  <li>VIP поддержка 24/7</li>
-                  <li>Эксклюзивные акции</li>
+                  <li>{t.maximumBonuses || 'Maximum bonuses'}</li>
+                  <li>{t.vipSupport || 'VIP support 24/7'}</li>
+                  <li>{t.exclusiveOffers || 'Exclusive offers'}</li>
                 </ul>
               </div>
               <div className="loyalty-level">
                 <div className="level-icon">💎</div>
-                <h4>Платина</h4>
-                <p>10000+ очков</p>
+                <h4>{t.platinum || 'Platinum'}</h4>
+                <p>{t.platinumPoints || '10000+ points'}</p>
                 <ul>
-                  <li>Эксклюзивные бонусы</li>
-                  <li>Персональные предложения</li>
-                  <li>Индивидуальные условия</li>
+                  <li>{t.exclusiveBonuses || 'Exclusive bonuses'}</li>
+                  <li>{t.personalOffers || 'Personal offers'}</li>
+                  <li>{t.individualTerms || 'Individual terms'}</li>
                 </ul>
               </div>
             </div>

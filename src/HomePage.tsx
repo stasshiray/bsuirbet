@@ -1,7 +1,14 @@
 import React, { useState, useEffect, useMemo } from "react";
 import GameCard from "./GameCard";
 import type { Game, Jackpot, Provider } from "./api";
-import { fetchGames, fetchJackpots, fetchProviders } from "./api";
+import {
+  fetchGames,
+  fetchJackpots,
+  fetchProviders,
+  fetchCategories,
+} from "./api";
+import { useLanguage } from "./LanguageContext";
+import Translate from "./Translate";
 import "./HomePage.css";
 
 type GamesLookup = {
@@ -32,8 +39,12 @@ const Home: React.FC = () => {
   const [games, setGames] = useState<Game[]>([]);
   const [jackpots, setJackpots] = useState<Jackpot[]>([]);
   const [providers, setProviders] = useState<Provider[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [categories, setCategories] = useState<string[]>([]);
+  const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
+  const [gamesRelatedDataLoading, setGamesRelatedDataLoading] = useState(true);
+  const [gamesLoading, setGamesLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const { loading: translationsLoading } = useLanguage();
 
   // Create optimized lookup object for faster searching
   const gamesMap = useMemo(() => createGamesLookup(games), [games]);
@@ -47,31 +58,56 @@ const Home: React.FC = () => {
   useEffect(() => {
     const loadData = async () => {
       try {
-        setLoading(true);
-        const [gamesData, jackpotsData, providersData] = await Promise.all([
-          fetchGames(),
-          fetchJackpots(),
-          fetchProviders(),
-        ]);
-        setGames(gamesData);
+        setGamesRelatedDataLoading(true);
+        const [jackpotsData, providersData, categoriesData] =
+          await Promise.all([
+            fetchJackpots(),
+            fetchProviders(),
+            fetchCategories(),
+          ]);
         setJackpots(jackpotsData);
         setProviders(providersData);
+        setCategories(categoriesData.categories);
       } catch (err) {
         setError(err instanceof Error ? err.message : "Failed to load data");
       } finally {
-        setLoading(false);
+        setGamesRelatedDataLoading(false);
       }
     };
 
     loadData();
   }, []);
 
-  if (loading) {
+  // Load games when selected categories change
+  useEffect(() => {
+    const loadFilteredGames = async () => {
+      try {
+        setGamesLoading(true);
+        const gamesData = await fetchGames(
+          selectedCategories.length > 0 ? selectedCategories : undefined
+        );
+        setGames(gamesData);
+      } catch (err) {
+        setError(
+          err instanceof Error ? err.message : "Failed to load filtered games"
+        );
+      } finally {
+        setGamesLoading(false);
+      }
+    };
+
+    loadFilteredGames();
+  }, [selectedCategories]);
+
+  if (gamesRelatedDataLoading || gamesLoading || translationsLoading) {
     return (
       <div className="home">
         <div className="container">
           <div style={{ textAlign: "center", padding: "2rem" }}>
-            <h2>Загрузка...</h2>
+            <h2>
+              <Translate id="loading" />
+            </h2>
+            {translationsLoading && <p>Loading translations...</p>}
           </div>
         </div>
       </div>
@@ -83,10 +119,12 @@ const Home: React.FC = () => {
       <div className="home">
         <div className="container">
           <div style={{ textAlign: "center", padding: "2rem" }}>
-            <h2>Ошибка загрузки</h2>
+            <h2>
+              <Translate id="error" />
+            </h2>
             <p>{error}</p>
             <button onClick={() => window.location.reload()}>
-              Попробовать снова
+              <Translate id="tryAgain" />
             </button>
           </div>
         </div>
@@ -100,16 +138,19 @@ const Home: React.FC = () => {
         <div className="container">
           <div className="hero-content">
             <h1 className="hero-title">
-              Добро пожаловать в{" "}
+              <Translate id="welcomeTitle" />{" "}
               <span className="fonbet-orange">BSUIRBet Casino</span>
             </h1>
             <p className="hero-subtitle">
-              Лучшие онлайн казино игры, турниры и бонусы. Играйте и
-              выигрывайте!
+              <Translate id="welcomeSubtitle" />
             </p>
             <div className="hero-actions">
-              <button className="btn-primary btn-large">Начать игру</button>
-              <button className="btn-secondary btn-large">Узнать больше</button>
+              <button className="btn-primary btn-large">
+                <Translate id="playNow" />
+              </button>
+              <button className="btn-secondary btn-large">
+                <Translate id="learnMore" />
+              </button>
             </div>
           </div>
         </div>
@@ -117,7 +158,9 @@ const Home: React.FC = () => {
 
       <section className="jackpot-section">
         <div className="container">
-          <h2 className="section-title">Джекпоты</h2>
+          <h2 className="section-title">
+            <Translate id="jackpotTitle" />
+          </h2>
           <div className="jackpot-display">
             {jackpots.slice(0, 3).map((jackpot, index) => {
               const game = gamesMap[jackpot.gameId];
@@ -136,7 +179,40 @@ const Home: React.FC = () => {
 
       <section className="games-section">
         <div className="container">
-          <h2 className="section-title">Популярные игры</h2>
+          <div className="games-header">
+            <h2 className="section-title">
+              <Translate id="popularGames" />
+            </h2>
+            <div className="category-filters">
+              <button
+                className={`filter-btn ${
+                  selectedCategories.length === 0 ? "active" : ""
+                }`}
+                onClick={() => setSelectedCategories([])}
+              >
+                <Translate id="all" />
+              </button>
+              {categories.map((category) => (
+                <button
+                  key={category}
+                  className={`filter-btn ${
+                    selectedCategories.includes(category) ? "active" : ""
+                  }`}
+                  onClick={() => {
+                    if (selectedCategories.includes(category)) {
+                      setSelectedCategories(
+                        selectedCategories.filter((c) => c !== category)
+                      );
+                    } else {
+                      setSelectedCategories([...selectedCategories, category]);
+                    }
+                  }}
+                >
+                  {category}
+                </button>
+              ))}
+            </div>
+          </div>
           <div className="games-grid">
             {games.map((game) => (
               <GameCard key={game.id} game={game} providersMap={providersMap} />
@@ -147,27 +223,45 @@ const Home: React.FC = () => {
 
       <section className="features-section">
         <div className="container">
-          <h2 className="section-title">Почему выбирают нас</h2>
+          <h2 className="section-title">
+            <Translate id="featuresTitle" />
+          </h2>
           <div className="features-grid">
             <div className="feature-card">
               <div className="feature-icon">🎰</div>
-              <h3>1000+ игр</h3>
-              <p>Огромный выбор слотов, рулетки, покера и других игр</p>
+              <h3>
+                <Translate id="secureGaming" />
+              </h3>
+              <p>
+                <Translate id="secureGamingDesc" />
+              </p>
             </div>
             <div className="feature-card">
               <div className="feature-icon">🏆</div>
-              <h3>Турниры</h3>
-              <p>Ежедневные турниры с призовыми фондами</p>
+              <h3>
+                <Translate id="instantPayouts" />
+              </h3>
+              <p>
+                <Translate id="instantPayoutsDesc" />
+              </p>
             </div>
             <div className="feature-card">
               <div className="feature-icon">💰</div>
-              <h3>Бонусы</h3>
-              <p>Приветственные бонусы и еженедельные акции</p>
+              <h3>
+                <Translate id="liveSupport" />
+              </h3>
+              <p>
+                <Translate id="liveSupportDesc" />
+              </p>
             </div>
             <div className="feature-card">
               <div className="feature-icon">🔒</div>
-              <h3>Безопасность</h3>
-              <p>Лицензированная платформа с защитой данных</p>
+              <h3>
+                <Translate id="mobileGaming" />
+              </h3>
+              <p>
+                <Translate id="mobileGamingDesc" />
+              </p>
             </div>
           </div>
         </div>

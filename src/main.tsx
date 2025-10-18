@@ -1,16 +1,17 @@
-import React from "react";
+import React, { useState } from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App.tsx";
 import { worker } from "./browser.ts";
 import "./index.css";
 
-worker.start().then(
-  () => {
-    ReactDOM.createRoot(document.getElementById("root")!).render(
-      <React.StrictMode>
-        <App />
-      </React.StrictMode>
-    );
-  },
-  () => console.error("error")
-);
+try {
+  await worker.start();
+
+  ReactDOM.createRoot(document.getElementById("root")!).render(
+    <React.StrictMode>
+      <App />
+    </React.StrictMode>
+  );
+} catch (error) {
+  console.error("error", error);
+}

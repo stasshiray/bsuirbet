@@ -1,6 +1,6 @@
 .auth-page {
   min-height: 100vh;
-  background: linear-gradient(135deg, #0f1419 0%, #1a2332 50%, #2d3748 100%);
+  background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 50%, var(--bg-tertiary) 100%);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -21,8 +21,8 @@
 }
 
 .auth-container {
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
   border-radius: 16px;
   padding: 3rem;
   width: 100%;
@@ -30,7 +30,7 @@
   position: relative;
   z-index: 1;
   backdrop-filter: blur(10px);
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 20px 40px var(--shadow);
 }
 
 .auth-header {
@@ -41,16 +41,16 @@
 .auth-title {
   font-size: 2.5rem;
   font-weight: bold;
-  color: #ffffff;
+  color: var(--text-primary);
   margin-bottom: 0.5rem;
-  background: linear-gradient(45deg, #ff6b35, #ff8c42);
+  background: linear-gradient(45deg, var(--accent-orange), #ff8c42);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
 
 .auth-subtitle {
-  color: #cccccc;
+  color: var(--text-secondary);
   font-size: 1.1rem;
   margin: 0;
 }
@@ -84,7 +84,7 @@
 }
 
 .form-label {
-  color: #ffffff;
+  color: var(--text-primary);
   font-weight: 500;
   font-size: 0.9rem;
   text-transform: uppercase;
@@ -92,11 +92,11 @@
 }
 
 .form-input {
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: var(--bg-secondary);
+  border: 1px solid var(--card-border);
   border-radius: 8px;
   padding: 1rem;
-  color: #ffffff;
+  color: var(--text-primary);
   font-size: 1rem;
   transition: all 0.3s ease;
 }
@@ -104,12 +104,12 @@
 .form-input:focus {
   outline: none;
   border-color: rgba(255, 107, 53, 0.5);
-  background: rgba(255, 255, 255, 0.08);
+  background: var(--bg-tertiary);
   box-shadow: 0 0 0 3px rgba(255, 107, 53, 0.1);
 }
 
 .form-input::placeholder {
-  color: #888888;
+  color: var(--text-muted);
 }
 
 .btn-primary {
@@ -148,12 +148,12 @@
 }
 
 .auth-links p {
-  color: #cccccc;
+  color: var(--text-secondary);
   margin: 0;
 }
 
 .auth-link {
-  color: #ff6b35;
+  color: var(--accent-orange);
   text-decoration: none;
   font-weight: 500;
   transition: color 0.3s ease;
@@ -182,13 +182,13 @@
 }
 
 .bonus-text {
-  color: #ffffff;
+  color: var(--text-primary);
   font-size: 0.9rem;
   line-height: 1.4;
 }
 
 .bonus-text strong {
-  color: #ff6b35;
+  color: var(--accent-orange);
   font-size: 1rem;
 }
 
