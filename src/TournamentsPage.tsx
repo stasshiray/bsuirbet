@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import TournamentCard from './TournamentCard';
+import ErrorBoundary from './ErrorBoundary';
 import type { Tournament } from './api';
 import { fetchTournaments, participateInTournament } from './api';
 import { useLanguage } from './LanguageContext';
 import './TournamentsPage.css';
 
-const Tournaments: React.FC = () => {
+const TournamentsContent: React.FC = () => {
   const [tournaments, setTournaments] = useState<Tournament[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -121,6 +122,14 @@ const Tournaments: React.FC = () => {
         </div>
       </section>
     </div>
+  );
+};
+
+const Tournaments: React.FC = () => {
+  return (
+    <ErrorBoundary>
+      <TournamentsContent />
+    </ErrorBoundary>
   );
 };
 
