@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from 'react';
-import BonusCard from './BonusCard';
-import type { Bonus } from './bonuses';
-import { fetchBonuses, claimBonus } from './api';
-import { useLanguage } from './LanguageContext';
-import './BonusesPage.css';
+import React, { useState, useEffect, useCallback } from "react";
+import BonusCard from "./BonusCard";
+import type { Bonus } from "./bonuses";
+import { fetchBonuses, claimBonus } from "./api";
+import { useLanguage } from "./LanguageContext";
+import "./BonusesPage.css";
 
 const Bonuses: React.FC = () => {
   const [bonuses, setBonuses] = useState<Bonus[]>([]);
@@ -18,7 +18,7 @@ const Bonuses: React.FC = () => {
         const data = await fetchBonuses();
         setBonuses(data);
       } catch (err) {
-        setError(err instanceof Error ? err.message : 'Failed to load bonuses');
+        setError(err instanceof Error ? err.message : "Failed to load bonuses");
       } finally {
         setLoading(false);
       }
@@ -27,21 +27,24 @@ const Bonuses: React.FC = () => {
     loadBonuses();
   }, []);
 
-  const handleClaimBonus = async (bonusId: number) => {
-    try {
-      await claimBonus(bonusId);
-      alert(t.bonusClaimed || 'Bonus successfully claimed!');
-    } catch (err) {
-      alert(err instanceof Error ? err.message : t.bonusClaimFailed || 'Failed to claim bonus');
-    }
-  };
+  const handleClaimBonus = useCallback(
+    async (bonusId: number) => {
+      try {
+        await claimBonus(bonusId);
+        alert(t.bonusClaimed);
+      } catch (err) {
+        alert(err instanceof Error ? err.message : t.bonusClaimFailed);
+      }
+    },
+    [t]
+  );
 
   if (loading) {
     return (
       <div className="bonuses">
         <div className="container">
-          <div style={{ textAlign: 'center', padding: '2rem' }}>
-            <h2>{t.loadingBonuses || 'Loading bonuses...'}</h2>
+          <div style={{ textAlign: "center", padding: "2rem" }}>
+            <h2>{t.loadingBonuses}</h2>
           </div>
         </div>
       </div>
@@ -52,10 +55,12 @@ const Bonuses: React.FC = () => {
     return (
       <div className="bonuses">
         <div className="container">
-          <div style={{ textAlign: 'center', padding: '2rem' }}>
+          <div style={{ textAlign: "center", padding: "2rem" }}>
             <h2>{t.error}</h2>
             <p>{error}</p>
-            <button onClick={() => window.location.reload()}>{t.tryAgain}</button>
+            <button onClick={() => window.location.reload()}>
+              {t.tryAgain}
+            </button>
           </div>
         </div>
       </div>
@@ -63,18 +68,18 @@ const Bonuses: React.FC = () => {
   }
 
   // Group bonuses by category
-  const welcomeBonuses = bonuses.filter(bonus => bonus.category === 'welcome');
-  const vipBonuses = bonuses.filter(bonus => bonus.category === 'vip');
-  const dailyBonuses = bonuses.filter(bonus => bonus.category === 'daily');
+  const welcomeBonuses = bonuses.filter(
+    (bonus) => bonus.category === "welcome"
+  );
+  const vipBonuses = bonuses.filter((bonus) => bonus.category === "vip");
+  const dailyBonuses = bonuses.filter((bonus) => bonus.category === "daily");
 
   return (
     <div className="bonuses">
       <section className="bonuses-hero">
         <div className="container">
           <h1 className="page-title">{t.bonusesTitle}</h1>
-          <p className="page-subtitle">
-            {t.bonusesSubtitle}
-          </p>
+          <p className="page-subtitle">{t.bonusesSubtitle}</p>
         </div>
       </section>
 
@@ -85,16 +90,16 @@ const Bonuses: React.FC = () => {
             <div className="section-header">
               <h2 className="section-title">
                 <span className="section-icon">🎁</span>
-                {t.welcomeBonuses || 'Welcome Bonuses'}
+                {t.welcomeBonuses}
               </h2>
-              <p className="section-description">{t.welcomeBonusesDesc || 'Special bonuses for new players'}</p>
+              <p className="section-description">{t.welcomeBonusesDesc}</p>
             </div>
             <div className="bonuses-grid">
-              {welcomeBonuses.map(bonus => (
-                <BonusCard 
-                  key={bonus.id} 
-                  bonus={bonus} 
-                  onClaim={() => handleClaimBonus(bonus.id)}
+              {welcomeBonuses.map((bonus) => (
+                <BonusCard
+                  key={bonus.id}
+                  bonus={bonus}
+                  onClaim={handleClaimBonus}
                 />
               ))}
             </div>
@@ -105,16 +110,16 @@ const Bonuses: React.FC = () => {
             <div className="section-header">
               <h2 className="section-title">
                 <span className="section-icon">👑</span>
-                {t.vipBonuses || 'VIP Bonuses'}
+                {t.vipBonuses}
               </h2>
-              <p className="section-description">{t.vipBonusesDesc || 'Exclusive offers for VIP players'}</p>
+              <p className="section-description">{t.vipBonusesDesc}</p>
             </div>
             <div className="bonuses-grid">
-              {vipBonuses.map(bonus => (
-                <BonusCard 
-                  key={bonus.id} 
-                  bonus={bonus} 
-                  onClaim={() => handleClaimBonus(bonus.id)}
+              {vipBonuses.map((bonus) => (
+                <BonusCard
+                  key={bonus.id}
+                  bonus={bonus}
+                  onClaim={handleClaimBonus}
                 />
               ))}
             </div>
@@ -125,83 +130,83 @@ const Bonuses: React.FC = () => {
             <div className="section-header">
               <h2 className="section-title">
                 <span className="section-icon">🎰</span>
-                {t.dailyBonuses || 'Daily Bonuses'}
+                {t.dailyBonuses}
               </h2>
-              <p className="section-description">{t.dailyBonusesDesc || 'Regular rewards for active players'}</p>
+              <p className="section-description">{t.dailyBonusesDesc}</p>
             </div>
             <div className="bonuses-grid">
-              {dailyBonuses.map(bonus => (
-                <BonusCard 
-                  key={bonus.id} 
-                  bonus={bonus} 
-                  onClaim={() => handleClaimBonus(bonus.id)}
+              {dailyBonuses.map((bonus) => (
+                <BonusCard
+                  key={bonus.id}
+                  bonus={bonus}
+                  onClaim={handleClaimBonus}
                 />
               ))}
             </div>
           </div>
 
           <div className="bonus-terms">
-            <h3>{t.bonusTerms || 'Bonus Terms'}</h3>
+            <h3>{t.bonusTerms}</h3>
             <div className="terms-grid">
               <div className="term-item">
-                <h4>🎯 {t.wagering || 'Wagering'}</h4>
-                <p>{t.wageringDesc || 'All bonuses have wagering requirements'}</p>
+                <h4>🎯 {t.wagering}</h4>
+                <p>{t.wageringDesc}</p>
               </div>
               <div className="term-item">
-                <h4>⏰ {t.validity || 'Validity'}</h4>
-                <p>{t.validityDesc || 'Bonuses are valid for a limited time'}</p>
+                <h4>⏰ {t.validity}</h4>
+                <p>{t.validityDesc}</p>
               </div>
               <div className="term-item">
-                <h4>🎮 {t.games || 'Games'}</h4>
-                <p>{t.gamesDesc || 'Some games may not count towards wagering'}</p>
+                <h4>🎮 {t.games}</h4>
+                <p>{t.gamesDesc}</p>
               </div>
               <div className="term-item">
-                <h4>📋 {t.rules || 'Rules'}</h4>
-                <p>{t.rulesDesc || 'Follow casino rules to receive bonuses'}</p>
+                <h4>📋 {t.rules}</h4>
+                <p>{t.rulesDesc}</p>
               </div>
             </div>
           </div>
 
           <div className="loyalty-program">
-            <h3>{t.loyaltyProgram || 'Loyalty Program'}</h3>
+            <h3>{t.loyaltyProgram}</h3>
             <div className="loyalty-levels">
               <div className="loyalty-level">
                 <div className="level-icon">🥉</div>
-                <h4>{t.bronze || 'Bronze'}</h4>
-                <p>{t.bronzePoints || '0-999 points'}</p>
+                <h4>{t.bronze}</h4>
+                <p>{t.bronzePoints}</p>
                 <ul>
-                  <li>{t.basicBonuses || 'Basic bonuses'}</li>
-                  <li>{t.standardSupport || 'Standard support'}</li>
+                  <li>{t.basicBonuses}</li>
+                  <li>{t.standardSupport}</li>
                 </ul>
               </div>
               <div className="loyalty-level">
                 <div className="level-icon">🥈</div>
-                <h4>{t.silver || 'Silver'}</h4>
-                <p>{t.silverPoints || '1000-4999 points'}</p>
+                <h4>{t.silver}</h4>
+                <p>{t.silverPoints}</p>
                 <ul>
-                  <li>{t.increasedBonuses || 'Increased bonuses'}</li>
-                  <li>{t.prioritySupport || 'Priority support'}</li>
-                  <li>{t.personalManager || 'Personal manager'}</li>
+                  <li>{t.increasedBonuses}</li>
+                  <li>{t.prioritySupport}</li>
+                  <li>{t.personalManager}</li>
                 </ul>
               </div>
               <div className="loyalty-level">
                 <div className="level-icon">🥇</div>
-                <h4>{t.gold || 'Gold'}</h4>
-                <p>{t.goldPoints || '5000-9999 points'}</p>
+                <h4>{t.gold}</h4>
+                <p>{t.goldPoints}</p>
                 <ul>
-                  <li>{t.maximumBonuses || 'Maximum bonuses'}</li>
-                  <li>{t.vipSupport || 'VIP support 24/7'}</li>
-                  <li>{t.exclusiveOffers || 'Exclusive offers'}</li>
+                  <li>{t.maximumBonuses}</li>
+                  <li>{t.vipSupport}</li>
+                  <li>{t.exclusiveOffers}</li>
                 </ul>
               </div>
               <div className="loyalty-level">
                 <div className="level-icon">💎</div>
-                <h4>{t.platinum || 'Platinum'}</h4>
-                <p>{t.platinumPoints || '10000+ points'}</p>
+                <h4>{t.platinum}</h4>
+                <p>{t.platinumPoints}</p>
                 <ul>
-                  <li>{t.exclusiveBonuses || 'Exclusive bonuses'}</li>
-                  <li>{t.personalOffers || 'Personal offers'}</li>
-                  <li>{t.individualTerms || 'Individual terms'}</li>
+                  <li>{t.exclusiveBonuses}</li>
+                  <li>{t.personalOffers}</li>
+                  <li>{t.individualTerms}</li>
                 </ul>
               </div>
             </div>

@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useMemo, useRef } from "react";
 import GameCard from "./GameCard";
+import GameModal from "./GameModal";
 import type { Game, Jackpot, Provider } from "./api";
 import {
   fetchGames,
@@ -45,6 +46,10 @@ const Home: React.FC = () => {
   const [gamesLoading, setGamesLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const { loading: translationsLoading } = useLanguage();
+
+  // Modal state
+  const [selectedGame, setSelectedGame] = useState<Game | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   // useRef for auto-scrolling jackpot display
   const jackpotScrollRef = useRef<HTMLDivElement>(null);
@@ -134,6 +139,17 @@ const Home: React.FC = () => {
       }
     };
   }, [jackpots]);
+
+  // Modal handlers
+  const handlePlayGame = (game: Game) => {
+    setSelectedGame(game);
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+    setSelectedGame(null);
+  };
 
   if (gamesRelatedDataLoading || gamesLoading || translationsLoading) {
     return (
@@ -281,7 +297,12 @@ const Home: React.FC = () => {
           </div>
           <div className="games-grid">
             {games.map((game) => (
-              <GameCard key={game.id} game={game} providersMap={providersMap} />
+              <GameCard 
+                key={game.id} 
+                game={game} 
+                providersMap={providersMap}
+                onPlayGame={handlePlayGame}
+              />
             ))}
           </div>
         </div>
@@ -332,6 +353,13 @@ const Home: React.FC = () => {
           </div>
         </div>
       </section>
+
+      {/* Game Modal */}
+      <GameModal 
+        game={selectedGame}
+        isOpen={isModalOpen}
+        onClose={handleCloseModal}
+      />
     </div>
   );
 };
