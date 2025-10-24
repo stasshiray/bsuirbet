@@ -1,31 +1,22 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useCallback, useEffect } from "react";
 import BonusCard from "./BonusCard";
 import type { Bonus } from "./bonuses";
 import { fetchBonuses, claimBonus } from "./api";
 import { useLanguage } from "./LanguageContext";
+import useFetch from "./useFetch";
 import "./BonusesPage.css";
 
 const Bonuses: React.FC = () => {
-  const [bonuses, setBonuses] = useState<Bonus[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
   const { t } = useLanguage();
 
-  useEffect(() => {
-    const loadBonuses = async () => {
-      try {
-        setLoading(true);
-        const data = await fetchBonuses();
-        setBonuses(data);
-      } catch (err) {
-        setError(err instanceof Error ? err.message : "Failed to load bonuses");
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    loadBonuses();
-  }, []);
+  const {
+    data: bonuses,
+    loading,
+    error,
+    fetchData,
+  } = useFetch<Bonus[]>(fetchBonuses, {
+    immediate: true,
+  });
 
   const handleClaimBonus = useCallback(
     async (bonusId: number) => {
@@ -58,9 +49,11 @@ const Bonuses: React.FC = () => {
           <div style={{ textAlign: "center", padding: "2rem" }}>
             <h2>{t.error}</h2>
             <p>{error}</p>
-            <button onClick={() => window.location.reload()}>
-              {t.tryAgain}
-            </button>
+            <div
+              style={{ display: "flex", gap: "1rem", justifyContent: "center" }}
+            >
+              <button onClick={fetchData}>{t.tryAgain}</button>
+            </div>
           </div>
         </div>
       </div>
@@ -68,11 +61,11 @@ const Bonuses: React.FC = () => {
   }
 
   // Group bonuses by category
-  const welcomeBonuses = bonuses.filter(
-    (bonus) => bonus.category === "welcome"
-  );
-  const vipBonuses = bonuses.filter((bonus) => bonus.category === "vip");
-  const dailyBonuses = bonuses.filter((bonus) => bonus.category === "daily");
+  const welcomeBonuses =
+    bonuses?.filter((bonus) => bonus.category === "welcome") || [];
+  const vipBonuses = bonuses?.filter((bonus) => bonus.category === "vip") || [];
+  const dailyBonuses =
+    bonuses?.filter((bonus) => bonus.category === "daily") || [];
 
   return (
     <div className="bonuses">
@@ -99,7 +92,7 @@ const Bonuses: React.FC = () => {
                 <BonusCard
                   key={bonus.id}
                   bonus={bonus}
-                  onClaim={handleClaimBonus}
+                  onClaim={() => handleClaimBonus(bonus.id)}
                 />
               ))}
             </div>
@@ -119,7 +112,7 @@ const Bonuses: React.FC = () => {
                 <BonusCard
                   key={bonus.id}
                   bonus={bonus}
-                  onClaim={handleClaimBonus}
+                  onClaim={() => handleClaimBonus(bonus.id)}
                 />
               ))}
             </div>
@@ -139,7 +132,7 @@ const Bonuses: React.FC = () => {
                 <BonusCard
                   key={bonus.id}
                   bonus={bonus}
-                  onClaim={handleClaimBonus}
+                  onClaim={() => handleClaimBonus(bonus.id)}
                 />
               ))}
             </div>
