@@ -1,5 +1,5 @@
 // API service functions for fetching data from the backend
-import type { Bonus } from './bonuses';
+import type { Bonus } from "./bonuses";
 
 export interface Provider {
   id: string;
@@ -38,6 +38,9 @@ export interface Jackpot {
   amount: string;
 }
 
+type Sum = (num1: number, num2: number) => number;
+type Result = ReturnType<Sum>;
+
 export interface User {
   id: number;
   email: string;
@@ -49,14 +52,23 @@ export interface User {
   createdAt: string;
 }
 
+type UserPatch = Omit<Partial<User>, "id" | "createdAt">;
+
+function logUser(user: Readonly<User>) {
+  console.log(user);
+}
+
 export interface LoginRequest {
   email: string;
   password: string;
 }
 
-export type SignupRequest = Pick<User, 'email' | 'username' | 'firstName' | 'lastName'> & {
+export type SignupRequest = Pick<
+  User,
+  "email" | "username" | "firstName" | "lastName"
+> & {
   password: string;
-}
+};
 
 export interface AuthResponse {
   success: boolean;
@@ -67,14 +79,16 @@ export interface AuthResponse {
 
 // Games API
 export const fetchGames = async (categories?: string[]): Promise<Game[]> => {
-  const url = new URL('/api/games', window.location.origin);
+  const url = new URL("/api/games", window.location.origin);
   if (categories && categories.length > 0) {
-    categories.forEach(category => url.searchParams.append('category', category));
+    categories.forEach((category) =>
+      url.searchParams.append("category", category)
+    );
   }
-  
+
   const response = await fetch(url.toString());
   if (!response.ok) {
-    throw new Error('Failed to fetch games');
+    throw new Error("Failed to fetch games");
   }
   return response.json();
 };
@@ -82,16 +96,16 @@ export const fetchGames = async (categories?: string[]): Promise<Game[]> => {
 export const fetchGame = async (id: number): Promise<Game> => {
   const response = await fetch(`/api/games/${id}`);
   if (!response.ok) {
-    throw new Error('Failed to fetch game');
+    throw new Error("Failed to fetch game");
   }
   return response.json();
 };
 
 // Tournaments API
 export const fetchTournaments = async (): Promise<Tournament[]> => {
-  const response = await fetch('/api/tournaments');
+  const response = await fetch("/api/tournaments");
   if (!response.ok) {
-    throw new Error('Failed to fetch tournaments');
+    throw new Error("Failed to fetch tournaments");
   }
   return response.json();
 };
@@ -99,32 +113,34 @@ export const fetchTournaments = async (): Promise<Tournament[]> => {
 export const fetchTournament = async (id: number): Promise<Tournament> => {
   const response = await fetch(`/api/tournaments/${id}`);
   if (!response.ok) {
-    throw new Error('Failed to fetch tournament');
+    throw new Error("Failed to fetch tournament");
   }
   return response.json();
 };
 
-export const participateInTournament = async (id: number): Promise<{ success: boolean; message: string }> => {
+export const participateInTournament = async (
+  id: number
+): Promise<{ success: boolean; message: string }> => {
   const response = await fetch(`/api/tournaments/${id}/participate`, {
-    method: 'POST',
+    method: "POST",
     headers: {
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
     },
   });
-  
+
   if (!response.ok) {
     const error = await response.json();
-    throw new Error(error.error || 'Failed to participate in tournament');
+    throw new Error(error.error || "Failed to participate in tournament");
   }
-  
+
   return response.json();
 };
 
 // Bonuses API
 export const fetchBonuses = async (): Promise<Bonus[]> => {
-  const response = await fetch('/api/bonuses');
+  const response = await fetch("/api/bonuses");
   if (!response.ok) {
-    throw new Error('Failed to fetch bonuses');
+    throw new Error("Failed to fetch bonuses");
   }
   return response.json();
 };
@@ -132,100 +148,109 @@ export const fetchBonuses = async (): Promise<Bonus[]> => {
 export const fetchBonus = async (id: number): Promise<Bonus> => {
   const response = await fetch(`/api/bonuses/${id}`);
   if (!response.ok) {
-    throw new Error('Failed to fetch bonus');
+    throw new Error("Failed to fetch bonus");
   }
   return response.json();
 };
 
-export const claimBonus = async (id: number): Promise<{ success: boolean; message: string }> => {
+export const claimBonus = async (
+  id: number
+): Promise<{ success: boolean; message: string }> => {
   const response = await fetch(`/api/bonuses/${id}/claim`, {
-    method: 'POST',
+    method: "POST",
     headers: {
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
     },
   });
-  
+
   if (!response.ok) {
     const error = await response.json();
-    throw new Error(error.error || 'Failed to claim bonus');
+    throw new Error(error.error || "Failed to claim bonus");
   }
-  
+
   return response.json();
 };
 
 // Providers API
 export const fetchProviders = async (): Promise<Provider[]> => {
-  const response = await fetch('/api/providers');
+  const response = await fetch("/api/providers");
   if (!response.ok) {
-    throw new Error('Failed to fetch providers');
+    throw new Error("Failed to fetch providers");
   }
   return response.json();
 };
 
 // Jackpots API
 export const fetchJackpots = async (): Promise<Jackpot[]> => {
-  const response = await fetch('/api/jackpots');
+  const response = await fetch("/api/jackpots");
   if (!response.ok) {
-    throw new Error('Failed to fetch jackpots');
+    throw new Error("Failed to fetch jackpots");
   }
   return response.json();
 };
 
 // Authentication API
-export const login = async (credentials: LoginRequest): Promise<AuthResponse> => {
-  const response = await fetch('/api/auth/login', {
-    method: 'POST',
+export const login = async (
+  credentials: LoginRequest
+): Promise<AuthResponse> => {
+  const response = await fetch("/api/auth/login", {
+    method: "POST",
     headers: {
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
     },
     body: JSON.stringify(credentials),
   });
-  
+
   if (!response.ok) {
     const error = await response.json();
-    throw new Error(error.message || 'Login failed');
+    throw new Error(error.message || "Login failed");
   }
-  
+
   return response.json();
 };
 
-export const signup = async (userData: SignupRequest): Promise<AuthResponse> => {
-  const response = await fetch('/api/auth/signup', {
-    method: 'POST',
+export const signup = async (
+  userData: SignupRequest
+): Promise<AuthResponse> => {
+  const response = await fetch("/api/auth/signup", {
+    method: "POST",
     headers: {
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
     },
     body: JSON.stringify(userData),
   });
-  
+
   if (!response.ok) {
     const error = await response.json();
-    throw new Error(error.message || 'Signup failed');
+    throw new Error(error.message || "Signup failed");
   }
-  
+
   return response.json();
 };
 
-export const logout = async (): Promise<{ success: boolean; message: string }> => {
-  const response = await fetch('/api/auth/logout', {
-    method: 'POST',
+export const logout = async (): Promise<{
+  success: boolean;
+  message: string;
+}> => {
+  const response = await fetch("/api/auth/logout", {
+    method: "POST",
     headers: {
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
     },
   });
-  
+
   if (!response.ok) {
     const error = await response.json();
-    throw new Error(error.message || 'Logout failed');
+    throw new Error(error.message || "Logout failed");
   }
-  
+
   return response.json();
 };
 
 export const getCurrentUser = async (): Promise<User> => {
-  const response = await fetch('/api/auth/me');
+  const response = await fetch("/api/auth/me");
   if (!response.ok) {
-    throw new Error('Failed to get current user');
+    throw new Error("Failed to get current user");
   }
   return response.json();
 };
@@ -246,23 +271,25 @@ export interface LanguagesResponse {
   }>;
 }
 
-export const fetchTranslations = async (language: string): Promise<TranslationResponse> => {
+export const fetchTranslations = async (
+  language: string
+): Promise<TranslationResponse> => {
   const response = await fetch(`/api/translations/${language}`);
-  
+
   if (!response.ok) {
     const error = await response.json();
-    throw new Error(error.error || 'Failed to fetch translations');
+    throw new Error(error.error || "Failed to fetch translations");
   }
 
   return response.json();
 };
 
 export const fetchAvailableLanguages = async (): Promise<LanguagesResponse> => {
-  const response = await fetch('/api/translations');
-  
+  const response = await fetch("/api/translations");
+
   if (!response.ok) {
     const error = await response.json();
-    throw new Error(error.error || 'Failed to fetch available languages');
+    throw new Error(error.error || "Failed to fetch available languages");
   }
 
   return response.json();
@@ -275,11 +302,11 @@ export interface CategoriesResponse {
 }
 
 export const fetchCategories = async (): Promise<CategoriesResponse> => {
-  const response = await fetch('/api/categories');
-  
+  const response = await fetch("/api/categories");
+
   if (!response.ok) {
     const error = await response.json();
-    throw new Error(error.error || 'Failed to fetch categories');
+    throw new Error(error.error || "Failed to fetch categories");
   }
 
   return response.json();

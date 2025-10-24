@@ -78,7 +78,8 @@
   display: flex;
   justify-content: center;
   gap: 3rem;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
+  overflow: hidden;
 }
 
 .jackpot-item {

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useEffect, useMemo, useRef } from "react";
 import GameCard from "./GameCard";
 import type { Game, Jackpot, Provider } from "./api";
 import {
@@ -28,7 +28,7 @@ const createGamesLookup = (games: Game[]): GamesLookup => {
 };
 
 const createProvidersLookup = (providers: Provider[]): ProvidersLookup => {
-  const lookup: ProvidersLookup = {};
+  const lookup: Record<string, Provider> = {};
   providers.forEach((provider) => {
     lookup[provider.id] = provider;
   });
@@ -46,6 +46,10 @@ const Home: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const { loading: translationsLoading } = useLanguage();
 
+  // useRef for auto-scrolling jackpot display
+  const jackpotScrollRef = useRef<HTMLDivElement>(null);
+  const jackpotScrollIntervalRef = useRef<number | null>(null);
+
   // Create optimized lookup object for faster searching
   const gamesMap = useMemo(() => createGamesLookup(games), [games]);
 
@@ -59,12 +63,9 @@ const Home: React.FC = () => {
     const loadData = async () => {
       try {
         setGamesRelatedDataLoading(true);
-        const [jackpotsData, providersData, categoriesData] =
-          await Promise.all([
-            fetchJackpots(),
-            fetchProviders(),
-            fetchCategories(),
-          ]);
+        const [jackpotsData, providersData, categoriesData] = await Promise.all(
+          [fetchJackpots(), fetchProviders(), fetchCategories()]
+        );
         setJackpots(jackpotsData);
         setProviders(providersData);
         setCategories(categoriesData.categories);
@@ -98,6 +99,41 @@ const Home: React.FC = () => {
 
     loadFilteredGames();
   }, [selectedCategories]);
+
+  // Auto-scroll jackpot display
+  useEffect(() => {
+    if (jackpots.length > 0) {
+      const startAutoScroll = () => {
+        if (jackpotScrollIntervalRef.current) {
+          clearInterval(jackpotScrollIntervalRef.current);
+        }
+
+        jackpotScrollIntervalRef.current = setInterval(() => {
+          if (jackpotScrollRef.current) {
+            const container = jackpotScrollRef.current;
+            const scrollAmount = 1;
+            container.scrollLeft += scrollAmount;
+
+            // Reset scroll when reaching the end
+            if (
+              container.scrollLeft >=
+              container.scrollWidth - container.clientWidth
+            ) {
+              container.scrollLeft = 0;
+            }
+          }
+        }, 50); // Scroll every 50ms for smooth animation
+      };
+
+      startAutoScroll();
+    }
+
+    return () => {
+      if (jackpotScrollIntervalRef.current) {
+        clearInterval(jackpotScrollIntervalRef.current);
+      }
+    };
+  }, [jackpots]);
 
   if (gamesRelatedDataLoading || gamesLoading || translationsLoading) {
     return (
@@ -161,11 +197,41 @@ const Home: React.FC = () => {
           <h2 className="section-title">
             <Translate id="jackpotTitle" />
           </h2>
-          <div className="jackpot-display">
-            {jackpots.slice(0, 3).map((jackpot, index) => {
+          <div
+            ref={jackpotScrollRef}
+            className="jackpot-display"
+            onMouseEnter={() => {
+              if (jackpotScrollIntervalRef.current) {
+                clearInterval(jackpotScrollIntervalRef.current);
+              }
+            }}
+            onMouseLeave={() => {
+              if (jackpots.length > 0) {
+                jackpotScrollIntervalRef.current = setInterval(() => {
+                  if (jackpotScrollRef.current) {
+                    const container = jackpotScrollRef.current;
+                    const scrollAmount = 1;
+                    container.scrollLeft += scrollAmount;
+
+                    if (
+                      container.scrollLeft >=
+                      container.scrollWidth - container.clientWidth
+                    ) {
+                      container.scrollLeft = 0;
+                    }
+                  }
+                }, 50);
+              }
+            }}
+          >
+            {jackpots.slice(0, 10).map((jackpot, index) => {
               const game = gamesMap[jackpot.gameId];
               return (
-                <div key={index} className="jackpot-item">
+                <div
+                  key={index}
+                  className="jackpot-item"
+                  style={{ display: "inline-block", marginRight: "2rem" }}
+                >
                   <span className="jackpot-label">
                     {game?.title || `Game ${jackpot.gameId}`}
                   </span>
