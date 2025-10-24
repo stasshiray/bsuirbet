@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router';
 import { signup, type SignupRequest } from './api';
 import Button from './Button';
 import { useLanguage } from './LanguageContext';

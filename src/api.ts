@@ -38,9 +38,6 @@ export interface Jackpot {
   amount: string;
 }
 
-type Sum = (num1: number, num2: number) => number;
-type Result = ReturnType<Sum>;
-
 export interface User {
   id: number;
   email: string;
@@ -52,11 +49,11 @@ export interface User {
   createdAt: string;
 }
 
-type UserPatch = Omit<Partial<User>, "id" | "createdAt">;
+// type UserPatch = Omit<Partial<User>, "id" | "createdAt">;
 
-function logUser(user: Readonly<User>) {
-  console.log(user);
-}
+// function logUser(user: Readonly<User>) {
+//   console.log(user);
+// }
 
 export interface LoginRequest {
   email: string;

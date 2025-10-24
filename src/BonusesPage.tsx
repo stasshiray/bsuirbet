@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect } from "react";
+import React, { useCallback } from "react";
 import BonusCard from "./BonusCard";
 import type { Bonus } from "./bonuses";
 import { fetchBonuses, claimBonus } from "./api";
