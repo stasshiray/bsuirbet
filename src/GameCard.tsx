@@ -10,7 +10,7 @@ interface GameCardProps {
   onPlayGame?: (game: Game) => void;
 }
 
-const GameCard: React.FC<GameCardProps> = memo(({ game, providersMap, onPlayGame }) => {
+const GameCardBase = ({ game, providersMap, onPlayGame }) => {
   const provider = providersMap[game.providerId];
 
   // useRef for game card hover effects and animations
@@ -65,15 +65,15 @@ const GameCard: React.FC<GameCardProps> = memo(({ game, providersMap, onPlayGame
         {game.category === "Live Games" && (
           <div className="live-indicator">LIVE</div>
         )}
-         <div ref={overlayRef} className="game-overlay">
-           <Button 
-             variant="primary" 
-             size="small"
-             onClick={() => onPlayGame?.(game)}
-           >
-             <Translate id="playGame" />
-           </Button>
-         </div>
+        <div ref={overlayRef} className="game-overlay">
+          <Button
+            variant="primary"
+            size="small"
+            onClick={() => onPlayGame?.(game)}
+          >
+            <Translate id="playGame" />
+          </Button>
+        </div>
       </div>
       <div className="game-info">
         <h3 className="game-title">{game.title}</h3>
@@ -95,8 +95,12 @@ const GameCard: React.FC<GameCardProps> = memo(({ game, providersMap, onPlayGame
       </div>
     </div>
   );
-});
+};
+const GameCard: React.FC<GameCardProps> = memo(
+  GameCardBase as React.FC<GameCardProps>,
+  (prevProps, nextProps) => prevProps.game !== nextProps.game
+);
 
-GameCard.displayName = 'GameCard';
+GameCard.displayName = "GameCard";
 
 export default GameCard;

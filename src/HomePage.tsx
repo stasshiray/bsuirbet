@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo, useRef } from "react";
+import React, { useState, useEffect, useMemo, useRef, useCallback } from "react";
 import GameCard from "./GameCard";
 import GameModal from "./GameModal";
 import type { Game, Jackpot, Provider } from "./api";
@@ -35,6 +35,16 @@ const createProvidersLookup = (providers: Provider[]): ProvidersLookup => {
   });
   return lookup;
 };
+
+class Component {
+  timer = setInterval(() => {
+
+  })
+
+  render() {
+    return <div></div>
+  }
+}
 
 const Home: React.FC = () => {
   const [games, setGames] = useState<Game[]>([]);
@@ -146,10 +156,10 @@ const Home: React.FC = () => {
     setIsModalOpen(true);
   };
 
-  const handleCloseModal = () => {
+  const handleCloseModal = useCallback(() => {
     setIsModalOpen(false);
     setSelectedGame(null);
-  };
+  }, []);
 
   if (gamesRelatedDataLoading || gamesLoading || translationsLoading) {
     return (
