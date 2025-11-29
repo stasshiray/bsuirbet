@@ -15,7 +15,7 @@ interface UseFetchReturn<T> extends UseFetchState<T> {
 }
 
 function useFetch<T>(
-  fetchFn: () => Promise<T>,
+  fetchFn: ({signal}: {signal: AbortSignal}) => Promise<T>,
   options: UseFetchOptions = {}
 ): UseFetchReturn<T> {
   const { immediate = true } = options;
@@ -38,7 +38,7 @@ function useFetch<T>(
     setState((prev) => ({ ...prev, loading: true, error: null }));
 
     try {
-      const result = await fetchFn();
+      const result = await fetchFn({ signal: abortControllerRef.current.signal });
 
       setState({
         data: result,

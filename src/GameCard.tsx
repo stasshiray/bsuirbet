@@ -10,7 +10,7 @@ interface GameCardProps {
   onPlayGame?: (game: Game) => void;
 }
 
-const GameCardBase = ({ game, providersMap, onPlayGame }) => {
+const GameCardBase = ({ game, providersMap, onPlayGame }: GameCardProps) => {
   const provider = providersMap[game.providerId];
 
   // useRef for game card hover effects and animations

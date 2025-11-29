@@ -1,11 +1,11 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App.tsx";
-// import { worker } from "./browser.ts";
+import { worker } from "./browser.ts";
 import "./index.css";
 
 try {
-  // await worker.start();
+  await worker.start();
 
   ReactDOM.createRoot(document.getElementById("root")!).render(
     <React.StrictMode>

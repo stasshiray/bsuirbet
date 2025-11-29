@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from 'react';
-import { Link, useLocation, useNavigate } from 'react-router';
-import type { User } from './api';
-import Button from './Button';
-import { useTheme } from './ThemeContext';
-import { useLanguage } from './LanguageContext';
-import Translate from './Translate';
-import './Header.css';
+import React, { useState, useEffect } from "react";
+import { Link, useLocation, useNavigate } from "react-router";
+import type { User } from "./api";
+import Button from "./Button";
+import { useTheme } from "./ThemeContext";
+import { useLanguage } from "./LanguageContext";
+import Translate from "./Translate";
+import "./Header.css";
 
 const Header: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -19,17 +19,21 @@ const Header: React.FC = () => {
 
   useEffect(() => {
     // Check if user is logged in
-    const storedUser = localStorage.getItem('user');
+    const storedUser = localStorage.getItem("user");
     if (storedUser) {
-      setUser(JSON.parse(storedUser));
+      try {
+        setUser(JSON.parse(storedUser));
+      } catch (error) {
+        setUser(null);
+      }
     }
   }, []);
 
   const handleLogout = () => {
-    localStorage.removeItem('user');
-    localStorage.removeItem('token');
+    localStorage.removeItem("user");
+    localStorage.removeItem("token");
     setUser(null);
-    navigate('/');
+    navigate("/");
   };
 
   return (
@@ -41,88 +45,98 @@ const Header: React.FC = () => {
             <span className="logo-subtitle">CASINO</span>
           </Link>
 
-          <nav className={`nav ${isMenuOpen ? 'nav-open' : ''}`}>
-                   <Link
-                     to="/"
-                     className={`nav-link ${isActive('/') ? 'active' : ''}`}
-                     onClick={() => setIsMenuOpen(false)}
-                   >
-                     <Translate id="games" />
-                   </Link>
-                   <Link
-                     to="/tournaments"
-                     className={`nav-link ${isActive('/tournaments') ? 'active' : ''}`}
-                     onClick={() => setIsMenuOpen(false)}
-                   >
-                     <Translate id="tournaments" />
-                   </Link>
-                   <Link
-                     to="/bonuses"
-                     className={`nav-link ${isActive('/bonuses') ? 'active' : ''}`}
-                     onClick={() => setIsMenuOpen(false)}
-                   >
-                     <Translate id="bonuses" />
-                   </Link>
+          <nav className={`nav ${isMenuOpen ? "nav-open" : ""}`}>
+            <Link
+              to="/"
+              className={`nav-link ${isActive("/") ? "active" : ""}`}
+              onClick={() => setIsMenuOpen(false)}
+            >
+              <Translate id="games" />
+            </Link>
+            <Link
+              to="/tournaments"
+              className={`nav-link ${isActive("/tournaments") ? "active" : ""}`}
+              onClick={() => setIsMenuOpen(false)}
+            >
+              <Translate id="tournaments" />
+            </Link>
+            <Link
+              to="/bonuses"
+              className={`nav-link ${isActive("/bonuses") ? "active" : ""}`}
+              onClick={() => setIsMenuOpen(false)}
+            >
+              <Translate id="bonuses" />
+            </Link>
           </nav>
 
-                 <div className="header-actions">
-                   <div className="language-selector">
-                     <select
-                       value={language}
-                       onChange={(e) => setLanguage(e.target.value as 'ru' | 'en')}
-                       className="language-select"
-                       disabled={loading}
-                     >
-                       <option value="ru">🇷🇺 <Translate id="russian" /></option>
-                       <option value="en">🇺🇸 <Translate id="english" /></option>
-                     </select>
-                     {loading && <span className="loading-indicator">⟳</span>}
-                   </div>
-            
-            <button 
+          <div className="header-actions">
+            <div className="language-selector">
+              <select
+                value={language}
+                onChange={(e) => setLanguage(e.target.value as "ru" | "en")}
+                className="language-select"
+                disabled={loading}
+              >
+                <option value="ru">
+                  🇷🇺 <Translate id="russian" />
+                </option>
+                <option value="en">
+                  🇺🇸 <Translate id="english" />
+                </option>
+              </select>
+              {loading && <span className="loading-indicator">⟳</span>}
+            </div>
+
+            <button
               className="theme-toggle"
               onClick={toggleTheme}
-              title={`Switch to ${theme === 'light' ? 'dark' : 'light'} theme`}
+              title={`Switch to ${theme === "light" ? "dark" : "light"} theme`}
             >
-              {theme === 'light' ? '🌙' : '☀️'}
+              {theme === "light" ? "🌙" : "☀️"}
             </button>
-            
-                   {user ? (
-                     <div className="user-info">
-                       <div className="user-balance">
-                         <span className="balance-label"><Translate id="balance" />:</span>
-                         <span className="balance-amount">{user.balance} <Translate id="currency" /></span>
-                       </div>
-                       <div className="user-menu">
-                         <span className="user-name">{user.firstName} {user.lastName}</span>
-                         <Button
-                           variant="secondary"
-                           size="small"
-                           onClick={handleLogout}
-                         >
-                           <Translate id="logout" />
-                         </Button>
-                       </div>
-                     </div>
-                   ) : (
-                     <>
-                       <Button
-                         variant="secondary"
-                         size="small"
-                         onClick={() => navigate('/login')}
-                       >
-                         <Translate id="login" />
-                       </Button>
-                       <Button
-                         variant="primary"
-                         size="small"
-                         onClick={() => navigate('/signup')}
-                       >
-                         <Translate id="register" />
-                       </Button>
-                     </>
-                   )}
-            <button 
+
+            {user ? (
+              <div className="user-info">
+                <div className="user-balance">
+                  <span className="balance-label">
+                    <Translate id="balance" />:
+                  </span>
+                  <span className="balance-amount">
+                    {user.balance} <Translate id="currency" />
+                  </span>
+                </div>
+                <div className="user-menu">
+                  <span className="user-name">
+                    {user.firstName} {user.lastName}
+                  </span>
+                  <Button
+                    variant="secondary"
+                    size="small"
+                    onClick={handleLogout}
+                  >
+                    <Translate id="logout" />
+                  </Button>
+                </div>
+              </div>
+            ) : (
+              <>
+                <Button
+                  variant="secondary"
+                  size="small"
+                  onClick={() => navigate("/login")}
+                >
+                  <Translate id="login" />
+                </Button>
+                <Button
+                  variant="primary"
+                  size="small"
+                  onClick={() => navigate("/signup")}
+                >
+                  <Translate id="register" />
+                </Button>
+              </>
+            )}
+            <button
               className="menu-toggle"
               onClick={() => setIsMenuOpen(!isMenuOpen)}
             >

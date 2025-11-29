@@ -1,6 +1,11 @@
 // API service functions for fetching data from the backend
 import type { Bonus } from "./bonuses";
 
+// Get API base URL from environment variable or use relative path for dev proxy
+const API_BASE_URL = import.meta.env.VITE_BACKEND_URL 
+  ? `${import.meta.env.VITE_BACKEND_URL}/api`
+  : '/api';
+
 export interface Provider {
   id: string;
   name: string;
@@ -76,7 +81,10 @@ export interface AuthResponse {
 
 // Games API
 export const fetchGames = async (categories?: string[]): Promise<Game[]> => {
-  const url = new URL("/api/games", window.location.origin);
+  const baseUrl = API_BASE_URL.startsWith('http') 
+    ? API_BASE_URL 
+    : `${window.location.origin}${API_BASE_URL}`;
+  const url = new URL(`${baseUrl}/games`);
   if (categories && categories.length > 0) {
     categories.forEach((category) =>
       url.searchParams.append("category", category)
@@ -91,7 +99,7 @@ export const fetchGames = async (categories?: string[]): Promise<Game[]> => {
 };
 
 export const fetchGame = async (id: number): Promise<Game> => {
-  const response = await fetch(`/api/games/${id}`);
+  const response = await fetch(`${API_BASE_URL}/games/${id}`);
   if (!response.ok) {
     throw new Error("Failed to fetch game");
   }
@@ -100,7 +108,7 @@ export const fetchGame = async (id: number): Promise<Game> => {
 
 // Tournaments API
 export const fetchTournaments = async (): Promise<Tournament[]> => {
-  const response = await fetch("/api/tournaments");
+  const response = await fetch(`${API_BASE_URL}/tournaments`);
   if (!response.ok) {
     throw new Error("Failed to fetch tournaments");
   }
@@ -108,7 +116,7 @@ export const fetchTournaments = async (): Promise<Tournament[]> => {
 };
 
 export const fetchTournament = async (id: number): Promise<Tournament> => {
-  const response = await fetch(`/api/tournaments/${id}`);
+  const response = await fetch(`${API_BASE_URL}/tournaments/${id}`);
   if (!response.ok) {
     throw new Error("Failed to fetch tournament");
   }
@@ -118,7 +126,7 @@ export const fetchTournament = async (id: number): Promise<Tournament> => {
 export const participateInTournament = async (
   id: number
 ): Promise<{ success: boolean; message: string }> => {
-  const response = await fetch(`/api/tournaments/${id}/participate`, {
+  const response = await fetch(`${API_BASE_URL}/tournaments/${id}/participate`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -134,8 +142,8 @@ export const participateInTournament = async (
 };
 
 // Bonuses API
-export const fetchBonuses = async (): Promise<Bonus[]> => {
-  const response = await fetch("/api/bonuses");
+export const fetchBonuses = async ({ signal }: { signal?: AbortSignal }): Promise<Bonus[]> => {
+  const response = await fetch(`${API_BASE_URL}/bonuses`, { signal });
   if (!response.ok) {
     throw new Error("Failed to fetch bonuses");
   }
@@ -143,7 +151,7 @@ export const fetchBonuses = async (): Promise<Bonus[]> => {
 };
 
 export const fetchBonus = async (id: number): Promise<Bonus> => {
-  const response = await fetch(`/api/bonuses/${id}`);
+  const response = await fetch(`${API_BASE_URL}/bonuses/${id}`);
   if (!response.ok) {
     throw new Error("Failed to fetch bonus");
   }
@@ -153,7 +161,7 @@ export const fetchBonus = async (id: number): Promise<Bonus> => {
 export const claimBonus = async (
   id: number
 ): Promise<{ success: boolean; message: string }> => {
-  const response = await fetch(`/api/bonuses/${id}/claim`, {
+  const response = await fetch(`${API_BASE_URL}/bonuses/${id}/claim`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -170,7 +178,7 @@ export const claimBonus = async (
 
 // Providers API
 export const fetchProviders = async (): Promise<Provider[]> => {
-  const response = await fetch("/api/providers");
+  const response = await fetch(`${API_BASE_URL}/providers`);
   if (!response.ok) {
     throw new Error("Failed to fetch providers");
   }
@@ -179,7 +187,7 @@ export const fetchProviders = async (): Promise<Provider[]> => {
 
 // Jackpots API
 export const fetchJackpots = async (): Promise<Jackpot[]> => {
-  const response = await fetch("/api/jackpots");
+  const response = await fetch(`${API_BASE_URL}/jackpots`);
   if (!response.ok) {
     throw new Error("Failed to fetch jackpots");
   }
@@ -190,7 +198,7 @@ export const fetchJackpots = async (): Promise<Jackpot[]> => {
 export const login = async (
   credentials: LoginRequest
 ): Promise<AuthResponse> => {
-  const response = await fetch("/api/auth/login", {
+  const response = await fetch(`${API_BASE_URL}/auth/login`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -209,7 +217,7 @@ export const login = async (
 export const signup = async (
   userData: SignupRequest
 ): Promise<AuthResponse> => {
-  const response = await fetch("/api/auth/signup", {
+  const response = await fetch(`${API_BASE_URL}/auth/signup`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -229,7 +237,7 @@ export const logout = async (): Promise<{
   success: boolean;
   message: string;
 }> => {
-  const response = await fetch("/api/auth/logout", {
+  const response = await fetch(`${API_BASE_URL}/auth/logout`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -245,7 +253,7 @@ export const logout = async (): Promise<{
 };
 
 export const getCurrentUser = async (): Promise<User> => {
-  const response = await fetch("/api/auth/me");
+  const response = await fetch(`${API_BASE_URL}/auth/me`);
   if (!response.ok) {
     throw new Error("Failed to get current user");
   }
@@ -271,7 +279,7 @@ export interface LanguagesResponse {
 export const fetchTranslations = async (
   language: string
 ): Promise<TranslationResponse> => {
-  const response = await fetch(`/api/translations/${language}`);
+  const response = await fetch(`${API_BASE_URL}/translations/${language}`);
 
   if (!response.ok) {
     const error = await response.json();
@@ -282,7 +290,7 @@ export const fetchTranslations = async (
 };
 
 export const fetchAvailableLanguages = async (): Promise<LanguagesResponse> => {
-  const response = await fetch("/api/translations");
+  const response = await fetch(`${API_BASE_URL}/translations`);
 
   if (!response.ok) {
     const error = await response.json();
@@ -299,7 +307,7 @@ export interface CategoriesResponse {
 }
 
 export const fetchCategories = async (): Promise<CategoriesResponse> => {
-  const response = await fetch("/api/categories");
+  const response = await fetch(`${API_BASE_URL}/categories`);
 
   if (!response.ok) {
     const error = await response.json();

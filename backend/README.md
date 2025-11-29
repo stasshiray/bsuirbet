@@ -10,21 +10,75 @@ npm install
 
 ## Запуск
 
-### Режим разработки
+### С использованием Docker Compose (рекомендуется)
+
+1. Создайте файл `.env` на основе `.env.example`:
+```bash
+cp .env.example .env
+```
+
+2. Запустите PostgreSQL и Backend:
+
+**Для разработки (с hot reload, по умолчанию):**
+```bash
+docker-compose up -d
+```
+
+**Для production:**
+```bash
+DOCKERFILE=Dockerfile BACKEND_COMMAND="npm start" docker-compose up -d
+```
+
+3. Остановите сервисы:
+```bash
+docker-compose down
+```
+
+4. Остановите и удалите volumes (включая данные БД):
+```bash
+docker-compose down -v
+```
+
+PostgreSQL будет доступен на `localhost:5432`, Backend на `http://localhost:3001`, а pgAdmin на `http://localhost:5050`.
+
+**Инициализация базы данных:**
+
+После первого запуска контейнеров, выполните инициализацию базы данных:
+```bash
+docker-compose exec backend npm run init-db
+```
+
+Это создаст необходимые таблицы и заполнит их начальными данными (провайдеры, игры, турниры, бонусы, демо-пользователи).
+
+**pgAdmin доступ:**
+- Email: `admin@bsuirbet.com` (по умолчанию, настраивается через `PGADMIN_EMAIL`)
+- Password: `admin123` (по умолчанию, настраивается через `PGADMIN_PASSWORD`)
+
+После входа в pgAdmin, добавьте новый сервер PostgreSQL:
+- Host: `postgres` (имя сервиса в docker-compose)
+- Port: `5432`
+- Database: `bsuirbet` (или значение из `POSTGRES_DB`)
+- Username: `bsuirbet` (или значение из `POSTGRES_USER`)
+- Password: `bsuirbet123` (или значение из `POSTGRES_PASSWORD`)
+
+### Локальный запуск (без Docker)
+
+#### Режим разработки
 
 ```bash
+npm install
 npm run dev
 ```
 
 Сервер запустится на `http://localhost:3001` с автоматической перезагрузкой при изменении файлов.
 
-### Сборка
+#### Сборка
 
 ```bash
 npm run build
 ```
 
-### Запуск в production режиме
+#### Запуск в production режиме
 
 ```bash
 npm start

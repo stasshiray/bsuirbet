@@ -1,5 +1,7 @@
+import 'reflect-metadata';
 import express from 'express';
 import cors from 'cors';
+import { AppDataSource } from './data-source';
 import gamesRouter from './routes/games';
 import tournamentsRouter from './routes/tournaments';
 import bonusesRouter from './routes/bonuses';
@@ -14,28 +16,38 @@ import { notFoundHandler } from './middleware/notFound';
 const app = express();
 const PORT = process.env.PORT || 3001;
 
-// Middleware
-app.use(cors());
-app.use(express.json());
+// Initialize TypeORM
+AppDataSource.initialize()
+  .then(() => {
+    console.log('Data Source has been initialized!');
 
-// Routes
-app.use('/api/games', gamesRouter);
-app.use('/api/tournaments', tournamentsRouter);
-app.use('/api/bonuses', bonusesRouter);
-app.use('/api/providers', providersRouter);
-app.use('/api/jackpots', jackpotsRouter);
-app.use('/api/auth', authRouter);
-app.use('/api/translations', translationsRouter);
-app.use('/api/categories', categoriesRouter);
+    // Middleware
+    app.use(cors());
+    app.use(express.json());
 
-// 404 handler (must be after all routes)
-app.use(notFoundHandler);
+    // Routes
+    app.use('/api/games', gamesRouter);
+    app.use('/api/tournaments', tournamentsRouter);
+    app.use('/api/bonuses', bonusesRouter);
+    app.use('/api/providers', providersRouter);
+    app.use('/api/jackpots', jackpotsRouter);
+    app.use('/api/auth', authRouter);
+    app.use('/api/translations', translationsRouter);
+    app.use('/api/categories', categoriesRouter);
 
-// Error handler (must be last)
-app.use(errorHandler);
+    // 404 handler (must be after all routes)
+    app.use(notFoundHandler);
 
-// Start server
-app.listen(PORT, () => {
-  console.log(`Server is running on http://localhost:${PORT}`);
-});
+    // Error handler (must be last)
+    app.use(errorHandler);
+
+    // Start server
+    app.listen(PORT, () => {
+      console.log(`Server is running on http://localhost:${PORT}`);
+    });
+  })
+  .catch((err: Error) => {
+    console.error('Error during Data Source initialization:', err);
+    process.exit(1);
+  });
 

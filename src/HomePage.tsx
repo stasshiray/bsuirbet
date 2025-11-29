@@ -36,16 +36,6 @@ const createProvidersLookup = (providers: Provider[]): ProvidersLookup => {
   return lookup;
 };
 
-class Component {
-  timer = setInterval(() => {
-
-  })
-
-  render() {
-    return <div></div>
-  }
-}
-
 const Home: React.FC = () => {
   const [games, setGames] = useState<Game[]>([]);
   const [jackpots, setJackpots] = useState<Jackpot[]>([]);
