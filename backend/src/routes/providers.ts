@@ -1,22 +1,25 @@
-import { Router, Request, Response, NextFunction } from 'express';
-import { providers } from '../data';
+import { Router } from 'express';
+import type { Request, Response, NextFunction } from 'express';
+import { providerService } from '../services/ProviderService';
 import { NotFoundError } from '../utils/errors';
 
 const router = Router();
 
 // Providers API
-router.get('/', (req: Request, res: Response, next: NextFunction) => {
+router.get('/', async (req: Request, res: Response, next: NextFunction) => {
   try {
-    res.json(providers);
+    const allProviders = await providerService.getAllProviders();
+    res.json(allProviders);
   } catch (error) {
     next(error);
   }
 });
 
-router.get('/:id', (req: Request, res: Response, next: NextFunction) => {
+router.get('/:id', async (req: Request, res: Response, next: NextFunction) => {
   try {
     const id = req.params.id;
-    const provider = providers.find(p => p.id === id);
+
+    const provider = await providerService.getProviderById(id);
 
     if (!provider) {
       return next(NotFoundError('Provider not found'));

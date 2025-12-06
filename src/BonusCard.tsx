@@ -70,10 +70,10 @@ const BonusCard: React.FC<BonusCardProps> = ({ bonus, onClaim }) => {
               <span className="info-value">✓</span>
             </div>
           )}
-          <div className="info-item">
+          {/* <div className="info-item">
             <span className="info-label">Эксклюзивные функции:</span>
             <span className="info-value">{bonus.exclusiveFeatures.join(', ')}</span>
-          </div>
+          </div> */}
         </div>
       );
     }

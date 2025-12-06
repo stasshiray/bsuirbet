@@ -8,6 +8,7 @@ import bonusesRouter from './routes/bonuses';
 import providersRouter from './routes/providers';
 import jackpotsRouter from './routes/jackpots';
 import authRouter from './routes/auth';
+import usersRouter from './routes/users';
 import translationsRouter from './routes/translations';
 import categoriesRouter from './routes/categories';
 import { errorHandler } from './middleware/errorHandler';
@@ -32,6 +33,7 @@ AppDataSource.initialize()
     app.use('/api/providers', providersRouter);
     app.use('/api/jackpots', jackpotsRouter);
     app.use('/api/auth', authRouter);
+    app.use('/api/users', usersRouter);
     app.use('/api/translations', translationsRouter);
     app.use('/api/categories', categoriesRouter);
 

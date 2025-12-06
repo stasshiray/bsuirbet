@@ -1,20 +1,21 @@
-import { Router, Request, Response, NextFunction } from 'express';
-import { getAllGames } from '../utils';
+import { Router } from 'express';
+import type { Request, Response, NextFunction } from 'express';
+import { jackpotService } from '../services/JackpotService';
 
 const router = Router();
 
 // Jackpot API
-router.get('/', (req: Request, res: Response, next: NextFunction) => {
+router.get('/', async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const allGames = getAllGames();
-    const jackpots = allGames
-      .filter(game => game.jackpot)
-      .map(game => ({
-        gameId: game.id,
-        amount: game.jackpot
-      }));
+    const jackpots = await jackpotService.getAllJackpots();
 
-    res.json(jackpots);
+    // Keep the same response shape as before
+    const response = jackpots.map((jackpot) => ({
+      gameId: jackpot.gameId,
+      amount: jackpot.amount,
+    }));
+
+    res.json(response);
   } catch (error) {
     next(error);
   }

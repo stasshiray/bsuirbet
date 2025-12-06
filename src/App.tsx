@@ -5,6 +5,7 @@ import Home from "./HomePage";
 import Tournaments from "./TournamentsPage";
 import Login from "./LoginPage";
 import Signup from "./SignupPage";
+import Profile from "./ProfilePage";
 import OnlineStatus from "./OnlineStatus";
 import LoadingSpinner from "./LoadingSpinner";
 import { ThemeProvider } from "./ThemeContext";
@@ -53,6 +54,7 @@ function App() {
                         </Suspense>
                       }
                     />
+                    <Route path="/profile" element={<Profile />} />
                   </Routes>
                 </Layout>
               }

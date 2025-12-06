@@ -29,6 +29,7 @@ export const AppDataSource = new DataSource({
     BonusClaim,
   ],
   migrations: ['src/migrations/**/*.ts'],
-  subscribers: ['src/subscribers/**/*.ts'],
+  migrationsRun: true,
+  // subscribers: ['src/subscribers/**/*.ts'],
 });
 

@@ -253,10 +253,51 @@ export const logout = async (): Promise<{
 };
 
 export const getCurrentUser = async (): Promise<User> => {
-  const response = await fetch(`${API_BASE_URL}/auth/me`);
+  const token = localStorage.getItem("token");
+  const response = await fetch(`${API_BASE_URL}/auth/me`, {
+    headers: {
+      Authorization: token ? `Bearer ${token}` : "",
+    },
+  });
   if (!response.ok) {
     throw new Error("Failed to get current user");
   }
+  return response.json();
+};
+
+export interface UpdateUserProfileRequest {
+  firstName?: string;
+  lastName?: string;
+}
+
+export interface UpdateUserProfileResponse {
+  success: boolean;
+  message: string;
+  user: User;
+}
+
+export const updateUserProfile = async (
+  data: UpdateUserProfileRequest
+): Promise<UpdateUserProfileResponse> => {
+  const token = localStorage.getItem("token");
+  if (!token) {
+    throw new Error("No authentication token found");
+  }
+
+  const response = await fetch(`${API_BASE_URL}/users/me`, {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify(data),
+  });
+
+  if (!response.ok) {
+    const error = await response.json();
+    throw new Error(error.error?.message || "Failed to update profile");
+  }
+
   return response.json();
 };
 

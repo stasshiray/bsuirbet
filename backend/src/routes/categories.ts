@@ -1,16 +1,18 @@
-import { Router, Request, Response, NextFunction } from 'express';
-import { getAllGames } from '../utils';
+import { Router } from 'express';
+import type { Request, Response, NextFunction } from 'express';
+import { gameService } from '../services/GameService';
 
 const router = Router();
 
 // Categories API
-router.get('/', (req: Request, res: Response, next: NextFunction) => {
+router.get('/', async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const allGames = getAllGames();
-    const categories = [...new Set(allGames.map(game => game.category))];
+    const allGames = await gameService.getAllGames();
+
+    const categories = [...new Set(allGames.map((game) => game.category))];
     res.json({
       success: true,
-      categories
+      categories,
     });
   } catch (error) {
     next(error);

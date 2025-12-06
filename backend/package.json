@@ -4,26 +4,29 @@
   "description": "Backend server for BSUIRBet application",
   "main": "dist/server.js",
   "scripts": {
-    "dev": "tsx watch src/server.ts",
+    "dev": "cross-env NODE_ENV=development ts-node-dev --respawn src/server.ts",
     "build": "tsc",
     "start": "node dist/server.js",
-    "init-db": "tsx src/scripts/init-db.ts"
+    "init-db": "ts-node src/scripts/init-db.ts"
   },
   "dependencies": {
-    "express": "^4.18.2",
+    "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",
-    "typeorm": "^0.3.20",
+    "express": "^4.18.2",
+    "jsonwebtoken": "^9.0.2",
     "pg": "^8.11.3",
     "reflect-metadata": "^0.2.2",
-    "bcryptjs": "^2.4.3"
+    "typeorm": "^0.3.27"
   },
   "devDependencies": {
-    "@types/express": "^4.17.21",
-    "@types/cors": "^2.8.17",
-    "@types/node": "^20.10.0",
     "@types/bcryptjs": "^2.4.6",
-    "tsx": "^4.7.0",
+    "@types/cors": "^2.8.17",
+    "@types/express": "^4.17.21",
+    "@types/jsonwebtoken": "^9.0.5",
+    "@types/node": "^20.10.0",
+    "cross-env": "^10.1.0",
+    "ts-node": "^10.9.2",
+    "ts-node-dev": "^2.0.0",
     "typescript": "^5.3.3"
   }
 }
-
