@@ -1,0 +1,13 @@
+include:
+  - backend/docker-compose.app.yml
+
+services:
+  frontend:
+    build:
+      context: .
+      dockerfile: ${DOCKERFILE:-Dockerfile}
+    container_name: bsuirbet-frontend
+    ports:
+      - "5173:80"
+    depends_on:
+      - backend

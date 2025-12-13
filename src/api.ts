@@ -1,10 +1,40 @@
 // API service functions for fetching data from the backend
 import type { Bonus } from "./bonuses";
+import { fetchWithAuth } from "./fetchWithAuth";
 
 // Get API base URL from environment variable or use relative path for dev proxy
 const API_BASE_URL = import.meta.env.VITE_BACKEND_URL 
   ? `${import.meta.env.VITE_BACKEND_URL}/api`
   : '/api';
+
+// Helper function to get authorization header
+export const getAuthHeader = (): Record<string, string> => {
+  // Try to get token from localStorage (oidc-client-ts stores user data there)
+  const keycloakUrl = import.meta.env.VITE_KEYCLOAK_URL || 'http://localhost:8080';
+  const realm = import.meta.env.VITE_KEYCLOAK_REALM || 'bsuirbet';
+  const clientId = import.meta.env.VITE_KEYCLOAK_CLIENT_ID || 'bsuirbet-frontend';
+  const authority = `${keycloakUrl}/realms/${realm}`;
+  const storageKey = `oidc.user:${authority}:${clientId}`;
+  
+  try {
+    const userStr = localStorage.getItem(storageKey);
+    if (userStr) {
+      const user = JSON.parse(userStr);
+      if (user?.access_token) {
+        return {
+          'Authorization': `Bearer ${user.access_token}`,
+          'Content-Type': 'application/json',
+        };
+      }
+    }
+  } catch (e) {
+    console.error('Error reading token from storage:', e);
+  }
+  
+  return {
+    'Content-Type': 'application/json',
+  };
+};
 
 export interface Provider {
   id: string;
@@ -126,11 +156,8 @@ export const fetchTournament = async (id: number): Promise<Tournament> => {
 export const participateInTournament = async (
   id: number
 ): Promise<{ success: boolean; message: string }> => {
-  const response = await fetch(`${API_BASE_URL}/tournaments/${id}/participate`, {
+  const response = await fetchWithAuth(`${API_BASE_URL}/tournaments/${id}/participate`, {
     method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
   });
 
   if (!response.ok) {
@@ -161,11 +188,8 @@ export const fetchBonus = async (id: number): Promise<Bonus> => {
 export const claimBonus = async (
   id: number
 ): Promise<{ success: boolean; message: string }> => {
-  const response = await fetch(`${API_BASE_URL}/bonuses/${id}/claim`, {
+  const response = await fetchWithAuth(`${API_BASE_URL}/bonuses/${id}/claim`, {
     method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
   });
 
   if (!response.ok) {
@@ -253,12 +277,7 @@ export const logout = async (): Promise<{
 };
 
 export const getCurrentUser = async (): Promise<User> => {
-  const token = localStorage.getItem("token");
-  const response = await fetch(`${API_BASE_URL}/auth/me`, {
-    headers: {
-      Authorization: token ? `Bearer ${token}` : "",
-    },
-  });
+  const response = await fetchWithAuth(`${API_BASE_URL}/auth/me`);
   if (!response.ok) {
     throw new Error("Failed to get current user");
   }
@@ -279,17 +298,8 @@ export interface UpdateUserProfileResponse {
 export const updateUserProfile = async (
   data: UpdateUserProfileRequest
 ): Promise<UpdateUserProfileResponse> => {
-  const token = localStorage.getItem("token");
-  if (!token) {
-    throw new Error("No authentication token found");
-  }
-
-  const response = await fetch(`${API_BASE_URL}/users/me`, {
+  const response = await fetchWithAuth(`${API_BASE_URL}/users/me`, {
     method: "PATCH",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
-    },
     body: JSON.stringify(data),
   });
 

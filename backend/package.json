@@ -7,13 +7,16 @@
     "dev": "cross-env NODE_ENV=development ts-node-dev --respawn src/server.ts",
     "build": "tsc",
     "start": "node dist/server.js",
-    "init-db": "ts-node src/scripts/init-db.ts"
+    "init-db": "ts-node src/scripts/init-db.ts",
+    "typeorm": "ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js",
+    "migration:generate": "npm run typeorm -- migration:generate -d src/data-source.ts"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",
     "express": "^4.18.2",
     "jsonwebtoken": "^9.0.2",
+    "jwks-rsa": "^3.1.0",
     "pg": "^8.11.3",
     "reflect-metadata": "^0.2.2",
     "typeorm": "^0.3.27"

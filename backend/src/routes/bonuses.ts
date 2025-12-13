@@ -1,7 +1,8 @@
 import { Router } from 'express';
 import type { Request, Response, NextFunction } from 'express';
 import { bonusService } from '../services/BonusService';
-import { NotFoundError, BadRequestError } from '../utils/errors';
+import { NotFoundError, BadRequestError, UnauthorizedError } from '../utils/errors';
+import { authenticateKeycloak } from '../middleware/keycloakAuth';
 
 const router = Router();
 
@@ -43,6 +44,7 @@ router.get('/:id', async (req: Request, res: Response, next: NextFunction) => {
 
 router.post(
   '/:id/claim',
+  authenticateKeycloak,
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       const id = Number.parseInt(req.params.id, 10);

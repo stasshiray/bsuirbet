@@ -2,7 +2,7 @@ import type { MigrationInterface, QueryRunner } from "typeorm";
 import bcrypt from "bcryptjs";
 import { providers, games, liveGames, tournaments, bonuses } from "../data";
 
-export class SeedInitialData1710000000000 implements MigrationInterface {
+export class SeedInitialData1765586118252 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     // Do not reseed if there are already users (assumes DB already initialized)
     const existingUsersResult = (await queryRunner.query(

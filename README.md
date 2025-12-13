@@ -44,6 +44,7 @@ src/
 
 - Node.js (version 20.19.0 or higher)
 - npm or yarn
+- Keycloak server running (see backend docker-compose.yml)
 
 ### Installation
 
@@ -58,12 +59,32 @@ cd bsuirbet
 npm install
 ```
 
-3. Start the development server:
+3. Configure environment variables (optional, defaults are provided):
+Create a `.env` file in the root directory:
+```env
+VITE_KEYCLOAK_URL=http://localhost:8080
+VITE_KEYCLOAK_REALM=bsuirbet
+VITE_KEYCLOAK_CLIENT_ID=bsuirbet-frontend
+VITE_KEYCLOAK_REDIRECT_URI=http://localhost:5173/login/callback
+VITE_BACKEND_URL=http://localhost:3001
+```
+
+4. Start the development server:
 ```bash
 npm run dev
 ```
 
-4. Open your browser and navigate to `http://localhost:5173`
+5. Open your browser and navigate to `http://localhost:5173`
+
+### Authentication
+
+The application uses Keycloak for authentication via OpenID Connect:
+- **Login**: Click "Login with Keycloak" to authenticate
+- **Test User**: 
+  - Username: `test`
+  - Password: `test`
+- **Realm**: `bsuirbet`
+- **Client**: `bsuirbet-frontend` (public client)
 
 ### Available Scripts
 

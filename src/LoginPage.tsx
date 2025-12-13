@@ -1,47 +1,40 @@
 import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router';
-import { login, type LoginRequest } from './api';
+import { Link } from 'react-router';
+import { useAuth } from './AuthContext';
 import Button from './Button';
 import { useLanguage } from './LanguageContext';
 import './LoginPage.css';
 
 const Login: React.FC = () => {
-  const navigate = useNavigate();
+  const { login, isAuthenticated } = useAuth();
   const { t } = useLanguage();
-  const [formData, setFormData] = useState<LoginRequest>({
-    email: '',
-    password: ''
-  });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      [name]: value
-    }));
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleKeycloakLogin = async () => {
     setLoading(true);
     setError(null);
 
     try {
-      const response = await login(formData);
-      if (response.success) {
-        // Store token in localStorage
-        localStorage.setItem('token', response.token || '');
-        localStorage.setItem('user', JSON.stringify(response.user));
-        navigate('/');
-      }
+      await login();
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Login failed');
-    } finally {
       setLoading(false);
     }
   };
+
+  if (isAuthenticated) {
+    return (
+      <div className="auth-page">
+        <div className="auth-container">
+          <div className="auth-header">
+            <h1 className="auth-title">Already Logged In</h1>
+            <p className="auth-subtitle">You are already authenticated</p>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="auth-page">
@@ -51,48 +44,21 @@ const Login: React.FC = () => {
           <p className="auth-subtitle">{t.loginSubtitle}</p>
         </div>
 
-        <form className="auth-form" onSubmit={handleSubmit}>
+        <div className="auth-form">
           {error && (
             <div className="error-message">
               {error}
             </div>
           )}
 
-          <div className="form-group">
-            <label htmlFor="email" className="form-label">{t.email}</label>
-            <input
-              type="email"
-              id="email"
-              name="email"
-              value={formData.email}
-              onChange={handleChange}
-              className="form-input"
-              placeholder={t.email}
-              required
-            />
-          </div>
-
-          <div className="form-group">
-            <label htmlFor="password" className="form-label">{t.password}</label>
-            <input
-              type="password"
-              id="password"
-              name="password"
-              value={formData.password}
-              onChange={handleChange}
-              className="form-input"
-              placeholder={t.password}
-              required
-            />
-          </div>
-
           <Button
-            type="submit"
+            type="button"
             variant="primary"
             fullWidth
             loading={loading}
+            onClick={handleKeycloakLogin}
           >
-            {t.login}
+            {t.login} with Keycloak
           </Button>
 
           <div className="auth-links">
@@ -100,15 +66,15 @@ const Login: React.FC = () => {
           </div>
 
           <div className="demo-credentials">
-            <h3>{t.demoCredentials}:</h3>
+            <h3>Test Credentials:</h3>
             <div className="demo-account">
-              {t.demoAccount1}
+              Username: test
             </div>
             <div className="demo-account">
-              {t.demoAccount2}
+              Password: test
             </div>
           </div>
-        </form>
+        </div>
       </div>
     </div>
   );

@@ -1,39 +1,29 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router";
-import type { User } from "./api";
 import Button from "./Button";
 import { useTheme } from "./ThemeContext";
 import { useLanguage } from "./LanguageContext";
+import { useAuth } from "./AuthContext";
 import Translate from "./Translate";
 import "./Header.css";
 
 const Header: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [user, setUser] = useState<User | null>(null);
   const location = useLocation();
   const navigate = useNavigate();
   const { theme, toggleTheme } = useTheme();
   const { language, setLanguage, loading } = useLanguage();
+  const { user, logout, isAuthenticated } = useAuth();
 
   const isActive = (path: string) => location.pathname === path;
 
-  useEffect(() => {
-    // Check if user is logged in
-    const storedUser = localStorage.getItem("user");
-    if (storedUser) {
-      try {
-        setUser(JSON.parse(storedUser));
-      } catch (error) {
-        setUser(null);
-      }
+  const handleLogout = async () => {
+    try {
+      await logout();
+      navigate("/");
+    } catch (error) {
+      console.error("Logout error:", error);
     }
-  }, []);
-
-  const handleLogout = () => {
-    localStorage.removeItem("user");
-    localStorage.removeItem("token");
-    setUser(null);
-    navigate("/");
   };
 
   return (
@@ -95,19 +85,11 @@ const Header: React.FC = () => {
               {theme === "light" ? "🌙" : "☀️"}
             </button>
 
-            {user ? (
+            {isAuthenticated && user ? (
               <div className="user-info">
-                <div className="user-balance">
-                  <span className="balance-label">
-                    <Translate id="balance" />:
-                  </span>
-                  <span className="balance-amount">
-                    {user.balance} <Translate id="currency" />
-                  </span>
-                </div>
                 <div className="user-menu">
                   <span className="user-name">
-                    {user.firstName} {user.lastName}
+                    {user.profile?.name || user.profile?.preferred_username || user.profile?.email || 'User'}
                   </span>
                   <Button
                     variant="secondary"

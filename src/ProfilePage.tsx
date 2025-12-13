@@ -8,11 +8,13 @@ import {
 } from "./api";
 import Button from "./Button";
 import { useLanguage } from "./LanguageContext";
+import { useAuth } from "./AuthContext";
 import "./ProfilePage.css";
 
 const ProfilePage: React.FC = () => {
   const navigate = useNavigate();
   const { t } = useLanguage();
+  const { isAuthenticated, user: oidcUser } = useAuth();
   const [user, setUser] = useState<User | null>(null);
   const [formData, setFormData] = useState<UpdateUserProfileRequest>({
     firstName: "",
@@ -24,25 +26,22 @@ const ProfilePage: React.FC = () => {
   const [success, setSuccess] = useState<string | null>(null);
 
   useEffect(() => {
+    if (!isAuthenticated) {
+      navigate("/login");
+      return;
+    }
+
     const fetchUser = async () => {
       try {
-        const token = localStorage.getItem("token");
-        if (!token) {
-          navigate("/login");
-          return;
-        }
-
         const currentUser = await getCurrentUser();
         setUser(currentUser);
         setFormData({
-          firstName: currentUser.firstName,
-          lastName: currentUser.lastName,
+          firstName: currentUser.firstName || oidcUser?.profile?.given_name || "",
+          lastName: currentUser.lastName || oidcUser?.profile?.family_name || "",
         });
       } catch (err) {
         setError(err instanceof Error ? err.message : "Failed to load profile");
         if (err instanceof Error && err.message.includes("Unauthorized")) {
-          localStorage.removeItem("token");
-          localStorage.removeItem("user");
           navigate("/login");
         }
       } finally {
@@ -51,7 +50,7 @@ const ProfilePage: React.FC = () => {
     };
 
     fetchUser();
-  }, [navigate]);
+  }, [navigate, isAuthenticated, oidcUser]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -73,7 +72,6 @@ const ProfilePage: React.FC = () => {
       const response = await updateUserProfile(formData);
       if (response.success) {
         setUser(response.user);
-        localStorage.setItem("user", JSON.stringify(response.user));
         setSuccess("Profile updated successfully");
       }
     } catch (err) {
