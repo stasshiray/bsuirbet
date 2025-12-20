@@ -186,6 +186,7 @@ const Home: React.FC = () => {
 
   return (
     <div className="home">
+      <h1>Test</h1>
       <section className="hero">
         <div className="container">
           <div className="hero-content">
