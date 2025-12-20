@@ -1,0 +1,27 @@
+[
+  {
+    "id": "netent",
+    "name": "NetEnt",
+    "logo": "/images/providers/netent.png",
+    "description": "Leading game provider",
+    "isActive": true,
+    "gameCount": 150
+  },
+  {
+    "id": "playngo",
+    "name": "Play'n GO",
+    "logo": "/images/providers/playngo.png",
+    "description": "Premium slot games",
+    "isActive": true,
+    "gameCount": 200
+  },
+  {
+    "id": "evolution",
+    "name": "Evolution Gaming",
+    "logo": "/images/providers/evolution.png",
+    "description": "Live casino games",
+    "isActive": true,
+    "gameCount": 100
+  }
+]
+

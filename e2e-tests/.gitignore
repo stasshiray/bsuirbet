@@ -1,0 +1,16 @@
+# Cypress
+cypress/videos/
+cypress/screenshots/
+cypress/downloads/
+
+# Node
+node_modules/
+package-lock.json
+
+# Logs
+*.log
+
+# OS
+.DS_Store
+Thumbs.db
+

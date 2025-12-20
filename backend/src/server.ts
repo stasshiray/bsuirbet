@@ -1,7 +1,9 @@
 import 'reflect-metadata';
 import express from 'express';
 import cors from 'cors';
+import swaggerUi from 'swagger-ui-express';
 import { AppDataSource } from './data-source';
+import { swaggerSpec } from './config/swagger';
 import gamesRouter from './routes/games';
 import tournamentsRouter from './routes/tournaments';
 import bonusesRouter from './routes/bonuses';
@@ -26,6 +28,12 @@ AppDataSource.initialize()
     app.use(cors());
     app.use(express.json());
 
+    // Swagger documentation
+    app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+    app.use('/api-docs.json', (req, res) => {
+      res.json(swaggerSpec);
+    });
+    
     // Routes
     app.use('/api/games', gamesRouter);
     app.use('/api/tournaments', tournamentsRouter);
