@@ -53,7 +53,7 @@ const Home: React.FC = () => {
 
   // useRef for auto-scrolling jackpot display
   const jackpotScrollRef = useRef<HTMLDivElement>(null);
-  const jackpotScrollIntervalRef = useRef<number | null>(null);
+  const jackpotScrollIntervalRef = useRef<NodeJS.Timeout | null>(null);
 
   // Create optimized lookup object for faster searching
   const gamesMap = useMemo(() => createGamesLookup(games), [games]);
